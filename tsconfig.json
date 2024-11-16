@@ -1,0 +1,20 @@
+{
+    "ts-node": {
+        "compilerOptions": {
+            "module": "commonjs"
+        }
+    },
+    "compilerOptions": {
+        "outDir": "dist",
+        "jsx": "react",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": true,
+        "module": "CommonJS",
+        "target": "es5",
+        "allowJs": true,
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+    },
+    "exclude": ["node_modules", "dist"]
+}
