@@ -22,28 +22,36 @@ async function updateBlockedWebsites() {
     blockedWebsites = await Websites.getWebsites();
 }
 
-const init = async () => {
-    // Load the initial list of blocked websites
-    await updateBlockedWebsites();
+const handleOnCommitted = (
+    details: browser.WebNavigation.OnCommittedDetailsType,
+) => {
+    // Check if the navigation is not in prerender state
+    if (
+        // @ts-ignore
+        details.frameType === 'outermost_frame'
+        // @ts-ignore
+        && details.documentLifecycle !== 'prerender'
+        && isBlocked(details.url)
+    ) {
+        browser.tabs.update(details.tabId, { url: browser.runtime.getURL('blocked.html') });
+    }
+};
 
-    // Update blocked websites whenever the extension is installed or updated
+const syncInit = () => {
     browser.runtime.onInstalled.addListener(updateBlockedWebsites);
     browser.runtime.onStartup.addListener(updateBlockedWebsites);
     Websites.onChanged.addListener(updateBlockedWebsites);
 
-    // Listen for web navigation events
-    browser.webNavigation.onCommitted.addListener((details) => {
-        // Check if the navigation is not in prerender state
-        if (
-            // @ts-ignore
-            details.frameType === 'outermost_frame'
-            // @ts-ignore
-            && details.documentLifecycle !== 'prerender'
-            && isBlocked(details.url)
-        ) {
-            browser.tabs.update(details.tabId, { url: browser.runtime.getURL('blocked.html') });
-        }
-    }, { url: [{ schemes: ['http', 'https'] }] });
+    browser.webNavigation.onCommitted.addListener(handleOnCommitted, { url: [{ schemes: ['http', 'https'] }] });
+};
+
+const asyncInit = async () => {
+    await updateBlockedWebsites();
+};
+
+const init = () => {
+    syncInit();
+    asyncInit();
 };
 
 export { init };
