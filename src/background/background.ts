@@ -4,6 +4,7 @@ import { Websites, WebsitesMap } from '../common/websites';
 import { getHostname } from '../common/utils/url';
 
 let blockedWebsites: WebsitesMap = {};
+let blockedWebsitesPromise: Promise<void> | null = null;
 
 /**
  * Checks if a given URL matches any of the blocked websites.
@@ -16,15 +17,23 @@ function isBlocked(url: string): boolean {
 }
 
 /**
- * Updates the list of blocked websites from Chrome storage.
+ * Updates the list of blocked websites from storage.
  */
-async function updateBlockedWebsites() {
-    blockedWebsites = await Websites.getWebsites();
+function updateBlockedWebsites() {
+    blockedWebsitesPromise = Websites.getWebsites().then((websites) => {
+        blockedWebsites = websites;
+        blockedWebsitesPromise = null;
+    });
 }
 
-const handleOnCommitted = (
+const handleOnCommitted = async (
     details: browser.WebNavigation.OnCommittedDetailsType,
 ) => {
+    // Wait until blockedWebsites is initialized
+    if (blockedWebsitesPromise) {
+        await blockedWebsitesPromise;
+    }
+
     // Check if the navigation is not in prerender state
     if (
         // @ts-ignore
@@ -33,7 +42,9 @@ const handleOnCommitted = (
         && details.documentLifecycle !== 'prerender'
         && isBlocked(details.url)
     ) {
-        browser.tabs.update(details.tabId, { url: browser.runtime.getURL('blocked.html') });
+        await browser.tabs.update(details.tabId, {
+            url: browser.runtime.getURL('blocked.html'),
+        });
     }
 };
 
