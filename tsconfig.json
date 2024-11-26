@@ -15,6 +15,7 @@
         "allowJs": true,
         "moduleResolution": "node",
         "skipLibCheck": true,
+        "resolveJsonModule": true,
     },
     "exclude": ["node_modules", "dist"]
 }

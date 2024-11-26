@@ -104,6 +104,12 @@ export const genCommonConfig = (
                     {
                         from: path.resolve(__dirname, '../../src/manifest.json'),
                         to: 'manifest.json',
+                        transform: async (content) => {
+                            const packageJson = await import('../../package.json');
+                            const manifestJson = JSON.parse(content.toString());
+                            manifestJson.version = packageJson.version;
+                            return JSON.stringify(manifestJson, null, 2);
+                        },
                     },
                 ],
             }),
@@ -127,7 +133,7 @@ export const genCommonConfig = (
                 chunks: [POPUP_OUTPUT],
                 scriptLoading: 'blocking',
                 cache: false,
-            }) as WebpackPluginInstance, // Ensure type compatibility
+            }) as WebpackPluginInstance,
         ],
     };
 
