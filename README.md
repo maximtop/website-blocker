@@ -37,6 +37,10 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 - Open the extension's options page to add or remove websites from the blocked list.
 - The extension will automatically block access to the specified websites.
 
+## Download
+
+You can install the Website Blocker by MT extension directly from the [Chrome Web Store](https://chromewebstore.google.com/detail/website-blocker-by-mt/enffllmgjpgoifnfeljkfhpedcadnpbj).
+
 ## Development
 
 To start the development server with watch mode:
@@ -51,3 +55,6 @@ pnpm lint
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
+
+## GitHub Repository
+For more information, visit our GitHub repository: [https://github.com/maximtop/website-blocker](https://github.com/maximtop/website-blocker)
