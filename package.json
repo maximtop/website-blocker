@@ -2,7 +2,7 @@
   "name": "website-blocker",
   "module": "index.ts",
   "license": "MIT",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "author": {
     "name": "Maxim Topciu",
     "email": "me@maximtop.dev"
