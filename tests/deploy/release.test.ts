@@ -49,7 +49,10 @@ describe('published release contract', () => {
         const release = { tagName: 'v1.2.3', isDraft: false, isPrerelease: false };
         expect(releaseVersion(release)).toBe('1.2.3');
         const invalid = [
-            { isDraft: true }, { isPrerelease: true }, { tagName: 'v1.2.3-rc.1' }, { tagName: '-h' },
+            { isDraft: true },
+            { isPrerelease: true },
+            { tagName: 'v1.2.3-rc.1' },
+            { tagName: '-h' },
         ];
         invalid.forEach((change) => {
             expect(() => releaseVersion({ ...release, ...change })).toThrow();

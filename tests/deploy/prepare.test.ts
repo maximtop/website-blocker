@@ -138,9 +138,10 @@ describe.each(STORE_TARGETS)('release preparation protocol for %s', (target) => 
         expect(views[0]?.[1] ?? []).not.toContain('v1.2.3');
         expect(downloadArguments()).toContain('v1.2.3');
         expect(downloadArguments()).toContain(assetName(target));
+        const outputs = `asset=${assetName(target)}\nsource=${assetName('source')}\n`;
         expect(appendFileSync).toHaveBeenCalledWith(
             'fixture-output',
-            `tag=v1.2.3\nversion=1.2.3\nasset=${assetName(target)}\nsource=${assetName('source')}\n`,
+            `tag=v1.2.3\nversion=1.2.3\n${outputs}`,
         );
     });
     it('refuses malformed input and unsupported modes before invoking external tools', () => {
