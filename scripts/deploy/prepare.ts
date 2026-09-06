@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * @file Resolve one published release and verify its immutable store upload inputs.
  * Identical in every extension repository; repository specifics live in ./constants.
@@ -133,8 +132,8 @@ export const prepare = (env: NodeJS.ProcessEnv = process.env): void => {
         output,
         `tag=${release.tagName}\nversion=${version}\nasset=${archive}\nsource=${source}\n`,
     );
-    console.log(
-        `Verified ${release.tagName} (${tagCommit}) for ${browser} in ${mode} mode:`,
-        assets.join(', '),
+    process.stdout.write(
+        `Verified ${release.tagName} (${tagCommit}) for ${browser} in ${mode} mode: `
+        + `${assets.join(', ')}\n`,
     );
 };

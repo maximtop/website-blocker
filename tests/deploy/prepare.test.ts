@@ -1,3 +1,5 @@
+// @vitest-environment node
+
 /**
  * @file Exercise the deployment preparation protocol against simulated GitHub and Git responses.
  * Identical in every extension repository; repository specifics come from scripts/deploy/constants.
@@ -65,7 +67,9 @@ const envFor = (target: string, mode = 'submit'): NodeJS.ProcessEnv => ({
 });
 const pack = (files: Record<string, string>): Buffer => {
     const zip = new AdmZip();
-    Object.entries(files).forEach(([name, value]) => zip.addFile(name, Buffer.from(value)));
+    Object.entries(files).forEach(([name, value]) => {
+        zip.addFile(name, Buffer.from(value));
+    });
     return zip.toBuffer();
 };
 const chromiumPackage = pack({
@@ -145,18 +149,26 @@ describe.each(STORE_TARGETS)('release preparation protocol for %s', (target) => 
         );
     });
     it('refuses malformed input and unsupported modes before invoking external tools', () => {
-        expect(() => prepare({ ...envFor(target), INPUT_TAG: '--latest' })).toThrow('vX.Y.Z');
-        expect(() => prepare(envFor(target, UNSUPPORTED_MODE[target] ?? ''))).toThrow('mode');
+        expect(() => {
+            prepare({ ...envFor(target), INPUT_TAG: '--latest' });
+        }).toThrow('vX.Y.Z');
+        expect(() => {
+            prepare(envFor(target, UNSUPPORTED_MODE[target] ?? ''));
+        }).toThrow('mode');
         expect(execFileSync).not.toHaveBeenCalled();
     });
     it.each(['isDraft', 'isPrerelease'] as const)('rejects %s without downloading', (field) => {
         release[field] = true;
-        expect(() => prepare(envFor(target))).toThrow('published stable');
+        expect(() => {
+            prepare(envFor(target));
+        }).toThrow('published stable');
         expect(execFileSync).toHaveBeenCalledTimes(1);
     });
     it('stops before assets if store credentials are absent', () => {
         const name = Object.keys(STORE_CONFIG[target] ?? {})[0] ?? '';
-        expect(() => prepare({ ...envFor(target), [name]: '' })).toThrow(name);
+        expect(() => {
+            prepare({ ...envFor(target), [name]: '' });
+        }).toThrow(name);
         expect(execFileSync).toHaveBeenCalledTimes(1);
     });
     it('rejects a commit outside master before downloading assets', () => {
@@ -169,7 +181,9 @@ describe.each(STORE_TARGETS)('release preparation protocol for %s', (target) => 
             }
             return 'fixture-commit';
         });
-        expect(() => prepare(envFor(target))).toThrow('not an ancestor');
+        expect(() => {
+            prepare(envFor(target));
+        }).toThrow('not an ancestor');
         expect(downloadArguments()).toBeUndefined();
         expect(appendFileSync).not.toHaveBeenCalled();
     });
@@ -180,19 +194,25 @@ describe.each(STORE_TARGETS)('release preparation protocol for %s', (target) => 
             }
             return args?.[0] === 'show' ? '{"version":"9.9.9"}' : 'fixture-commit';
         });
-        expect(() => prepare(envFor(target))).toThrow('package.json');
+        expect(() => {
+            prepare(envFor(target));
+        }).toThrow('package.json');
         expect(appendFileSync).not.toHaveBeenCalled();
     });
     it('refuses corrupt checksums before writing successful release outputs', () => {
         vi.mocked(readFileSync).mockReturnValue('invalid checksum');
-        expect(() => prepare(envFor(target))).toThrow('SHA-256');
+        expect(() => {
+            prepare(envFor(target));
+        }).toThrow('SHA-256');
         expect(appendFileSync).not.toHaveBeenCalled();
     });
     it('refuses a package built for another store even when its checksum matches', () => {
         const store: string = target;
         assets[assetName(target)] = store === 'firefox' ? chromiumPackage : firefoxPackage;
         const reason = store === 'firefox' ? 'Gecko' : 'service worker';
-        expect(() => prepare(envFor(target))).toThrow(reason);
+        expect(() => {
+            prepare(envFor(target));
+        }).toThrow(reason);
         expect(appendFileSync).not.toHaveBeenCalled();
     });
     it('verifies the release in validate mode without a store-specific step', () => {

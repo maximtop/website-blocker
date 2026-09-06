@@ -15,7 +15,22 @@ import {
 /**
  * GitHub metadata required to select a stable release.
  */
-export type PublishedRelease = { tagName: string; isDraft: boolean; isPrerelease: boolean };
+export type PublishedRelease = {
+    /**
+     * Git tag of the release, `vX.Y.Z` for stable releases.
+     */
+    tagName: string;
+
+    /**
+     * Whether the release is still a draft.
+     */
+    isDraft: boolean;
+
+    /**
+     * Whether the release is marked as a pre-release.
+     */
+    isPrerelease: boolean;
+};
 
 /**
  * Validate a stable published release and return its version.
