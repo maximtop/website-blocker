@@ -58,9 +58,12 @@ export const requireConfiguration = (names: string[], env: NodeJS.ProcessEnv): v
  * @throws If the checksum is absent, duplicated or incorrect.
  */
 export const verifyChecksum = (name: string, bytes: Buffer, checksums: string): void => {
-    const entries = checksums.split(/\r?\n/).map((line) => line.match(/^([a-f0-9]{64}) [ *](?:\.\/)?(.+)$/));
+    const entries = checksums
+        .split(/\r?\n/)
+        .map((line) => line.match(/^([a-f0-9]{64}) [ *](?:\.\/)?(.+)$/));
     const matches = entries.filter((entry) => entry?.[2] === name);
-    if (matches.length !== 1 || matches[0]?.[1] !== createHash('sha256').update(bytes).digest('hex')) {
+    const digest = createHash('sha256').update(bytes).digest('hex');
+    if (matches.length !== 1 || matches[0]?.[1] !== digest) {
         throw new Error(`Missing, duplicate or mismatched SHA-256 for ${name}`);
     }
 };
@@ -77,16 +80,18 @@ export const verifyChecksum = (name: string, bytes: Buffer, checksums: string): 
 export const verifyManifest = (bytes: Buffer, version: string, browser: string): void => {
     const archive = new AdmZip(bytes);
     const manifests = archive.getEntries().filter((entry) => entry.entryName === 'manifest.json');
-    if (manifests.length !== 1) {
+    const [manifestEntry] = manifests;
+    if (manifests.length !== 1 || !manifestEntry) {
         throw new Error('Package must contain exactly one root manifest.json');
     }
-    const manifest = JSON.parse(archive.readAsText(manifests[0]));
+    const manifest = JSON.parse(archive.readAsText(manifestEntry));
     if (manifest.version !== version || manifest.manifest_version !== 3) {
         throw new Error('Package manifest version does not match the selected release');
     }
     if (browser === 'firefox') {
         if (manifest.browser_specific_settings?.gecko?.id !== GECKO_ID
-            || !Array.isArray(manifest.background?.scripts) || manifest.background?.service_worker) {
+            || !Array.isArray(manifest.background?.scripts)
+            || manifest.background?.service_worker) {
             throw new Error('Incorrect Firefox Gecko ID or background');
         }
     } else if (!manifest.background?.service_worker) {
@@ -116,7 +121,9 @@ export const verifySource = (bytes: Buffer, version: string, requireNotes: boole
     }
     const notes = zip.getEntry(AMO_REVIEW_NOTES_PATH) ? zip.readAsText(AMO_REVIEW_NOTES_PATH) : '';
     if (requireNotes && !notes.trim()) {
-        throw new Error(`Source has no ${AMO_REVIEW_NOTES_PATH}; use the Developer Hub for this historical release`);
+        throw new Error(
+            `Source has no ${AMO_REVIEW_NOTES_PATH}; use the Developer Hub for this release`,
+        );
     }
     return notes;
 };

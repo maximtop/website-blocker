@@ -32,7 +32,11 @@ import {
  */
 const STORE_CONFIGURATION: Record<string, string[]> = {
     chrome: [
-        'CHROME_APP_ID', 'CHROME_PUBLISHER_ID', 'CHROME_CLIENT_ID', 'CHROME_CLIENT_SECRET', 'CHROME_REFRESH_TOKEN',
+        'CHROME_APP_ID',
+        'CHROME_PUBLISHER_ID',
+        'CHROME_CLIENT_ID',
+        'CHROME_CLIENT_SECRET',
+        'CHROME_REFRESH_TOKEN',
     ],
     edge: ['EDGE_PRODUCT_ID', 'EDGE_CLIENT_ID', 'EDGE_API_KEY'],
     firefox: ['FIREFOX_AMO_ID', 'FIREFOX_CLIENT_ID', 'FIREFOX_CLIENT_SECRET'],
@@ -74,11 +78,11 @@ const isStoreTarget = (value: string | undefined): value is StoreTarget => {
 export const prepare = (env: NodeJS.ProcessEnv = process.env): void => {
     const browser = env.STORE_TARGET;
     const mode = env.DEPLOY_MODE || DEFAULT_MODE;
-    if (!isStoreTarget(browser) || !STORE_MODES[browser].includes(mode)) {
+    if (!isStoreTarget(browser) || !STORE_MODES[browser]?.includes(mode)) {
         throw new Error('Invalid store target or deployment mode');
     }
-    // Widened on purpose: repositories with a single store target would otherwise fail to type-check
-    // the Firefox-specific branches below.
+    // Widened on purpose: repositories with a single store target would otherwise fail to
+    // type-check the Firefox-specific branches below.
     const store: string = browser;
     requireConfiguration(['GITHUB_REPOSITORY', 'GITHUB_OUTPUT', 'GH_TOKEN'], env);
     const repository = env.GITHUB_REPOSITORY ?? '';
@@ -87,17 +91,22 @@ export const prepare = (env: NodeJS.ProcessEnv = process.env): void => {
     if (tag && !RELEASE_TAG_PATTERN.test(tag)) {
         throw new Error('Release tag must match vX.Y.Z');
     }
-    const viewArgs = ['release', 'view', ...(tag ? [tag] : []), '--repo', repository,
-        '--json', 'tagName,isDraft,isPrerelease'];
+    const viewArgs = [
+        'release', 'view', ...(tag ? [tag] : []),
+        '--repo', repository, '--json', 'tagName,isDraft,isPrerelease',
+    ];
     const release = JSON.parse(execFileSync('gh', viewArgs, { encoding: 'utf8' }));
     const version = releaseVersion(release);
-    requireConfiguration(STORE_CONFIGURATION[browser], env);
+    requireConfiguration(STORE_CONFIGURATION[browser] ?? [], env);
     execFileSync('git', ['fetch', '--no-tags', 'origin', 'master']);
-    const master = execFileSync('git', ['rev-parse', 'FETCH_HEAD^{commit}'], { encoding: 'utf8' }).trim();
+    const revParse = ['rev-parse', 'FETCH_HEAD^{commit}'];
+    const master = execFileSync('git', revParse, { encoding: 'utf8' }).trim();
     execFileSync('git', ['fetch', '--no-tags', 'origin', `refs/tags/${release.tagName}`]);
-    const tagCommit = execFileSync('git', ['rev-parse', 'FETCH_HEAD^{commit}'], { encoding: 'utf8' }).trim();
+    const tagCommit = execFileSync('git', revParse, { encoding: 'utf8' }).trim();
     execFileSync('git', ['merge-base', '--is-ancestor', tagCommit, master]);
-    const pkg = JSON.parse(execFileSync('git', ['show', `${tagCommit}:package.json`], { encoding: 'utf8' }));
+    const pkg = JSON.parse(execFileSync('git', ['show', `${tagCommit}:package.json`], {
+        encoding: 'utf8',
+    }));
     if (pkg.version !== version) {
         throw new Error('Tagged package.json version does not match release tag');
     }
@@ -106,17 +115,26 @@ export const prepare = (env: NodeJS.ProcessEnv = process.env): void => {
     const source = `${RELEASE_ASSET_PREFIX}-${version}-source.zip`;
     const assets = [archive, ...(store === 'firefox' ? [source] : [])];
     const patterns = [...assets, CHECKSUMS_FILE].flatMap((name) => ['--pattern', name]);
-    execFileSync('gh', ['release', 'download', release.tagName, '--repo', repository,
-        '--dir', STORE_UPLOAD_DIRECTORY, ...patterns]);
+    execFileSync('gh', [
+        'release', 'download', release.tagName,
+        '--repo', repository, '--dir', STORE_UPLOAD_DIRECTORY, ...patterns,
+    ]);
     const checksums = readFileSync(path.join(STORE_UPLOAD_DIRECTORY, CHECKSUMS_FILE), 'utf8');
     assets.forEach((asset) => {
         verifyChecksum(asset, readFileSync(path.join(STORE_UPLOAD_DIRECTORY, asset)), checksums);
     });
     verifyManifest(readFileSync(path.join(STORE_UPLOAD_DIRECTORY, archive)), version, browser);
     if (store === 'firefox') {
-        const notes = verifySource(readFileSync(path.join(STORE_UPLOAD_DIRECTORY, source)), version, false);
+        const sourceBytes = readFileSync(path.join(STORE_UPLOAD_DIRECTORY, source));
+        const notes = verifySource(sourceBytes, version, false);
         writeFileSync(path.join(STORE_UPLOAD_DIRECTORY, 'approval-notes.txt'), notes);
     }
-    appendFileSync(output, `tag=${release.tagName}\nversion=${version}\nasset=${archive}\nsource=${source}\n`);
-    console.log(`Verified ${release.tagName} (${tagCommit}) for ${browser} in ${mode} mode: ${assets.join(', ')}`);
+    appendFileSync(
+        output,
+        `tag=${release.tagName}\nversion=${version}\nasset=${archive}\nsource=${source}\n`,
+    );
+    console.log(
+        `Verified ${release.tagName} (${tagCommit}) for ${browser} in ${mode} mode:`,
+        assets.join(', '),
+    );
 };

@@ -42,13 +42,19 @@ const STORE_CONFIG: Record<string, Record<string, string>> = {
         CHROME_REFRESH_TOKEN: 'fixture-token',
     },
     edge: {
-        EDGE_PRODUCT_ID: 'fixture-product', EDGE_CLIENT_ID: 'fixture-client', EDGE_API_KEY: 'fixture-key',
+        EDGE_PRODUCT_ID: 'fixture-product',
+        EDGE_CLIENT_ID: 'fixture-client',
+        EDGE_API_KEY: 'fixture-key',
     },
     firefox: {
-        FIREFOX_AMO_ID: 'fixture', FIREFOX_CLIENT_ID: 'fixture-issuer', FIREFOX_CLIENT_SECRET: 'fixture-secret',
+        FIREFOX_AMO_ID: 'fixture',
+        FIREFOX_CLIENT_ID: 'fixture-issuer',
+        FIREFOX_CLIENT_SECRET: 'fixture-secret',
     },
 };
-const UNSUPPORTED_MODE: Record<string, string> = { chrome: 'upload', edge: 'status', firefox: 'upload' };
+const UNSUPPORTED_MODE: Record<string, string> = {
+    chrome: 'upload', edge: 'status', firefox: 'upload',
+};
 const envFor = (target: string, mode = 'submit'): NodeJS.ProcessEnv => ({
     GITHUB_REPOSITORY: 'fixture/repository',
     GITHUB_OUTPUT: 'fixture-output',
@@ -64,7 +70,9 @@ const pack = (files: Record<string, string>): Buffer => {
 };
 const chromiumPackage = pack({
     'manifest.json': JSON.stringify({
-        manifest_version: 3, version: '1.2.3', background: { service_worker: 'background.js' },
+        manifest_version: 3,
+        version: '1.2.3',
+        background: { service_worker: 'background.js' },
     }),
 });
 const firefoxPackage = pack({
@@ -80,9 +88,9 @@ const sourcePackage = pack({
     'package.json': JSON.stringify({ version: '1.2.3' }),
     [AMO_REVIEW_NOTES_PATH]: 'Reviewer instructions',
 });
-const assetName = (kind: string) => `${RELEASE_ASSET_PREFIX}-1.2.3-${kind}.zip`;
-const downloadArguments = () => vi.mocked(execFileSync).mock.calls
-    .find(([file, args]) => file === 'gh' && args?.[1] === 'download')?.[1] as string[];
+const assetName = (kind: string): string => `${RELEASE_ASSET_PREFIX}-1.2.3-${kind}.zip`;
+const downloadArguments = (): string[] | undefined => vi.mocked(execFileSync).mock.calls
+    .find(([file, args]) => file === 'gh' && args?.[1] === 'download')?.[1] as string[] | undefined;
 let assets: Record<string, Buffer>;
 let release = { tagName: 'v1.2.3', isDraft: false, isPrerelease: false };
 
@@ -112,20 +120,22 @@ beforeEach(() => {
         const name = path.basename(String(file));
         if (name === 'SHA256SUMS.txt') {
             return Object.entries(assets)
-                .map(([asset, bytes]) => `${createHash('sha256').update(bytes).digest('hex')}  ${asset}`)
+                .map(([asset, bytes]) => {
+                    return `${createHash('sha256').update(bytes).digest('hex')}  ${asset}`;
+                })
                 .join('\n');
         }
-        return Buffer.from(assets[name]);
+        return Buffer.from(assets[name] ?? '');
     });
 });
 
 describe.each(STORE_TARGETS)('release preparation protocol for %s', (target) => {
-    it('resolves latest once, pins every download to the selected tag and names the asset', () => {
+    it('resolves latest once, pins every download to that tag and names the asset', () => {
         prepare(envFor(target));
         const views = vi.mocked(execFileSync).mock.calls
             .filter(([file, args]) => file === 'gh' && args?.[1] === 'view');
         expect(views).toHaveLength(1);
-        expect(views[0][1]).not.toContain('v1.2.3');
+        expect(views[0]?.[1] ?? []).not.toContain('v1.2.3');
         expect(downloadArguments()).toContain('v1.2.3');
         expect(downloadArguments()).toContain(assetName(target));
         expect(appendFileSync).toHaveBeenCalledWith(
@@ -135,7 +145,7 @@ describe.each(STORE_TARGETS)('release preparation protocol for %s', (target) => 
     });
     it('refuses malformed input and unsupported modes before invoking external tools', () => {
         expect(() => prepare({ ...envFor(target), INPUT_TAG: '--latest' })).toThrow('vX.Y.Z');
-        expect(() => prepare(envFor(target, UNSUPPORTED_MODE[target]))).toThrow('deployment mode');
+        expect(() => prepare(envFor(target, UNSUPPORTED_MODE[target] ?? ''))).toThrow('mode');
         expect(execFileSync).not.toHaveBeenCalled();
     });
     it.each(['isDraft', 'isPrerelease'] as const)('rejects %s without downloading', (field) => {
@@ -144,7 +154,7 @@ describe.each(STORE_TARGETS)('release preparation protocol for %s', (target) => 
         expect(execFileSync).toHaveBeenCalledTimes(1);
     });
     it('stops before assets if store credentials are absent', () => {
-        const [name] = Object.keys(STORE_CONFIG[target]);
+        const name = Object.keys(STORE_CONFIG[target] ?? {})[0] ?? '';
         expect(() => prepare({ ...envFor(target), [name]: '' })).toThrow(name);
         expect(execFileSync).toHaveBeenCalledTimes(1);
     });
@@ -180,7 +190,8 @@ describe.each(STORE_TARGETS)('release preparation protocol for %s', (target) => 
     it('refuses a package built for another store even when its checksum matches', () => {
         const store: string = target;
         assets[assetName(target)] = store === 'firefox' ? chromiumPackage : firefoxPackage;
-        expect(() => prepare(envFor(target))).toThrow(store === 'firefox' ? 'Gecko' : 'service worker');
+        const reason = store === 'firefox' ? 'Gecko' : 'service worker';
+        expect(() => prepare(envFor(target))).toThrow(reason);
         expect(appendFileSync).not.toHaveBeenCalled();
     });
     it('verifies the release in validate mode without a store-specific step', () => {

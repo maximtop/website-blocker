@@ -14,6 +14,9 @@ export const RELEASE_ASSET_PREFIX = 'website-blocker';
  */
 export const STORE_TARGETS = ['chrome'] as const;
 
+/**
+ * Store this repository can deploy to.
+ */
 export type StoreTarget = typeof STORE_TARGETS[number];
 
 /**
@@ -31,6 +34,12 @@ export const SOURCE_REQUIRED_FILES = ['package.json', 'pnpm-lock.yaml', 'src/man
  */
 export const AMO_REVIEW_NOTES_PATH = 'docs/AMO_REVIEW.md';
 
+/**
+ * Shape of a release tag; the version is the tag without the `v` prefix.
+ */
 export const RELEASE_TAG_PATTERN = /^v[0-9]+\.[0-9]+\.[0-9]+$/;
 
+/**
+ * Directory the deploy workflows download the release assets into.
+ */
 export const STORE_UPLOAD_DIRECTORY = 'store-upload';
