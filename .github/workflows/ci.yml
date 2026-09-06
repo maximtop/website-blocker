@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   check:
-    name: Lint and build
+    name: Check and build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -28,8 +28,8 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Run lint
-        run: pnpm lint
+      - name: Run quality checks
+        run: pnpm check
       - name: Build release extension
         run: pnpm release
       - name: Verify built manifest

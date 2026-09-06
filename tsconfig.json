@@ -12,6 +12,7 @@
         "noImplicitAny": true,
         "module": "CommonJS",
         "target": "es5",
+        "lib": ["ES2022", "DOM"],
         "allowJs": true,
         "moduleResolution": "node",
         "skipLibCheck": true,
