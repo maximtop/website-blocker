@@ -2,7 +2,11 @@
   "name": "website-blocker",
   "module": "index.ts",
   "license": "MIT",
-  "version": "1.2.5",
+  "version": "1.2.6",
+  "packageManager": "pnpm@11.18.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
   "author": {
     "name": "Maxim Topciu",
     "email": "me@maximtop.dev"
