@@ -116,7 +116,7 @@ describe('published release contract', () => {
             verifyManifest(bytes, '1.2.3', 'firefox');
         }).not.toThrow();
         const wrong = JSON.parse(firefoxManifest) as {
-            browser_specific_settings: { gecko: { id: string } };
+            'browser_specific_settings': { gecko: { id: string } };
         };
         wrong.browser_specific_settings.gecko.id = 'another-addon@example.test';
         const other = pack({ 'manifest.json': JSON.stringify(wrong) });
