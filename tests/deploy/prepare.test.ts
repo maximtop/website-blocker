@@ -28,7 +28,7 @@ import { prepare } from '../../scripts/deploy/prepare';
 
 vi.mock('node:child_process', () => ({ execFileSync: vi.fn() }));
 vi.mock('node:fs', async (original) => ({
-    ...await original<typeof import('node:fs')>(),
+    ...await original<Record<string, unknown>>(),
     appendFileSync: vi.fn(),
     mkdirSync: vi.fn(),
     readFileSync: vi.fn(),

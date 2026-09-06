@@ -33,6 +33,24 @@ export type PublishedRelease = {
 };
 
 /**
+ * Read a nested field of parsed JSON without assuming its shape.
+ *
+ * @param value Parsed JSON value.
+ * @param keys Property path to follow.
+ *
+ * @returns The nested value, or undefined when any step is missing.
+ */
+const read = (value: unknown, ...keys: string[]): unknown => keys.reduce<unknown>(
+    (current, key) => {
+        if (current && typeof current === 'object') {
+            return (current as Record<string, unknown>)[key];
+        }
+        return undefined;
+    },
+    value,
+);
+
+/**
  * Validate a stable published release and return its version.
  *
  * @param release Metadata returned by GitHub.
@@ -99,17 +117,18 @@ export const verifyManifest = (bytes: Buffer, version: string, browser: string):
     if (manifests.length !== 1 || !manifestEntry) {
         throw new Error('Package must contain exactly one root manifest.json');
     }
-    const manifest = JSON.parse(archive.readAsText(manifestEntry));
-    if (manifest.version !== version || manifest.manifest_version !== 3) {
+    const manifest: unknown = JSON.parse(archive.readAsText(manifestEntry));
+    if (read(manifest, 'version') !== version || read(manifest, 'manifest_version') !== 3) {
         throw new Error('Package manifest version does not match the selected release');
     }
+    const serviceWorker = read(manifest, 'background', 'service_worker');
     if (browser === 'firefox') {
-        if (manifest.browser_specific_settings?.gecko?.id !== GECKO_ID
-            || !Array.isArray(manifest.background?.scripts)
-            || manifest.background?.service_worker) {
+        if (read(manifest, 'browser_specific_settings', 'gecko', 'id') !== GECKO_ID
+            || !Array.isArray(read(manifest, 'background', 'scripts'))
+            || serviceWorker) {
             throw new Error('Incorrect Firefox Gecko ID or background');
         }
-    } else if (!manifest.background?.service_worker) {
+    } else if (!serviceWorker) {
         throw new Error('Chromium package has no service worker');
     }
 };
@@ -131,7 +150,8 @@ export const verifySource = (bytes: Buffer, version: string, requireNotes: boole
     if (missing.length) {
         throw new Error(`Source archive is missing ${missing.join(', ')}`);
     }
-    if (JSON.parse(zip.readAsText('package.json')).version !== version) {
+    const pkg: unknown = JSON.parse(zip.readAsText('package.json'));
+    if (read(pkg, 'version') !== version) {
         throw new Error('Source package version does not match the selected release');
     }
     const notes = zip.getEntry(AMO_REVIEW_NOTES_PATH) ? zip.readAsText(AMO_REVIEW_NOTES_PATH) : '';

@@ -25,6 +25,7 @@ import {
     verifyManifest,
     verifySource,
 } from './release';
+import type { PublishedRelease } from './release';
 
 /**
  * Store identifiers and credentials each target needs before any asset is downloaded.
@@ -94,7 +95,8 @@ export const prepare = (env: NodeJS.ProcessEnv = process.env): void => {
         'release', 'view', ...(tag ? [tag] : []),
         '--repo', repository, '--json', 'tagName,isDraft,isPrerelease',
     ];
-    const release = JSON.parse(execFileSync('gh', viewArgs, { encoding: 'utf8' }));
+    const releaseJson = execFileSync('gh', viewArgs, { encoding: 'utf8' });
+    const release = JSON.parse(releaseJson) as PublishedRelease;
     const version = releaseVersion(release);
     requireConfiguration(STORE_CONFIGURATION[browser] ?? [], env);
     execFileSync('git', ['fetch', '--no-tags', 'origin', 'master']);
@@ -105,7 +107,7 @@ export const prepare = (env: NodeJS.ProcessEnv = process.env): void => {
     execFileSync('git', ['merge-base', '--is-ancestor', tagCommit, master]);
     const pkg = JSON.parse(execFileSync('git', ['show', `${tagCommit}:package.json`], {
         encoding: 'utf8',
-    }));
+    })) as { version?: unknown };
     if (pkg.version !== version) {
         throw new Error('Tagged package.json version does not match release tag');
     }
