@@ -9,6 +9,9 @@ import './styles.css';
 export const popup = {
     init: () => {
         const container = document.getElementById('root');
+        if (!container) {
+            throw new Error('Popup root is missing');
+        }
         const root = createRoot(container);
         root.render(
             <RootStoreContext.Provider value={new RootStore()}>

@@ -13,7 +13,7 @@ let blockedWebsitesPromise: Promise<void> | null = null;
  */
 function isBlocked(url: string): boolean {
     const normalizedHostname = getHostname(url);
-    return !!blockedWebsites[normalizedHostname];
+    return normalizedHostname !== null && !!blockedWebsites[normalizedHostname];
 }
 
 /**
@@ -34,10 +34,9 @@ const handleOnCommitted = async (
         await blockedWebsitesPromise;
     }
 
-    // Check if the navigation is not in prerender state
+    // Only block top-level navigation; Firefox does not provide Chromium's frameType.
     if (
-        // @ts-ignore
-        details.frameType === 'outermost_frame'
+        details.frameId === 0
         // @ts-ignore
         && details.documentLifecycle !== 'prerender'
         && isBlocked(details.url)
