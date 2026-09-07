@@ -1,35 +1,29 @@
 name: Deploy Chrome Web Store
 
-# Submits the Chrome archive of an already published GitHub Release to the
-# Chrome Web Store for review with deferred (staged) publishing. Nothing goes
-# live automatically: after the store approves the review, publish the
-# version by hand in the Developer Dashboard.
+# Submits the Chrome archive of a published GitHub Release to the Chrome Web
+# Store for review with deferred (staged) publishing. Manual only: run it
+# after the release workflow has published the release. Nothing goes live
+# automatically; after the review is approved, publish the version by hand in
+# the Developer Dashboard within 30 days.
 #
-# Invoked by release.yml after a tagged release when CHROME_AUTO_DEPLOY_ENABLED
-# is "true", or manually with a published release tag as the retry path.
+# Identical across the extension repositories; repository specifics live in
+# scripts/deploy/constants.ts and the repository variables and secrets.
 
 on:
-  workflow_call:
-    inputs:
-      tag:
-        description: 'Published release tag to deploy (vX.Y.Z)'
-        required: true
-        type: string
-    secrets:
-      CHROME_CLIENT_ID:
-        required: true
-      CHROME_CLIENT_SECRET:
-        required: true
-      CHROME_REFRESH_TOKEN:
-        required: true
-      CHROME_PUBLISHER_ID:
-        required: true
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Published release tag to deploy (vX.Y.Z)'
-        required: true
+        description: 'Published release tag to deploy (vX.Y.Z); blank = latest release'
+        required: false
         type: string
+      mode:
+        description: 'submit: upload and submit for review; validate: only resolve and verify the release'
+        required: false
+        type: choice
+        default: submit
+        options:
+          - submit
+          - validate
 
 permissions:
   contents: read
@@ -45,113 +39,48 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GO_WEBEXT_VERSION: v0.4.2
-      RELEASE_TAG: ${{ inputs.tag }}
+      DEPLOY_MODE: ${{ inputs.mode || 'submit' }}
       CHROME_API_VERSION: v2
       CHROME_APP_ID: ${{ vars.CHROME_APP_ID }}
+      CHROME_PUBLISHER_ID: ${{ vars.CHROME_PUBLISHER_ID }}
       CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
       CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
       CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
-      CHROME_PUBLISHER_ID: ${{ secrets.CHROME_PUBLISHER_ID }}
     steps:
-      - name: Check store configuration
-        run: |
-          set -euo pipefail
-          MISSING=()
-          for NAME in CHROME_APP_ID CHROME_CLIENT_ID CHROME_CLIENT_SECRET \
-            CHROME_REFRESH_TOKEN CHROME_PUBLISHER_ID; do
-            [[ -n "${!NAME}" ]] || MISSING+=("$NAME")
-          done
-          if [[ "${#MISSING[@]}" -gt 0 ]]; then
-            echo "Missing store configuration: ${MISSING[*]}" >&2
-            echo "Set CHROME_APP_ID and the secrets listed in README.md" >&2
-            exit 1
-          fi
+      - name: Check out deployment helpers
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The deployment code comes from the workflow's own commit, never
+          # from the release tag; the full history serves the ancestry check.
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Set up pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: package.json
+          cache: pnpm
+      - name: Install deployment dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Resolve and validate release
         id: release
-        run: |
-          set -euo pipefail
-          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Release tag must match vX.Y.Z: $RELEASE_TAG" >&2
-            exit 1
-          fi
-
-          RELEASE_JSON="$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
-            --json isDraft,isPrerelease,assets)"
-          IS_DRAFT="$(jq -r '.isDraft' <<< "$RELEASE_JSON")"
-          if [[ "$IS_DRAFT" != "false" ]]; then
-            echo "Release $RELEASE_TAG is a draft; publish it before deploying" >&2
-            exit 1
-          fi
-          IS_PRERELEASE="$(jq -r '.isPrerelease' <<< "$RELEASE_JSON")"
-          if [[ "$IS_PRERELEASE" != "false" ]]; then
-            echo "Release $RELEASE_TAG is a pre-release and is not deployed" >&2
-            exit 1
-          fi
-
-          # The release workflow publishes only tags reachable from
-          # master; a release created by hand must meet the same bar.
-          COMPARE="repos/$GITHUB_REPOSITORY/compare/master...$RELEASE_TAG"
-          COMPARE_STATUS="$(gh api "$COMPARE" --jq '.status')"
-          if [[ "$COMPARE_STATUS" != "identical" && "$COMPARE_STATUS" != "behind" ]]; then
-            echo "Release commit is not on master (compare status: $COMPARE_STATUS)" >&2
-            exit 1
-          fi
-
-          # The Chrome archive is the one release asset ending in
-          # -chrome.zip, so the asset name is owned by release.yml alone.
-          CHROME_ASSET="$(jq -r '
-            [.assets[].name | select(endswith("-chrome.zip"))]
-            | if length == 1 then .[0] else empty end
-          ' <<< "$RELEASE_JSON")"
-          if [[ -z "$CHROME_ASSET" ]]; then
-            echo "Release $RELEASE_TAG needs exactly one asset ending in -chrome.zip" >&2
-            exit 1
-          fi
-
-          echo "version=${RELEASE_TAG#v}" >> "$GITHUB_OUTPUT"
-          echo "asset=$CHROME_ASSET" >> "$GITHUB_OUTPUT"
-
-      - name: Download release assets
         env:
-          CHROME_ASSET: ${{ steps.release.outputs.asset }}
-        run: |
-          set -euo pipefail
-          gh release download "$RELEASE_TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --pattern "$CHROME_ASSET" \
-            --pattern SHA256SUMS.txt \
-            --dir release-assets
-
-      - name: Verify asset integrity and version
-        working-directory: release-assets
-        env:
-          CHROME_ASSET: ${{ steps.release.outputs.asset }}
-          VERSION: ${{ steps.release.outputs.version }}
-        run: |
-          set -euo pipefail
-          # Only the Chrome archive is present: the other checksum
-          # entries are ignored, and an archive that is not listed
-          # fails with "no file was verified".
-          sha256sum --check --strict --ignore-missing SHA256SUMS.txt
-          if [[ "$(unzip -Z1 "$CHROME_ASSET" | grep -cxF manifest.json)" != "1" ]]; then
-            echo "$CHROME_ASSET must contain exactly one root manifest.json" >&2
-            exit 1
-          fi
-          ZIP_VERSION="$(unzip -p "$CHROME_ASSET" manifest.json | jq -er '.version')"
-          if [[ "$ZIP_VERSION" != "$VERSION" ]]; then
-            echo "$CHROME_ASSET manifest version $ZIP_VERSION does not match $VERSION" >&2
-            exit 1
-          fi
+          STORE_TARGET: chrome
+          INPUT_TAG: ${{ inputs.tag }}
+        run: pnpm exec tsx scripts/deploy/cli.ts
 
       - name: Set up Go
+        if: env.DEPLOY_MODE == 'submit'
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
         with:
           go-version: '1.26.x'
           cache: false
-
       - name: Install go-webext
         id: install
+        if: env.DEPLOY_MODE == 'submit'
         run: |
           set -euo pipefail
           go install "github.com/adguardteam/go-webext@$GO_WEBEXT_VERSION"
@@ -159,17 +88,17 @@ jobs:
 
       - name: Upload to Chrome Web Store
         id: upload
+        if: env.DEPLOY_MODE == 'submit'
         env:
-          CHROME_ASSET: ${{ steps.release.outputs.asset }}
+          ASSET: ${{ steps.release.outputs.asset }}
           VERSION: ${{ steps.release.outputs.version }}
         run: |
           set -euo pipefail
-          go-webext update chrome \
-            -a "$CHROME_APP_ID" -f "release-assets/$CHROME_ASSET" 2>&1 \
+          go-webext update chrome -a "$CHROME_APP_ID" -f "store-upload/$ASSET" 2>&1 \
             | tee "$RUNNER_TEMP/upload-output.txt"
-          # The v2 upload can finish asynchronously; never submit for
-          # review unless the store confirmed this exact version as the
-          # draft. Re-uploading the same version replaces the draft.
+          # The v2 upload can finish asynchronously; never submit for review
+          # unless the store confirmed this exact version as the draft.
+          # Re-uploading the same version replaces the draft.
           if ! grep -qxF "Upload State: SUCCEEDED" "$RUNNER_TEMP/upload-output.txt"; then
             echo "Upload did not reach SUCCEEDED; not submitting an unconfirmed draft" >&2
             echo "Re-run with the same tag once the store finishes processing" >&2
@@ -182,6 +111,7 @@ jobs:
 
       - name: Submit for review with deferred publishing
         id: submit
+        if: env.DEPLOY_MODE == 'submit'
         run: |
           set -euo pipefail
           go-webext publish chrome -a "$CHROME_APP_ID" --staged 2>&1
@@ -189,14 +119,14 @@ jobs:
       - name: Report store status
         if: always() && steps.install.outcome == 'success'
         env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
           VERSION: ${{ steps.release.outputs.version }}
           UPLOAD_OUTCOME: ${{ steps.upload.outcome }}
           SUBMIT_OUTCOME: ${{ steps.submit.outcome }}
         run: |
           set -euo pipefail
-          # The summary is written even when the status call fails,
-          # which is likely when the upload already failed on
-          # credentials.
+          # The summary is written even when the status call fails, which is
+          # likely when the upload already failed on credentials.
           STATUS_OUTCOME=success
           if ! go-webext status chrome -a "$CHROME_APP_ID" 2>&1 \
             | tee "$RUNNER_TEMP/status-output.txt"; then
@@ -214,10 +144,24 @@ jobs:
               echo "- The review was not confirmed"
             fi
             echo "- Store status call: \`$STATUS_OUTCOME\`"
-            echo "- The status covers published and submitted state only"
-            echo "- Draft processing is visible in the Developer Dashboard"
+            echo "- The status covers published and submitted state only;"
+            echo "  draft processing is visible in the Developer Dashboard"
             echo
             echo '```'
             cat "$RUNNER_TEMP/status-output.txt"
             echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report validation
+        if: env.DEPLOY_MODE == 'validate'
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          ASSET: ${{ steps.release.outputs.asset }}
+        run: |
+          set -euo pipefail
+          {
+            echo "## Chrome Web Store deployment (validate mode)"
+            echo
+            echo "- Release \`$RELEASE_TAG\` resolved; \`$ASSET\` downloaded and verified"
+            echo "- Nothing was sent to the store"
           } >> "$GITHUB_STEP_SUMMARY"
