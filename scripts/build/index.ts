@@ -4,63 +4,31 @@
 import { program } from 'commander';
 
 import { bundleRunner } from './bundle-runner';
-import { Browser, BUILD_ENV, BuildTargetEnv } from './constants';
+import { Browser, BROWSERS } from './constants';
 import { getWebpackConfig } from './webpack-config';
 
 type CommanderOptions = {
-    [key: string]: any,
+    watch: boolean,
+    cache: boolean,
 };
 
-const bundleChrome = (options: CommanderOptions) => {
-    const webpackConfig = getWebpackConfig(Browser.Chrome, options.watch);
+const bundleBrowser = (browser: Browser, options: CommanderOptions) => {
+    const webpackConfig = getWebpackConfig(browser, options.watch);
     return bundleRunner(webpackConfig, { watch: options.watch, cache: options.cache });
 };
-
-const bundleFirefox = (options: CommanderOptions) => {
-    const webpackConfig = getWebpackConfig(Browser.Firefox, options.watch);
-    return bundleRunner(webpackConfig, { watch: options.watch, cache: options.cache });
-};
-
-const devPlan = [
-    bundleChrome,
-    bundleFirefox,
-];
-
-const releasePlan = [
-    bundleChrome,
-    bundleFirefox,
-];
 
 const runBuild = async (
-    tasks: ((options: CommanderOptions) => Promise<unknown>)[],
+    browsers: readonly Browser[],
     options: CommanderOptions,
 ) => {
-    for (const task of tasks) {
-        await task(options);
+    for (const browser of browsers) {
+        await bundleBrowser(browser, options);
     }
 };
 
-const mainBuild = async (options: CommanderOptions) => {
-    switch (BUILD_ENV) {
-        case BuildTargetEnv.Dev: {
-            await runBuild(devPlan, options);
-            break;
-        }
-        case BuildTargetEnv.Release: {
-            await runBuild(releasePlan, options);
-            break;
-        }
-        default:
-            throw new Error('Provide BUILD_ENV to choose correct build plan');
-    }
-};
-
-const runBuildCommand = async (
-    build: (options: CommanderOptions) => Promise<unknown>,
-    options: CommanderOptions,
-) => {
+const main = async (browsers: readonly Browser[], options: CommanderOptions) => {
     try {
-        await build(options);
+        await runBuild(browsers, options);
     } catch (e) {
         console.error(e);
         process.exit(1);
@@ -75,24 +43,19 @@ program
         true,
     );
 
-program
-    .command(Browser.Chrome)
-    .description('Builds extension for chrome browser')
-    .action(async () => {
-        await runBuildCommand(bundleChrome, program.opts());
-    });
-
-program
-    .command(Browser.Firefox)
-    .description('Builds extension for Firefox browser')
-    .action(async () => {
-        await runBuildCommand(bundleFirefox, program.opts());
-    });
+BROWSERS.forEach((browser) => {
+    program
+        .command(browser)
+        .description(`Builds extension for ${browser} browser`)
+        .action(async () => {
+            await main([browser], program.opts<CommanderOptions>());
+        });
+});
 
 program
     .description('By default builds for all platforms')
     .action(async () => {
-        await runBuildCommand(mainBuild, program.opts());
+        await main(BROWSERS, program.opts<CommanderOptions>());
     });
 
 program.parse(process.argv);

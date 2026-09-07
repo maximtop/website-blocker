@@ -5,22 +5,27 @@ opened through the toolbar popup. No account, payment, or external service is re
 
 ## Reproduce the package
 
-Use the source ZIP from the same GitHub Release as the Firefox ZIP. Extract it
-into an empty directory and run the following commands from its root:
+Use the source ZIP from the same GitHub Release as the Firefox ZIP. It includes
+all sources, build settings, the dependency lockfile and the pnpm build-script
+allowlist. Extract it into an empty directory and run the following commands
+from its root on Ubuntu 24.04 or macOS:
 
 ```sh
 node --version
 npm install --global pnpm@11.18.0
 pnpm install --frozen-lockfile
-pnpm release
+pnpm release firefox
 ```
 
 Use Node.js 24.x (the project requires `>=24 <25`). The pnpm version is pinned
 in `package.json`; dependencies are locked in `pnpm-lock.yaml`. Dependencies
 come from the npm registry. No credentials or environment-specific files are
-needed. `pnpm release` sets `BUILD_ENV=release` and builds both browser targets.
-The Firefox output is `dist/release/firefox/` and `dist/release/firefox.zip`.
-Compare the extracted file contents; ZIP timestamps may differ.
+needed, and the extracted source builds without a Git checkout.
+`pnpm release firefox` sets `BUILD_ENV=release` and builds the Firefox target.
+The output is `dist/release/firefox/` and `dist/release/firefox.zip`.
+Compare the extracted file contents; ZIP timestamps may differ. `pnpm release`
+without a browser builds Chrome, Edge and Firefox. General commands are in
+[DEVELOPMENT.md](../DEVELOPMENT.md).
 
 The build uses TypeScript, React, SWC, and webpack. Dependencies are bundled;
 no remote scripts or executable code are loaded. Release JavaScript is not
@@ -40,6 +45,12 @@ minified, but it is generated, so the original source is attached.
 6. With a persistent/signed installation, add it again and restart the browser.
    The saved block list should still apply. A temporary `about:debugging`
    installation is removed when Firefox closes and cannot test this step.
+7. If testing private windows, first allow the extension in private windows
+   through Firefox's add-on settings. Without that permission it does not
+   operate in private windows.
+
+Adding an already-open site's hostname does not redirect that tab until it
+navigates or reloads.
 
 Blocking uses hostname matching with an optional `www.` prefix removed. Other
 subdomains require their own entries. Navigation is redirected after it commits;
@@ -51,7 +62,8 @@ this is a focus tool, not a network firewall or parental-control security bounda
   hostname with the block list inside the browser.
 - Tab updates redirect a blocked tab to the packaged `blocked.html` page.
   `tabs.update` does not require the `tabs` permission; sensitive tab fields
-  are not read and that permission is not requested.
+  are not read and that permission is not requested. No content scripts or
+  host permissions are requested.
 - `storage`: save the user-configured block list in `browser.storage.sync`.
   Firefox may synchronize this setting between the user's browsers when
   Firefox Sync is enabled. The developer does not receive the block list.
@@ -63,17 +75,18 @@ API call, or developer-operated backend. The Firefox manifest declares
 disclosed here and in the listing; no browsing history is sent by the extension.
 
 Gecko ID: `website-blocker@maximtop.dev`. Firefox uses an event-page background
-script; Chrome uses a service worker. Both use `frameId === 0` for top-level
-navigation, with Chrome's prerender exclusion retained.
+script; Chrome and Edge use service workers. All three use `frameId === 0`
+for top-level navigation, with Chromium's prerender exclusion retained.
 
-License: MIT. Source and support:
-https://github.com/maximtop/website-blocker
+License: MIT. Source: https://github.com/maximtop/website-blocker
+Support: https://github.com/maximtop/website-blocker/issues or me@maximtop.dev
 
 ## Automated validator warnings
 
 The stock React DOM 18.3.1 renderer contains `innerHTML` assignments. The
-extension does not use `innerHTML` or `dangerouslySetInnerHTML`; user-entered
-hostnames are rendered as React text. The renderer is unmodified npm code.
+application code does not use `innerHTML`, `dangerouslySetInnerHTML`, `eval`
+or `Function`; user-entered hostnames and errors are rendered as React text.
+The renderer is unmodified npm code.
 
 The generated options bundle also includes webpack's global-object detection
 fallback using `Function` (the earlier `globalThis` branch is taken in supported

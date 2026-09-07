@@ -11,7 +11,7 @@ export const RELEASE_ASSET_PREFIX = 'website-blocker';
 /**
  * Stores this extension is deployed to; each one has a deploy-<store>.yml workflow.
  */
-export const STORE_TARGETS = ['chrome', 'firefox'] as const;
+export const STORE_TARGETS = ['chrome', 'edge', 'firefox'] as const;
 
 /**
  * Store this repository can deploy to.
@@ -42,6 +42,7 @@ export const SOURCE_REQUIRED_FILES = [
     'scripts/build/webpack.common.ts',
     'scripts/build/manifest.ts',
     'scripts/deploy/constants.ts',
+    'DEVELOPMENT.md',
 ];
 
 /**

@@ -1,6 +1,7 @@
 /**
  * @file Minimal read-only AMO client for duplicate prevention and signed artifact verification.
- * Follows the shared extension deployment flow; repository specifics live in ./constants.
+ * Shared deployment contract for extension repositories; repository specifics live in
+ * ./constants.
  */
 
 import { createHash, createHmac, randomUUID } from 'node:crypto';
@@ -17,19 +18,19 @@ export const AMO_API_URL = 'https://addons.mozilla.org/api/v5/addons/addon/';
  */
 export const AMO_REQUEST_TIMEOUT_MS = 30000;
 
-/**
- * Known AMO statuses used for reporting and signed-artifact availability checks.
- * API status fields remain strings so unknown states still reach the diagnostic fallback.
- */
-export const AMO_STATUS = {
-    Disabled: 'disabled',
-    Unreviewed: 'unreviewed',
-    Public: 'public',
-} as const;
-
 const AMO_JWT_LIFETIME_SECONDS = 60;
 
 const MILLISECONDS_PER_SECOND = 1000;
+
+/**
+ * AMO states understood by status reporting and signed artifact checks. Unknown API states
+ * remain valid input and are reported conservatively.
+ */
+export const AMO_STATUS = {
+    Public: 'public',
+    Disabled: 'disabled',
+    Unreviewed: 'unreviewed',
+} as const;
 
 /**
  * AMO fields needed to distinguish review, approval, signing and publication.
@@ -149,7 +150,7 @@ export const readAmo = async <T>(
         return null;
     }
     if (!response.ok) {
-        const body = await response.json().catch((): null => null) as { detail?: unknown } | null;
+        const body = await response.json().catch(() => null) as { detail?: unknown } | null;
         const detail = typeof body?.detail === 'string' ? body.detail : '';
         // Report only known authentication diagnostics, never arbitrary response values or
         // credentials.

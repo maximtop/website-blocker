@@ -2,41 +2,63 @@
 
 import { describe, expect, it } from 'vitest';
 import sourceManifest from '../../src/manifest.json';
-import { Browser } from '../../scripts/build/constants';
-import { transformManifest } from '../../scripts/build/manifest';
-import { GECKO_ID } from '../../scripts/deploy/constants';
+import { Browser, BROWSERS } from '../../scripts/build/constants';
+import { updateManifest } from '../../scripts/build/manifest';
+import { GECKO_ID, STORE_TARGETS } from '../../scripts/deploy/constants';
 
-const source = Buffer.from(JSON.stringify(sourceManifest));
-const build = (browser: Browser) => JSON.parse(transformManifest(source, browser, '2.3.4'));
+const version = '3.2.1';
+const manifestFor = (browser: Browser) => {
+    return JSON.parse(updateManifest(JSON.stringify(sourceManifest), browser, version));
+};
 
 describe('browser manifests', () => {
-    it('keeps the Chrome service worker, split mode, and shared metadata', () => {
-        expect(build(Browser.Chrome)).toEqual({ ...sourceManifest, version: '2.3.4' });
+    it('builds the same browser targets that the store deployment protocol accepts', () => {
+        expect(BROWSERS).toEqual(STORE_TARGETS);
     });
 
-    it('produces a Firefox MV3 event page with a stable identity and data declaration', () => {
-        const manifest = build(Browser.Firefox);
-        expect(manifest.manifest_version).toBe(3);
-        expect(manifest.version).toBe('2.3.4');
+    it.each([Browser.Chrome, Browser.Edge])('preserves the shared Chromium manifest for %s', (browser) => {
+        const manifest = manifestFor(browser);
+        expect(manifest).toEqual({ ...sourceManifest, version });
+        expect(manifest.background).toEqual({ service_worker: 'background.js', type: 'module' });
+        expect(manifest.background).not.toHaveProperty('scripts');
+        expect(manifest).not.toHaveProperty('browser_specific_settings');
+    });
+
+    it('provides a Firefox event page, stable sync identity, and supported private-window mode', () => {
+        const manifest = manifestFor(Browser.Firefox);
         expect(manifest.background).toEqual({ scripts: ['background.js'] });
-        expect(manifest).not.toHaveProperty('incognito');
-        expect(manifest.browser_specific_settings).toEqual({
-            gecko: {
-                id: GECKO_ID,
-                strict_min_version: '140.0',
-                data_collection_permissions: { required: ['none'] },
-            },
-        });
+        expect(manifest.background).not.toHaveProperty('service_worker');
         expect(GECKO_ID).toBe('website-blocker@maximtop.dev');
-        expect(manifest.permissions).toEqual(sourceManifest.permissions);
-        expect(manifest.action).toEqual(sourceManifest.action);
-        expect(manifest.options_page).toBe(sourceManifest.options_page);
-        expect(manifest.web_accessible_resources).toEqual(sourceManifest.web_accessible_resources);
+        expect(manifest.browser_specific_settings.gecko).toEqual({
+            id: GECKO_ID,
+            strict_min_version: '140.0',
+            data_collection_permissions: { required: ['none'] },
+        });
+        expect(manifest).not.toHaveProperty('minimum_chrome_version');
+        expect(manifest).not.toHaveProperty('incognito');
     });
 
     it('preserves the source manifest across consecutive browser builds', () => {
-        build(Browser.Firefox);
-        expect(build(Browser.Chrome)).toEqual({ ...sourceManifest, version: '2.3.4' });
+        const source = Buffer.from(JSON.stringify(sourceManifest));
+        updateManifest(source, Browser.Firefox, version);
+        expect(JSON.parse(updateManifest(source, Browser.Chrome, version)))
+            .toEqual({ ...sourceManifest, version });
+        expect(JSON.parse(updateManifest(source, Browser.Edge, version)))
+            .toEqual({ ...sourceManifest, version });
         expect(JSON.parse(source.toString())).toEqual(sourceManifest);
+    });
+
+    it.each(BROWSERS)('retains the blocking UI and permissions for %s', (browser) => {
+        const manifest = manifestFor(browser);
+        expect(manifest.manifest_version).toBe(3);
+        expect(manifest.version).toBe(version);
+        expect(manifest.permissions).toEqual(sourceManifest.permissions);
+        expect(manifest.permissions).toEqual(expect.arrayContaining(['webNavigation', 'storage']));
+        expect(manifest.action.default_popup).toBe('popup.html');
+        expect(manifest.options_page).toBe('options.html');
+        expect(manifest.web_accessible_resources).toEqual([
+            { resources: ['blocked.html'], matches: ['<all_urls>'] },
+        ]);
+        expect(manifest).not.toHaveProperty('host_permissions');
     });
 });

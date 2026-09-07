@@ -31,8 +31,11 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 5. Load the extension in your browser:
     - Chrome: open the extensions page, enable "Developer mode", click
       "Load unpacked", and select `dist/dev/chrome`.
+    - Edge: open the extensions page, enable "Developer mode", click
+      "Load unpacked", and select `dist/dev/edge`.
     - Firefox 140+: open `about:debugging#/runtime/this-firefox`, click
       "Load Temporary Add-on", and select `dist/dev/firefox/manifest.json`.
+      Temporary add-ons are removed when Firefox closes.
 
 ## Usage
 
@@ -56,12 +59,16 @@ To lint the code:
 pnpm lint
 ```
 
+Build an individual browser with `pnpm build chrome`, `pnpm build edge`, or
+`pnpm build firefox`. Run `pnpm check` for lint, TypeScript and tests. See
+[DEVELOPMENT.md](DEVELOPMENT.md) for browser differences and build instructions.
+
 ## Releasing
 
-Tagged releases publish a GitHub Release with Chrome and Firefox archives,
-matching sources, and checksums. Each store has a separate manual deployment
-workflow. See [docs/RELEASE.md](docs/RELEASE.md) for the release process, store
-configuration, and the failure playbook.
+Tagged releases publish Chrome, Edge and Firefox archives, matching source,
+and SHA-256 checksums in one GitHub Release. Each store has a separate manual
+deployment workflow. See [docs/RELEASE.md](docs/RELEASE.md) for first-time store
+setup, deployment modes and the failure playbook.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.

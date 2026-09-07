@@ -43,14 +43,13 @@ vi.mock('webextension-polyfill', () => ({
 
 let persistedWebsites: WebsitesMap;
 
-const navigate = async (url: string) => {
+const navigate = async (url: string, browser: 'firefox' | 'chromium' = 'chromium') => {
     const listener = browserMock.navigationAddListener.mock.calls[0][0];
     await listener({
         url,
         tabId: 42,
         frameId: 0,
-        frameType: 'outermost_frame',
-        documentLifecycle: 'active',
+        ...(browser === 'chromium' ? { frameType: 'outermost_frame', documentLifecycle: 'active' } : {}),
     });
 };
 
@@ -95,24 +94,27 @@ describe('navigation with per-website blocking preferences', () => {
         });
     });
 
-    it('applies persisted toggle changes after storage events without restarting the background', async () => {
-        await navigate('https://disabled.com/');
-        expect(browserMock.updateTab).not.toHaveBeenCalled();
+    it.each(['firefox', 'chromium'] as const)(
+        'applies persisted toggle changes in %s after storage events without restarting the background',
+        async (browser) => {
+            await navigate('https://disabled.com/', browser);
+            expect(browserMock.updateTab).not.toHaveBeenCalled();
 
-        await Websites.setWebsiteEnabled('disabled.com', true);
-        notifyStorageChanged();
-        await navigate('https://disabled.com/');
+            await Websites.setWebsiteEnabled('disabled.com', true);
+            notifyStorageChanged();
+            await navigate('https://disabled.com/', browser);
 
-        expect(browserMock.updateTab).toHaveBeenCalledExactlyOnceWith(42, {
-            url: 'moz-extension://website-blocker/blocked.html',
-        });
+            expect(browserMock.updateTab).toHaveBeenCalledExactlyOnceWith(42, {
+                url: 'moz-extension://website-blocker/blocked.html',
+            });
 
-        browserMock.updateTab.mockClear();
-        await Websites.setWebsiteEnabled('disabled.com', false);
-        notifyStorageChanged();
-        await navigate('https://disabled.com/');
+            browserMock.updateTab.mockClear();
+            await Websites.setWebsiteEnabled('disabled.com', false);
+            notifyStorageChanged();
+            await navigate('https://disabled.com/', browser);
 
-        expect(browserMock.updateTab).not.toHaveBeenCalled();
-        expect(persistedWebsites['disabled.com']).toEqual({ hostname: 'disabled.com', enabled: false });
-    });
+            expect(browserMock.updateTab).not.toHaveBeenCalled();
+            expect(persistedWebsites['disabled.com']).toEqual({ hostname: 'disabled.com', enabled: false });
+        },
+    );
 });

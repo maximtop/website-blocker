@@ -1,6 +1,7 @@
 /**
  * @file Read-only Firefox deployment preflight and post-submit/status reporting.
- * Repository specifics live in ./constants; this CommonJS entry point also permits isolated tests.
+ * Shared deployment contract for extension repositories; repository specifics live in
+ * ./constants.
  */
 
 import {
@@ -10,6 +11,7 @@ import {
     writeFileSync,
 } from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import {
     AMO_APPROVAL_NOTES_FILENAME,
     GECKO_ID,
@@ -30,8 +32,13 @@ import { requireConfiguration } from './release';
 
 const HUB_URL = 'https://addons.mozilla.org/en-US/developers/addon/';
 
-/** AMO_OPERATION value that checks whether a version can be submitted. */
-export const AMO_PREFLIGHT_OPERATION = 'preflight';
+/**
+ * Supported AMO_OPERATION values; omitted configuration defaults to status reporting.
+ */
+export const AMO_OPERATION = {
+    Preflight: 'preflight',
+    Status: 'status',
+} as const;
 
 /**
  * Check exact-version state, without ever submitting a second copy.
@@ -50,7 +57,10 @@ export const run = async (env: NodeJS.ProcessEnv = process.env): Promise<void> =
     if (!RELEASE_TAG_PATTERN.test(`v${version}`)) {
         throw new Error('Invalid version');
     }
-    const preflight = env.AMO_OPERATION === AMO_PREFLIGHT_OPERATION;
+    const operation = env.AMO_OPERATION ?? AMO_OPERATION.Status;
+    if (!Object.values(AMO_OPERATION).some((supported) => supported === operation)) {
+        throw new Error(`Invalid AMO_OPERATION; expected ${Object.values(AMO_OPERATION).join(' or ')}`);
+    }
     const token = amoToken(env.FIREFOX_CLIENT_ID ?? '', env.FIREFOX_CLIENT_SECRET ?? '');
     const addon = await readAmo<AmoAddon>(listing, '', token);
     if (!addon || addon.guid !== GECKO_ID || addon.is_disabled) {
@@ -60,7 +70,7 @@ export const run = async (env: NodeJS.ProcessEnv = process.env): Promise<void> =
     if (result && (result.version !== version || result.channel !== 'listed')) {
         throw new Error('AMO returned a different version or channel');
     }
-    if (preflight) {
+    if (operation === AMO_OPERATION.Preflight) {
         const submit = shouldSubmit(result);
         const notesPath = path.join(STORE_UPLOAD_DIRECTORY, AMO_APPROVAL_NOTES_FILENAME);
         if (submit && !readFileSync(notesPath, 'utf8').trim()) {
@@ -118,7 +128,7 @@ export const run = async (env: NodeJS.ProcessEnv = process.env): Promise<void> =
     }
 };
 
-if (require.main === module) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     run().catch((error: unknown) => {
         const message = error instanceof Error ? error.message : 'AMO status check failed';
         process.stderr.write(`${message}\n`);
