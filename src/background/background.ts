@@ -31,6 +31,12 @@ function updateBlockedWebsites() {
     });
 }
 
+/**
+ * Redirects a committed top-level navigation when its hostname is blocked.
+ *
+ * @param details - Browser navigation event with the destination URL and tab.
+ * @returns Resolves after checking the loaded list and applying any redirect.
+ */
 const handleOnCommitted = async (
     details: browser.WebNavigation.OnCommittedDetailsType,
 ) => {
@@ -53,6 +59,9 @@ const handleOnCommitted = async (
     }
 };
 
+/**
+ * Registers storage, browser lifecycle, and navigation listeners.
+ */
 const syncInit = () => {
     browser.runtime.onInstalled.addListener(updateBlockedWebsites);
     browser.runtime.onStartup.addListener(updateBlockedWebsites);
@@ -61,10 +70,18 @@ const syncInit = () => {
     browser.webNavigation.onCommitted.addListener(handleOnCommitted, { url: [{ schemes: ['http', 'https'] }] });
 };
 
+/**
+ * Starts loading the blocked list used by navigation checks.
+ *
+ * @returns Resolves after requesting the initial storage load.
+ */
 const asyncInit = async () => {
     await updateBlockedWebsites();
 };
 
+/**
+ * Starts background listeners and the initial blocked-list load.
+ */
 const init = () => {
     syncInit();
     asyncInit();

@@ -5,6 +5,9 @@ import { RootStore, RootStoreContext } from './stores/root-store';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+/**
+ * Mounts the options page with its settings store.
+ */
 export const options = {
     init: () => {
         document.title = 'Options Page';

@@ -1,6 +1,16 @@
 import React from 'react';
 
+/**
+ * Renders the blocked-page notice and the control for closing its tab.
+ *
+ * @returns The blocked-page content.
+ */
 export function App() {
+    /**
+     * Closes the blocked tab when the user activates the close button.
+     *
+     * @param e - Click event from the close button.
+     */
     const handleCloseClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         window.close();

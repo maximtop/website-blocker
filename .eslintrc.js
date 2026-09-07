@@ -19,6 +19,61 @@ module.exports = {
         'import-newlines',
     ],
     root: true,
+    overrides: [
+        {
+            files: ['src/**/*.{ts,tsx}'],
+            plugins: ['jsdoc'],
+            settings: {
+                jsdoc: { mode: 'typescript' },
+            },
+            rules: {
+                'jsdoc/require-jsdoc': ['error', {
+                    require: {
+                        ClassDeclaration: true,
+                        MethodDefinition: true,
+                        FunctionDeclaration: true,
+                    },
+                    contexts: [
+                        'TSInterfaceDeclaration',
+                        'TSTypeAliasDeclaration',
+                        'TSInterfaceDeclaration TSPropertySignature',
+                        'TSInterfaceDeclaration TSMethodSignature',
+                        'TSTypeAliasDeclaration TSPropertySignature',
+                        'TSTypeAliasDeclaration TSMethodSignature',
+                        'VariableDeclarator > ArrowFunctionExpression',
+                        'ExportNamedDeclaration[declaration.type="VariableDeclaration"]',
+                    ],
+                    checkGetters: true,
+                    checkSetters: true,
+                    exemptEmptyConstructors: true,
+                }],
+                'jsdoc/require-description': ['error', {
+                    contexts: [
+                        'ClassDeclaration',
+                        'MethodDefinition',
+                        'FunctionDeclaration',
+                        'ArrowFunctionExpression',
+                        'FunctionExpression',
+                        'TSInterfaceDeclaration',
+                        'TSTypeAliasDeclaration',
+                        'TSInterfaceDeclaration TSPropertySignature',
+                        'TSInterfaceDeclaration TSMethodSignature',
+                        'TSTypeAliasDeclaration TSPropertySignature',
+                        'TSTypeAliasDeclaration TSMethodSignature',
+                        'ExportNamedDeclaration[declaration.type="VariableDeclaration"]',
+                    ],
+                }],
+                'jsdoc/multiline-blocks': ['error', { noSingleLineBlocks: true }],
+                'jsdoc/check-param-names': 'error',
+                'jsdoc/require-param': ['error', { checkDestructured: false }],
+                'jsdoc/require-param-description': 'error',
+                'jsdoc/require-returns': 'error',
+                'jsdoc/require-returns-check': 'error',
+                'jsdoc/require-returns-description': 'error',
+                'jsdoc/no-types': 'error',
+            },
+        },
+    ],
     rules: {
         'max-len': [
             'error',

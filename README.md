@@ -57,6 +57,15 @@ To lint the code:
 pnpm lint
 ```
 
+ESLint checks both TypeScript and TSX files. Source classes, methods, functions,
+named arrow functions, exported variables, interfaces, type aliases, and their
+type properties and methods require descriptive multiline JSDoc. Describe
+parameters and returned values; keep types in TypeScript. Anonymous callbacks
+passed to hooks, event handlers, and array methods do not need separate blocks.
+
+Run `pnpm check` for lint, type checking, and tests, then `pnpm release` to verify
+the production build before submitting a change.
+
 ## Releasing
 
 Tagged releases publish a GitHub Release with the store archive and checksums; store submission is a separate manual workflow. See [docs/RELEASE.md](docs/RELEASE.md) for the release process, store configuration, and the failure playbook.

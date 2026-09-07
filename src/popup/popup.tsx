@@ -6,6 +6,9 @@ import { RootStore, RootStoreContext } from './stores/root-store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
+/**
+ * Mounts the extension popup with its store context.
+ */
 export const popup = {
     init: () => {
         const container = document.getElementById('root');

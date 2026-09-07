@@ -9,6 +9,9 @@ import { observer } from 'mobx-react-lite';
 import { RootStoreContext } from '../../stores/root-store';
 import { getErrorMessage } from '../../../common/utils/error';
 
+/**
+ * Displays saved websites with controls to add, edit, remove, and toggle blocking.
+ */
 export const WebsiteList = observer(() => {
     const { settingsStore } = useContext(RootStoreContext);
     const { websitesList } = settingsStore;
@@ -43,10 +46,21 @@ export const WebsiteList = observer(() => {
         }
     }, [editingWebsite, websitesList]);
 
+    /**
+     * Updates the draft address in the add form.
+     *
+     * @param e - Change event containing the user's current input.
+     */
     const handleNewWebsiteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewWebsite(e.target.value);
     };
 
+    /**
+     * Saves the add-form draft and reports any failure without clearing the input.
+     *
+     * @param e - Submit event from the add form.
+     * @returns Resolves after the save attempt and pending-state cleanup.
+     */
     const handleAddNewWebsite = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (isPendingRef.current) {
@@ -66,6 +80,12 @@ export const WebsiteList = observer(() => {
         }
     };
 
+    /**
+     * Removes an entry while preventing overlapping list changes.
+     *
+     * @param websiteToDelete - Normalized hostname of the entry to remove.
+     * @returns Resolves after the deletion attempt and pending-state cleanup.
+     */
     const handleDeleteWebsite = async (websiteToDelete: string) => {
         if (isPendingRef.current) {
             return;
@@ -83,6 +103,13 @@ export const WebsiteList = observer(() => {
         }
     };
 
+    /**
+     * Saves an entry's blocking state while preventing overlapping list changes.
+     *
+     * @param hostname - Normalized hostname of the entry to update.
+     * @param enabled - Whether the switch should enable blocking.
+     * @returns Resolves after the save attempt and pending-state cleanup.
+     */
     const handleToggleWebsite = async (hostname: string, enabled: boolean) => {
         if (isPendingRef.current) {
             return;
@@ -100,18 +127,32 @@ export const WebsiteList = observer(() => {
         }
     };
 
+    /**
+     * Opens an inline editor with the selected entry's current hostname.
+     *
+     * @param website - Normalized hostname of the entry to edit.
+     */
     const handleEditWebsite = (website: string) => {
         setEditingWebsite(website);
         setEditedWebsite(website);
         setEditError('');
     };
 
+    /**
+     * Discards the edit draft and closes the inline editor.
+     */
     const handleCancelEdit = () => {
         setEditingWebsite(null);
         setEditedWebsite('');
         setEditError('');
     };
 
+    /**
+     * Saves an edited address, preserving the draft when saving fails.
+     *
+     * @param e - Submit event from the inline edit form.
+     * @returns Resolves after the save attempt and pending-state cleanup.
+     */
     const handleSaveWebsite = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (editingWebsite === null || isPendingRef.current) {
