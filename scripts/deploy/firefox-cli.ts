@@ -1,7 +1,7 @@
 /**
  * @file Read-only Firefox deployment preflight and post-submit/status reporting.
- * Identical in every extension repository that deploys to Firefox; repository specifics live
- * in ./constants.
+ * Shared deployment contract for extension repositories; repository specifics live in
+ * ./constants.
  */
 
 import {
@@ -15,6 +15,7 @@ import { pathToFileURL } from 'node:url';
 import { GECKO_ID, RELEASE_TAG_PATTERN, STORE_UPLOAD_DIRECTORY } from './constants';
 import {
     AMO_REQUEST_TIMEOUT_MS,
+    AMO_STATUS,
     amoToken,
     describeAmoStatus,
     readAmo,
@@ -25,6 +26,14 @@ import type { AmoAddon, AmoVersion } from './firefox';
 import { requireConfiguration } from './release';
 
 const HUB_URL = 'https://addons.mozilla.org/en-US/developers/addon/';
+
+/**
+ * Supported AMO_OPERATION values; omitted configuration defaults to status reporting.
+ */
+export const AMO_OPERATION = {
+    Preflight: 'preflight',
+    Status: 'status',
+} as const;
 
 /**
  * Check exact-version state, without ever submitting a second copy.
@@ -43,7 +52,10 @@ export const run = async (env: NodeJS.ProcessEnv = process.env): Promise<void> =
     if (!RELEASE_TAG_PATTERN.test(`v${version}`)) {
         throw new Error('Invalid version');
     }
-    const preflight = env.AMO_OPERATION === 'preflight';
+    const operation = env.AMO_OPERATION ?? AMO_OPERATION.Status;
+    if (!Object.values(AMO_OPERATION).some((supported) => supported === operation)) {
+        throw new Error(`Invalid AMO_OPERATION; expected ${Object.values(AMO_OPERATION).join(' or ')}`);
+    }
     const token = amoToken(env.FIREFOX_CLIENT_ID ?? '', env.FIREFOX_CLIENT_SECRET ?? '');
     const addon = await readAmo<AmoAddon>(listing, '', token);
     if (!addon || addon.guid !== GECKO_ID || addon.is_disabled) {
@@ -53,7 +65,7 @@ export const run = async (env: NodeJS.ProcessEnv = process.env): Promise<void> =
     if (result && (result.version !== version || result.channel !== 'listed')) {
         throw new Error('AMO returned a different version or channel');
     }
-    if (preflight) {
+    if (operation === AMO_OPERATION.Preflight) {
         const submit = shouldSubmit(result);
         const notesPath = path.join(STORE_UPLOAD_DIRECTORY, 'approval-notes.txt');
         if (submit && !readFileSync(notesPath, 'utf8').trim()) {
@@ -76,7 +88,7 @@ export const run = async (env: NodeJS.ProcessEnv = process.env): Promise<void> =
     if (env.GITHUB_STEP_SUMMARY) {
         appendFileSync(env.GITHUB_STEP_SUMMARY, report);
     }
-    if (result?.file.status !== 'public' || result.is_disabled) {
+    if (result?.file.status !== AMO_STATUS.Public || result.is_disabled) {
         return;
     }
     if (!result.file.url || !result.file.hash) {

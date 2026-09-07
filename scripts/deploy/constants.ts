@@ -1,6 +1,5 @@
 /**
- * @file Store deployment constants of this repository. Every other file under scripts/deploy
- * and tests/deploy is identical across the extension repositories; only this file differs.
+ * @file Repository-specific values for the shared extension deployment contract.
  */
 
 /**

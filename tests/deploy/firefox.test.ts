@@ -1,8 +1,7 @@
 // @vitest-environment node
 
 /**
- * @file AMO state and signed artifact behavior with simulated network responses. Identical in
- * every extension repository that deploys to Firefox.
+ * @file Shared AMO state and signed artifact behavior with simulated network responses.
  */
 
 import { createHash, createHmac } from 'node:crypto';
@@ -15,6 +14,7 @@ import {
 } from 'vitest';
 import { GECKO_ID } from '../../scripts/deploy/constants';
 import {
+    AMO_STATUS,
     amoToken,
     describeAmoStatus,
     readAmo,
@@ -24,10 +24,10 @@ import {
 import type { AmoAddon, AmoVersion } from '../../scripts/deploy/firefox';
 
 const addon: AmoAddon = {
-    guid: 'fixture@test', slug: 'fixture', status: 'public', current_version: { version: '1.2.3' },
+    guid: 'fixture@test', slug: 'fixture', status: AMO_STATUS.Public, current_version: { version: '1.2.3' },
 };
 const version: AmoVersion = {
-    id: 123, version: '1.2.3', channel: 'listed', file: { status: 'unreviewed' },
+    id: 123, version: '1.2.3', channel: 'listed', file: { status: AMO_STATUS.Unreviewed },
 };
 const firefoxManifest = JSON.stringify({
     manifest_version: 3,
@@ -95,11 +95,15 @@ describe('AMO read-only checks', () => {
     it('distinguishes pending, approved, published, absent and disabled states', () => {
         expect(describeAmoStatus(addon, null)).toContain('not submitted');
         expect(describeAmoStatus(addon, version)).toContain('awaiting');
-        const approved = { ...version, file: { status: 'public' } };
+        const approved = { ...version, file: { status: AMO_STATUS.Public } };
         expect(describeAmoStatus(addon, approved)).toContain('Approved and published');
         const unlisted = { ...addon, current_version: null };
         expect(describeAmoStatus(unlisted, approved)).toContain('not the current');
         expect(describeAmoStatus(addon, { ...approved, is_disabled: true })).toContain('Disabled');
+        expect(describeAmoStatus(addon, { ...version, file: { status: AMO_STATUS.Disabled } }))
+            .toContain('Disabled');
+        expect(describeAmoStatus(addon, { ...version, file: { status: 'future-api-state' } }))
+            .toBe('AMO file status: future-api-state; inspect Developer Hub');
     });
     it('verifies signed artifact integrity and refuses unsigned or wrong-version payloads', () => {
         const zip = new AdmZip();
