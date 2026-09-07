@@ -39,10 +39,9 @@ const handleOnCommitted = async (
         await blockedWebsitesPromise;
     }
 
-    // Check if the navigation is not in prerender state
+    // Only block top-level navigation; Firefox does not provide Chromium's frameType.
     if (
-        // @ts-ignore
-        details.frameType === 'outermost_frame'
+        details.frameId === 0
         // @ts-ignore
         && details.documentLifecycle !== 'prerender'
         && isBlocked(details.url)

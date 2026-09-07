@@ -19,6 +19,15 @@ module.exports = {
         'import-newlines',
     ],
     root: true,
+    overrides: [
+        {
+            // Keep the shared deployment fixtures identical across extension repositories.
+            files: ['tests/deploy/**/*.ts'],
+            rules: {
+                'object-curly-newline': 'off',
+            },
+        },
+    ],
     rules: {
         'max-len': [
             'error',
