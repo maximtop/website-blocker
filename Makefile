@@ -1,19 +1,32 @@
-.PHONY: init build release start lint chrome_status chrome_update chrome_publish .require-chrome-app-id
+# Browser can be passed as an extra goal: make build chrome / make release firefox.
+BROWSERS := chrome edge firefox
+BROWSER_TARGET := $(firstword $(filter $(BROWSERS),$(MAKECMDGOALS)))
+
+.PHONY: init build release start lint check test chrome_status chrome_update chrome_publish .require-chrome-app-id $(BROWSERS)
 
 init:
 	pnpm install
 
 build:
-	pnpm build
+	pnpm build $(BROWSER_TARGET)
 
 release:
-	pnpm release
+	pnpm release $(BROWSER_TARGET)
 
 start:
-	pnpm start
+	pnpm start $(BROWSER_TARGET)
 
 lint:
 	pnpm lint
+
+check:
+	pnpm check
+
+test:
+	pnpm test
+
+$(BROWSERS):
+	@:
 
 # Local Chrome Web Store fallback for .github/workflows/deploy-chrome-store.yml.
 # Credentials come either from the environment (op run --env-file=.env.1password,
@@ -37,7 +50,7 @@ chrome_status: .require-chrome-app-id
 # A fresh build guarantees that the uploaded manifest carries the package.json
 # version.
 chrome_update: .require-chrome-app-id
-	@pnpm release
+	@pnpm release chrome
 	@go-webext update chrome -a "$(CHROME_APP_ID)" -f "dist/release/chrome.zip"
 
 chrome_publish: .require-chrome-app-id
