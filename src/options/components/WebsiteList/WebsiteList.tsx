@@ -9,6 +9,9 @@ import { observer } from 'mobx-react-lite';
 import { RootStoreContext } from '../../stores/root-store';
 import { getErrorMessage } from '../../../common/utils/error';
 
+/**
+ * Displays saved websites with controls to add, edit, remove, and toggle blocking.
+ */
 export const WebsiteList = observer(() => {
     const { settingsStore } = useContext(RootStoreContext);
     const { websitesList } = settingsStore;
@@ -43,6 +46,11 @@ export const WebsiteList = observer(() => {
         }
     }, [editingWebsite, websitesList]);
 
+    /**
+     * Updates the draft address in the add form.
+     *
+     * @param e - Change event containing the user's current input.
+     */
     const handleNewWebsiteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewWebsite(e.target.value);
     };
@@ -112,12 +120,20 @@ export const WebsiteList = observer(() => {
         });
     };
 
+    /**
+     * Opens an inline editor with the selected entry's current hostname.
+     *
+     * @param website - Normalized hostname of the entry to edit.
+     */
     const handleEditWebsite = (website: string) => {
         setEditingWebsite(website);
         setEditedWebsite(website);
         setEditError('');
     };
 
+    /**
+     * Discards the edit draft and closes the inline editor.
+     */
     const handleCancelEdit = () => {
         setEditingWebsite(null);
         setEditedWebsite('');

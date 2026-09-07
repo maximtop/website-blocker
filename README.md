@@ -60,6 +60,15 @@ To lint the code:
 pnpm lint
 ```
 
+ESLint checks both TypeScript and TSX files. Source classes, methods, functions,
+named arrow functions, exported variables, interfaces, type aliases, and their
+type properties and methods require descriptive multiline JSDoc. Describe
+parameters and returned values; keep types in TypeScript. Anonymous callbacks
+passed to hooks, event handlers, and array methods do not need separate blocks.
+
+Run `pnpm check` for lint, type checking, and tests, then `pnpm release` to verify
+the production build before submitting a change.
+
 Build an individual browser with `pnpm build chrome`, `pnpm build edge`, or
 `pnpm build firefox`. Run `pnpm check` for lint, TypeScript and tests. See
 [DEVELOPMENT.md](DEVELOPMENT.md) for browser differences and build instructions.
