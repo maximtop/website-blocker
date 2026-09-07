@@ -37,6 +37,21 @@ export class SettingsStore {
         await this.loadWebsites();
     }
 
+    /**
+     * Updates a blocked website and applies the saved map directly to the observable list.
+     *
+     * @param originalHostname - Existing normalized hostname to replace.
+     * @param rawWebsite - New hostname or URL to normalize and save.
+     * @returns Resolves after the saved list is displayed without another storage read.
+     * @throws If validation or saving fails.
+     */
+    async updateWebsite(originalHostname: string, rawWebsite: string) {
+        const websites = await Websites.updateWebsite(originalHostname, rawWebsite);
+        runInAction(() => {
+            this.websites = websites;
+        });
+    }
+
     async setWebsiteEnabled(hostname: string, enabled: boolean) {
         await Websites.setWebsiteEnabled(hostname, enabled);
         await this.loadWebsites();

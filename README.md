@@ -5,7 +5,7 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 ## Features
 
 - **Block Websites:** Easily block access to distracting websites.
-- **Customizable:** Add or remove websites from the blocked list.
+- **Customizable:** Add, edit, or remove websites from the blocked list.
 - **Per-site Control:** Turn blocking off or on for individual websites without removing them from the list.
 - **Persistent Storage:** Blocked websites are saved and loaded from browser storage.
 - **Real-time Updates:** Automatically updates the list of blocked websites when changes are made.
@@ -38,7 +38,9 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 
 ## Usage
 
-- Open the extension's options page to add or remove websites from the blocked list.
+- Open the extension's options page to add, edit, or remove websites from the blocked list.
+- Click **Edit** next to a website to change its address, then **Save** (or press Enter). Click **Cancel** (or press Escape) to discard the change. Invalid addresses and duplicates leave the original entry unchanged.
+- Editing an address preserves its blocking switch setting.
 - Use the switch next to a website to turn blocking off or on. Disabled websites stay in the list for later.
 - The extension will automatically block access to websites whose switches are on. Your choices are saved across restarts.
 
