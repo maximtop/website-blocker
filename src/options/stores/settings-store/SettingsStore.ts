@@ -37,6 +37,19 @@ export class SettingsStore {
         await this.loadWebsites();
     }
 
+    /**
+     * Updates a blocked website and refreshes the observable list after a successful save.
+     *
+     * @param originalHostname - Existing normalized hostname to replace.
+     * @param rawWebsite - New hostname or URL to normalize and save.
+     * @returns Resolves after the updated list has loaded.
+     * @throws If validation, saving, or reloading the list fails.
+     */
+    async updateWebsite(originalHostname: string, rawWebsite: string) {
+        await Websites.updateWebsite(originalHostname, rawWebsite);
+        await this.loadWebsites();
+    }
+
     async setWebsiteEnabled(hostname: string, enabled: boolean) {
         await Websites.setWebsiteEnabled(hostname, enabled);
         await this.loadWebsites();
