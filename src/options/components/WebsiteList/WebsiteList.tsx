@@ -128,7 +128,6 @@ export const WebsiteList = observer(() => {
      * Cancels editing from any form control unless a mutation is pending.
      *
      * @param e Keyboard event bubbling from an edit form control.
-     * @returns Nothing.
      */
     const handleEditKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
         if (e.key === 'Escape' && !isPendingRef.current) {
