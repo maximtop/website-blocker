@@ -44,6 +44,16 @@ Deployment helpers execute with `tsx`, matching the other extensions.
 - The blocklist uses `browser.storage.sync`. Browser account and sync
   settings determine whether it synchronizes between devices. The extension
   has no developer-operated backend, telemetry or remote code.
+- Blocklist additions, deletions and switches share a Web Lock across
+  extension pages in the same browser profile. Keep each read and write
+  inside that lock so concurrent edits preserve one another. This does not
+  coordinate writes from different devices. Options pages observe storage
+  changes and apply successful writes directly, without a follow-up read.
+- Website settings are edited in regular windows. Private options pages
+  offer a button to open the shared settings in a regular window: Chrome's
+  split incognito processes share extension storage but have separate Web
+  Lock managers. Split mode remains enabled for private blocked-page
+  navigation; opening settings does not pass private browsing URLs.
 
 Load `dist/dev/chrome` or `dist/dev/edge` as an unpacked extension. In Firefox,
 use `about:debugging#/runtime/this-firefox` and load

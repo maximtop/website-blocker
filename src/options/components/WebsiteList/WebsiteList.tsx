@@ -19,9 +19,11 @@ export const WebsiteList = observer(() => {
     const isSavingRef = useRef(false);
 
     useEffect(() => {
+        const unsubscribe = settingsStore.observeWebsites();
         settingsStore.loadWebsites().catch((ex) => {
             setError(getErrorMessage(ex));
         });
+        return unsubscribe;
     }, [settingsStore]);
 
     const handleNewWebsiteChange = (e: React.ChangeEvent<HTMLInputElement>) => {

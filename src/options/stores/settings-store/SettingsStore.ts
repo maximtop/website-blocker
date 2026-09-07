@@ -11,38 +11,59 @@ import { Websites, WebsitesMap, Website } from '../../../common/websites';
 export class SettingsStore {
     private rootStore: RootStore;
 
-    @observable websites: WebsitesMap = {};
+    private websitesRevision = 0;
 
-    @observable newWebsite: string = '';
+    websites: WebsitesMap = {};
+
+    newWebsite: string = '';
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
-        makeObservable(this);
+        makeObservable(this, {
+            websites: observable,
+            newWebsite: observable,
+            websitesList: computed,
+        });
     }
 
-    async loadWebsites() {
-        const websites = await Websites.getWebsites();
+    private updateWebsites(websites: WebsitesMap) {
+        this.websitesRevision += 1;
         runInAction(() => {
             this.websites = websites;
         });
     }
 
+    observeWebsites(): () => void {
+        return Websites.subscribe((websites) => this.updateWebsites(websites));
+    }
+
+    async loadWebsites() {
+        this.websitesRevision += 1;
+        const revision = this.websitesRevision;
+        try {
+            const websites = await Websites.getWebsites();
+            if (revision === this.websitesRevision) {
+                this.updateWebsites(websites);
+            }
+        } catch (error) {
+            if (revision === this.websitesRevision) {
+                throw error;
+            }
+        }
+    }
+
     async addNewWebsite(value: string) {
-        await Websites.addWebsite(value);
-        await this.loadWebsites();
+        this.updateWebsites(await Websites.addWebsite(value));
     }
 
     async deleteWebsite(value: string) {
-        await Websites.deleteWebsite(value);
-        await this.loadWebsites();
+        this.updateWebsites(await Websites.deleteWebsite(value));
     }
 
     async setWebsiteEnabled(hostname: string, enabled: boolean) {
-        await Websites.setWebsiteEnabled(hostname, enabled);
-        await this.loadWebsites();
+        this.updateWebsites(await Websites.setWebsiteEnabled(hostname, enabled));
     }
 
-    @computed
     get websitesList(): Website[] {
         return Object.values(this.websites);
     }

@@ -22,6 +22,7 @@ const browserMock = vi.hoisted(() => ({
 
 vi.mock('webextension-polyfill', () => ({
     default: {
+        extension: { inIncognitoContext: false },
         storage: {
             sync: {
                 get: browserMock.storageGet,
