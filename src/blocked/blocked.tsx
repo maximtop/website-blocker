@@ -12,6 +12,9 @@ export const blocked = {
     init: () => {
         document.title = 'Blocked Page';
         const container = document.getElementById('root');
+        if (!container) {
+            throw new Error('Blocked page root is missing');
+        }
         const root = createRoot(container);
         root.render(<App />);
     },
