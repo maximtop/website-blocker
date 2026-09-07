@@ -10,6 +10,9 @@ import './styles.css';
  * Mounts the extension popup with its store context.
  */
 export const popup = {
+    /**
+     * Renders the popup with a fresh store context.
+     */
     init: () => {
         const container = document.getElementById('root');
         if (!container) {
