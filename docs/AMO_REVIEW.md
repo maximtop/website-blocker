@@ -33,6 +33,19 @@ using SWC. Production output is not minified, and no Git checkout or store
 credentials are needed to build. General commands are in
 [DEVELOPMENT.md](../DEVELOPMENT.md).
 
+## Automated validation notes
+
+`web-ext` 10.6.0 reports no errors for this build. Its code warnings refer to
+bundled React DOM's HTML helper, Webpack's legacy global-object fallback and
+MobX's development breakpoint helper. The application uses JSX text for
+user-entered domains and errors and has no `dangerouslySetInnerHTML`, `eval`
+or `Function` calls. Supported Firefox versions use Webpack's `globalThis`
+branch, and MobX's development-only callers are absent from production.
+
+The validator also warns that Firefox 128 predates the built-in data consent
+manifest key (desktop 140 / Android 142). The manifest declares no developer
+data collection; browser-managed blocklist synchronization is described above.
+
 ## Permissions and test steps
 
 `storage` persists the user-configured blocklist through the browser storage
