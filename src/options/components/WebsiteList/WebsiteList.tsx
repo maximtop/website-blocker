@@ -1,35 +1,30 @@
-import React, {
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { RootStoreContext } from '../../stores/root-store';
-import { getErrorMessage } from '../../../common/utils/error';
 
 /**
- * Displays saved websites with controls to add, edit, remove, and toggle blocking.
+ * Renders the observable blocked website list with add and edit forms.
+ *
+ * @returns Website controls and their current validation feedback.
  */
 export const WebsiteList = observer(() => {
     const { settingsStore } = useContext(RootStoreContext);
-    const { websitesList } = settingsStore;
-
-    const [newWebsite, setNewWebsite] = useState('');
-    const [error, setError] = useState('');
-    const [editingWebsite, setEditingWebsite] = useState<string | null>(null);
-    const [editedWebsite, setEditedWebsite] = useState('');
-    const [editError, setEditError] = useState('');
-    const [isPending, setIsPending] = useState(false);
-    const editInput = useRef<HTMLInputElement>(null);
-    const isPendingRef = useRef(false);
+    const {
+        websitesList,
+        newWebsite,
+        error,
+        editingWebsite,
+        editedWebsite,
+        editError,
+        isPending,
+    } = settingsStore;
 
     useEffect(() => {
-        settingsStore.loadWebsites().catch((ex) => {
-            setError(getErrorMessage(ex));
-        });
+        settingsStore.loadWebsites().catch((ex) => settingsStore.reportError(ex));
     }, [settingsStore]);
+
+    const editInput = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (editingWebsite !== null && !isPending) {
@@ -38,137 +33,24 @@ export const WebsiteList = observer(() => {
         }
     }, [editingWebsite, isPending]);
 
-    useEffect(() => {
-        if (editingWebsite !== null && !websitesList.some((website) => website.hostname === editingWebsite)) {
-            setEditingWebsite(null);
-            setEditedWebsite('');
-            setEditError('');
-        }
-    }, [editingWebsite, websitesList]);
-
     /**
-     * Updates the draft address in the add form.
+     * Submits the add form through the settings store.
      *
-     * @param e - Change event containing the user's current input.
+     * @param event - Form submission to prevent from navigating the page.
      */
-    const handleNewWebsiteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewWebsite(e.target.value);
+    const handleAddNewWebsite = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        settingsStore.addNewWebsite();
     };
 
     /**
-     * Saves the add-form draft and reports any failure without clearing the input.
+     * Submits the edit form through the settings store.
      *
-     * @param e - Submit event from the add form.
-     * @returns Resolves after the save attempt and pending-state cleanup.
+     * @param event - Form submission to prevent from navigating the page.
      */
-    const handleAddNewWebsite = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (isPendingRef.current) {
-            return;
-        }
-        isPendingRef.current = true;
-        setIsPending(true);
-        try {
-            await settingsStore.addNewWebsite(newWebsite);
-            setNewWebsite('');
-            setError('');
-        } catch (ex) {
-            setError(getErrorMessage(ex));
-        } finally {
-            isPendingRef.current = false;
-            setIsPending(false);
-        }
-    };
-
-    /**
-     * Removes an entry while preventing overlapping list changes.
-     *
-     * @param websiteToDelete - Normalized hostname of the entry to remove.
-     * @returns Resolves after the deletion attempt and pending-state cleanup.
-     */
-    const handleDeleteWebsite = async (websiteToDelete: string) => {
-        if (isPendingRef.current) {
-            return;
-        }
-        isPendingRef.current = true;
-        setIsPending(true);
-        try {
-            await settingsStore.deleteWebsite(websiteToDelete);
-            setError('');
-        } catch (ex) {
-            setError(getErrorMessage(ex));
-        } finally {
-            isPendingRef.current = false;
-            setIsPending(false);
-        }
-    };
-
-    /**
-     * Saves an entry's blocking state while preventing overlapping list changes.
-     *
-     * @param hostname - Normalized hostname of the entry to update.
-     * @param enabled - Whether the switch should enable blocking.
-     * @returns Resolves after the save attempt and pending-state cleanup.
-     */
-    const handleToggleWebsite = async (hostname: string, enabled: boolean) => {
-        if (isPendingRef.current) {
-            return;
-        }
-        isPendingRef.current = true;
-        setIsPending(true);
-        try {
-            await settingsStore.setWebsiteEnabled(hostname, enabled);
-            setError('');
-        } catch (ex) {
-            setError(getErrorMessage(ex));
-        } finally {
-            isPendingRef.current = false;
-            setIsPending(false);
-        }
-    };
-
-    /**
-     * Opens an inline editor with the selected entry's current hostname.
-     *
-     * @param website - Normalized hostname of the entry to edit.
-     */
-    const handleEditWebsite = (website: string) => {
-        setEditingWebsite(website);
-        setEditedWebsite(website);
-        setEditError('');
-    };
-
-    /**
-     * Discards the edit draft and closes the inline editor.
-     */
-    const handleCancelEdit = () => {
-        setEditingWebsite(null);
-        setEditedWebsite('');
-        setEditError('');
-    };
-
-    /**
-     * Saves an edited address, preserving the draft when saving fails.
-     *
-     * @param e - Submit event from the inline edit form.
-     * @returns Resolves after the save attempt and pending-state cleanup.
-     */
-    const handleSaveWebsite = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (editingWebsite === null || isPendingRef.current) {
-            return;
-        }
-        isPendingRef.current = true;
-        setIsPending(true);
-        try {
-            await settingsStore.updateWebsite(editingWebsite, editedWebsite);
-            handleCancelEdit();
-        } catch (ex) {
-            setEditError(getErrorMessage(ex));
-        } finally {
-            isPendingRef.current = false;
-            setIsPending(false);
-        }
+    const handleSaveWebsite = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        settingsStore.updateWebsite();
     };
 
     return (
@@ -179,7 +61,7 @@ export const WebsiteList = observer(() => {
                     type="text"
                     className="form-control"
                     value={newWebsite}
-                    onChange={handleNewWebsiteChange}
+                    onChange={(event) => settingsStore.setNewWebsite(event.target.value)}
                     placeholder="Enter website to block"
                     aria-label="Enter website to block"
                     disabled={isPending}
@@ -198,14 +80,11 @@ export const WebsiteList = observer(() => {
                                             type="text"
                                             className={`form-control${editError ? ' is-invalid' : ''}`}
                                             value={editedWebsite}
-                                            onChange={(e) => {
-                                                setEditedWebsite(e.target.value);
-                                                setEditError('');
-                                            }}
+                                            onChange={(event) => settingsStore.setEditedWebsite(event.target.value)}
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Escape' && !isPending) {
                                                     e.preventDefault();
-                                                    handleCancelEdit();
+                                                    settingsStore.cancelEdit();
                                                 }
                                             }}
                                             aria-label={`Edit website ${hostname}`}
@@ -219,7 +98,7 @@ export const WebsiteList = observer(() => {
                                         <button
                                             type="button"
                                             className="btn btn-outline-secondary"
-                                            onClick={handleCancelEdit}
+                                            onClick={() => settingsStore.cancelEdit()}
                                             disabled={isPending}
                                         >
                                             Cancel
@@ -241,7 +120,9 @@ export const WebsiteList = observer(() => {
                                             role="switch"
                                             checked={enabled !== false}
                                             disabled={isPending}
-                                            onChange={(event) => handleToggleWebsite(hostname, event.target.checked)}
+                                            onChange={(event) => {
+                                                settingsStore.setWebsiteEnabled(hostname, event.target.checked);
+                                            }}
                                         />
                                         <label className="form-check-label text-break" htmlFor={`block-${hostname}`}>
                                             Block
@@ -256,7 +137,7 @@ export const WebsiteList = observer(() => {
                                         <button
                                             type="button"
                                             className="btn btn-outline-primary btn-sm"
-                                            onClick={() => handleEditWebsite(hostname)}
+                                            onClick={() => settingsStore.editWebsite(hostname)}
                                             aria-label={`Edit ${hostname}`}
                                             disabled={isPending || editingWebsite !== null}
                                         >
@@ -265,7 +146,7 @@ export const WebsiteList = observer(() => {
                                         <button
                                             type="button"
                                             className="btn btn-danger btn-sm"
-                                            onClick={() => handleDeleteWebsite(hostname)}
+                                            onClick={() => settingsStore.deleteWebsite(hostname)}
                                             aria-label={`Delete ${hostname}`}
                                             disabled={isPending}
                                         >
