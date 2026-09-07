@@ -6,6 +6,11 @@ import { getHostname } from '../common/utils/url';
 let blockedWebsites: WebsitesMap = {};
 let blockedWebsitesPromise: Promise<void> | null = null;
 
+type NavigationDetails = browser.WebNavigation.OnCommittedDetailsType & {
+    // Chromium supplies this field; Firefox does not.
+    documentLifecycle?: string;
+};
+
 /**
  * Checks if a given URL matches any of the blocked websites.
  * @param url - The URL of the website to check.
@@ -19,29 +24,34 @@ function isBlocked(url: string): boolean {
 /**
  * Updates the list of blocked websites from storage.
  */
-function updateBlockedWebsites() {
-    blockedWebsitesPromise = Websites.getWebsites().then((websites) => {
-        blockedWebsites = websites;
-        blockedWebsitesPromise = null;
+function updateBlockedWebsites(): Promise<void> {
+    const update = Websites.getWebsites().then((websites) => {
+        // An older read must not replace a newer storage update or mark it ready.
+        if (blockedWebsitesPromise === update) {
+            blockedWebsites = websites;
+            blockedWebsitesPromise = null;
+        }
     });
+    blockedWebsitesPromise = update;
+    return update;
 }
 
 const handleOnCommitted = async (
-    details: browser.WebNavigation.OnCommittedDetailsType,
+    details: NavigationDetails,
 ) => {
-    // Wait until blockedWebsites is initialized
-    if (blockedWebsitesPromise) {
+    // frameId is shared by Firefox and Chromium. Never redirect an iframe's tab
+    // or a Chromium document that has not yet left prerendering.
+    if (details.frameId !== 0 || details.documentLifecycle === 'prerender') {
+        return;
+    }
+
+    // Startup and storage changes can overlap; wait for the latest read.
+    while (blockedWebsitesPromise) {
+        // eslint-disable-next-line no-await-in-loop
         await blockedWebsitesPromise;
     }
 
-    // Check if the navigation is not in prerender state
-    if (
-        // @ts-ignore
-        details.frameType === 'outermost_frame'
-        // @ts-ignore
-        && details.documentLifecycle !== 'prerender'
-        && isBlocked(details.url)
-    ) {
+    if (isBlocked(details.url)) {
         await browser.tabs.update(details.tabId, {
             url: browser.runtime.getURL('blocked.html'),
         });
@@ -56,13 +66,10 @@ const syncInit = () => {
     browser.webNavigation.onCommitted.addListener(handleOnCommitted, { url: [{ schemes: ['http', 'https'] }] });
 };
 
-const asyncInit = async () => {
-    await updateBlockedWebsites();
-};
-
 const init = () => {
+    // Event pages must register listeners before asynchronous storage reads.
     syncInit();
-    asyncInit();
+    return updateBlockedWebsites();
 };
 
 export { init };

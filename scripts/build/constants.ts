@@ -33,6 +33,7 @@ export const ENV_CONF: Record<BuildTargetEnv, EnvConfig> = {
 
 export const enum Browser {
     Chrome = 'chrome',
+    Firefox = 'firefox',
 }
 
 export const BUILD_PATH = path.resolve(__dirname, '../../dist');
@@ -48,5 +49,10 @@ export const BROWSERS_CONF: Record<Browser, BrowserConfig> = {
         browser: Browser.Chrome,
         devtools: true,
         buildDir: Browser.Chrome,
+    },
+    [Browser.Firefox]: {
+        browser: Browser.Firefox,
+        devtools: true,
+        buildDir: Browser.Firefox,
     },
 };

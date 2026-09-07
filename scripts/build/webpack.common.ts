@@ -13,6 +13,7 @@ import {
 } from './constants';
 
 import { getEnvConf } from './helpers';
+import { transformManifest } from './manifest';
 
 const config = getEnvConf(BUILD_ENV);
 
@@ -106,9 +107,7 @@ export const genCommonConfig = (
                         to: 'manifest.json',
                         transform: async (content) => {
                             const packageJson = await import('../../package.json');
-                            const manifestJson = JSON.parse(content.toString());
-                            manifestJson.version = packageJson.version;
-                            return JSON.stringify(manifestJson, null, 2);
+                            return transformManifest(content, browserConfig.browser, packageJson.version);
                         },
                     },
                 ],

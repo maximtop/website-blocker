@@ -6,6 +6,7 @@ store list, the identifiers, and the repository-specific notes differ.
 - [Cut a release](#cut-a-release)
 - [Store deployment](#store-deployment)
   - [Chrome Web Store](#chrome-web-store)
+  - [Firefox Add-ons](#firefox-add-ons)
 - [Store configuration](#store-configuration)
 - [Local store commands](#local-store-commands)
 - [Failure playbook](#failure-playbook)
@@ -24,7 +25,8 @@ store list, the identifiers, and the repository-specific notes differ.
    `package.json`, is not reachable from `master`, or already has a release,
    then runs `pnpm check`, builds the extension, verifies the manifest
    versions, and publishes a GitHub Release with:
-   - `website-blocker-<version>-chrome.zip`, the store-ready archive
+   - `website-blocker-<version>-chrome.zip` and
+     `website-blocker-<version>-firefox.zip`, the store-ready archives
    - `website-blocker-<version>-source.zip`, the tagged repository state
    - `SHA256SUMS.txt`, GNU `sha256sum` lines with the bare asset names
 
@@ -48,6 +50,7 @@ workflow that takes an already published GitHub Release:
 
 ```sh
 gh workflow run deploy-chrome-store.yml -f tag=vX.Y.Z
+gh workflow run deploy-firefox-amo.yml -f tag=vX.Y.Z
 ```
 
 The `tag` input is optional; blank deploys the latest published release. The
@@ -81,6 +84,34 @@ unpublished expires back to a draft after about 30 days; re-run the workflow
 with the same tag to submit it again. A green run proves a successful
 submission, not approval.
 
+### Firefox Add-ons
+
+`deploy-firefox-amo.yml` uses the same manual deployment flow as
+`hide-gmail-upgrade-button`. Modes:
+
+- `validate`: resolve a stable GitHub Release, download its Firefox and source
+  ZIPs, and verify their checksums, version, Gecko ID and source completeness.
+  Nothing is uploaded. Configuration names must still be present.
+- `submit` (default): check the authenticated AMO API for that exact version,
+  then upload only if absent. Existing versions are never uploaded again.
+  The source archive must contain [AMO_REVIEW.md](AMO_REVIEW.md).
+- `status`: read review/publication status without uploading. When a signed XPI
+  is available, download it and check the AMO hash, version, Gecko ID and Mozilla
+  signature envelope, then retain it as an Actions artifact for 30 days. This
+  is not independent cryptographic verification of the signing certificate chain.
+
+Firefox publishes automatically after Mozilla approval. A successful upload
+does not prove approval or publication. Run `status` again later to check it;
+do not upload again because signing or a status endpoint is temporarily unavailable.
+The workflow uses `go-webext v0.4.2` for listed uploads and a TypeScript helper
+for AMO status because go-webext cannot parse some AMO category responses.
+
+The first listing must be completed in Developer Hub using a Firefox ZIP and
+the matching source ZIP. [FIREFOX_LISTING.md](FIREFOX_LISTING.md) contains the
+copy and reviewer details. Releases through 1.2.7 only contain Chrome; the first
+release with Firefox support is 1.2.8. Set `FIREFOX_AMO_ID` to the actual saved
+listing slug or numeric ID, not the Gecko ID (`website-blocker@maximtop.dev`).
+
 ## Store configuration
 
 The store item must exist before any deployment: the API cannot create the
@@ -106,6 +137,9 @@ committed.
 | Secret | `CHROME_CLIENT_ID` | OAuth 2.0 client ID of the Google Cloud project with the Chrome Web Store API enabled. |
 | Secret | `CHROME_CLIENT_SECRET` | Secret of that OAuth client. |
 | Secret | `CHROME_REFRESH_TOKEN` | Refresh token granted for the `https://www.googleapis.com/auth/chromewebstore` scope. |
+| Variable | `FIREFOX_AMO_ID` | Actual AMO listing slug or numeric ID from Developer Hub. |
+| Secret | `FIREFOX_CLIENT_ID` | JWT issuer from the AMO API credentials page. |
+| Secret | `FIREFOX_CLIENT_SECRET` | Full original JWT secret; the masked value AMO displays later cannot authenticate. |
 
 The publisher ID and the three secrets belong to the Google account and are
 shared by every extension it publishes. Their source of truth is the 1Password
@@ -118,6 +152,11 @@ op read op://Private/chrome-web-store-api/CHROME_REFRESH_TOKEN | gh secret set C
 
 Always capture a value before piping it into `gh secret set`: a failed `op`
 command otherwise stores an empty secret without any error.
+
+Firefox account credentials are shared with the other extensions and live in
+the 1Password item `firefox-amo-api`. Copy the existing values into the two
+Firefox secrets for this repository; do not regenerate the AMO key, which would
+invalidate it for every consumer. `1password.env.example` contains the references.
 
 ## Local store commands
 
@@ -170,3 +209,15 @@ Without 1Password, a `.env` filled in from `.env.example` works the same way;
   it to a draft, then re-run.
 - **Review rejected:** no workflow signal exists; the verdict arrives by
   e-mail. Address the feedback and ship a new version.
+
+Firefox Add-ons:
+
+- **Missing Firefox asset:** releases through 1.2.7 are Chrome-only. Select a
+  release with both Firefox and matching source ZIPs; never rebuild during deploy.
+- **`HTTP 401 (signature)`:** use the full JWT secret from `firefox-amo-api`,
+  not the masked value shown on AMO.
+- **Version already exists on AMO:** use `status`; do not upload it again.
+- **Existing version has no source attached:** attach the matching release's
+  source ZIP in Developer Hub before continuing.
+- **Status unavailable after a confirmed upload:** the submission stands;
+  run `status` later. Status-only mode fails when the API cannot be read.

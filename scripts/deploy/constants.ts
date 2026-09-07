@@ -12,7 +12,7 @@ export const RELEASE_ASSET_PREFIX = 'website-blocker';
 /**
  * Stores this extension is deployed to; each one has a deploy-<store>.yml workflow.
  */
-export const STORE_TARGETS = ['chrome'] as const;
+export const STORE_TARGETS = ['chrome', 'firefox'] as const;
 
 /**
  * Store this repository can deploy to.
@@ -22,12 +22,28 @@ export type StoreTarget = typeof STORE_TARGETS[number];
 /**
  * Firefox add-on ID (`browser_specific_settings.gecko.id`); empty when Firefox is not a target.
  */
-export const GECKO_ID = '';
+export const GECKO_ID = 'website-blocker@maximtop.dev';
 
 /**
  * Files the Firefox source archive must contain; unused when Firefox is not a target.
  */
-export const SOURCE_REQUIRED_FILES = ['package.json', 'pnpm-lock.yaml', 'src/manifest.json'];
+export const SOURCE_REQUIRED_FILES = [
+    'package.json',
+    'pnpm-lock.yaml',
+    'pnpm-workspace.yaml',
+    'tsconfig.json',
+    '.swcrc',
+    'src/manifest.json',
+    'src/entrypoints/background/index.ts',
+    'scripts/build/index.ts',
+    'scripts/build/constants.ts',
+    'scripts/build/helpers.ts',
+    'scripts/build/bundle-runner.ts',
+    'scripts/build/webpack-config.ts',
+    'scripts/build/webpack.common.ts',
+    'scripts/build/manifest.ts',
+    'scripts/deploy/constants.ts',
+];
 
 /**
  * Reviewer notes inside the source archive, submitted to AMO with every new Firefox version.

@@ -16,12 +16,19 @@ const bundleChrome = (options: CommanderOptions) => {
     return bundleRunner(webpackConfig, { watch: options.watch, cache: options.cache });
 };
 
+const bundleFirefox = (options: CommanderOptions) => {
+    const webpackConfig = getWebpackConfig(Browser.Firefox, options.watch);
+    return bundleRunner(webpackConfig, { watch: options.watch, cache: options.cache });
+};
+
 const devPlan = [
     bundleChrome,
+    bundleFirefox,
 ];
 
 const releasePlan = [
     bundleChrome,
+    bundleFirefox,
 ];
 
 const runBuild = async (
@@ -66,6 +73,15 @@ const chrome = async (options: CommanderOptions) => {
     }
 };
 
+const firefox = async (options: CommanderOptions) => {
+    try {
+        await bundleFirefox(options);
+    } catch (e) {
+        console.error(e);
+        process.exit(1);
+    }
+};
+
 program
     .option('--watch', 'Builds in watch mode', false)
     .option(
@@ -79,6 +95,13 @@ program
     .description('Builds extension for chrome browser')
     .action(async () => {
         await chrome(program.opts());
+    });
+
+program
+    .command('firefox')
+    .description('Builds extension for Firefox browser')
+    .action(async () => {
+        await firefox(program.opts());
     });
 
 program

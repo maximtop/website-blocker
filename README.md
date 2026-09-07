@@ -28,9 +28,10 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
     pnpm build
     ```
 5. Load the extension in your browser:
-    - Open your browser's extensions page.
-    - Enable "Developer mode".
-    - Click "Load unpacked" and select the `dist` directory.
+    - Chrome: open the extensions page, enable "Developer mode", click
+      "Load unpacked", and select `dist/dev/chrome`.
+    - Firefox 140+: open `about:debugging#/runtime/this-firefox`, click
+      "Load Temporary Add-on", and select `dist/dev/firefox/manifest.json`.
 
 ## Usage
 
@@ -55,7 +56,10 @@ pnpm lint
 
 ## Releasing
 
-Tagged releases publish a GitHub Release with the store archive and checksums; store submission is a separate manual workflow. See [docs/RELEASE.md](docs/RELEASE.md) for the release process, store configuration, and the failure playbook.
+Tagged releases publish a GitHub Release with Chrome and Firefox archives,
+matching sources, and checksums. Each store has a separate manual deployment
+workflow. See [docs/RELEASE.md](docs/RELEASE.md) for the release process, store
+configuration, and the failure playbook.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.

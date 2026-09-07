@@ -5,8 +5,7 @@
     "description": "Stay focused by blocking distracting websites.",
     "permissions": [
         "webNavigation",
-        "storage",
-        "tabs"
+        "storage"
     ],
     "icons": {
         "16": "assets/icons/icon-16.png",
