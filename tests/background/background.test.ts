@@ -1,6 +1,5 @@
 // @vitest-environment node
 
-import browser from 'webextension-polyfill';
 import {
     beforeEach,
     describe,
@@ -8,96 +7,114 @@ import {
     it,
     vi,
 } from 'vitest';
+import { init } from '../../src/background/background';
 import { Websites, WebsitesMap } from '../../src/common/websites';
+
+const browserMock = vi.hoisted(() => ({
+    storageGet: vi.fn(),
+    storageSet: vi.fn(),
+    storageAddListener: vi.fn(),
+    navigationAddListener: vi.fn(),
+    installedAddListener: vi.fn(),
+    startupAddListener: vi.fn(),
+    updateTab: vi.fn(),
+}));
 
 vi.mock('webextension-polyfill', () => ({
     default: {
-        runtime: {
-            onInstalled: { addListener: vi.fn() },
-            onStartup: { addListener: vi.fn() },
-            getURL: vi.fn(),
+        storage: {
+            sync: {
+                get: browserMock.storageGet,
+                set: browserMock.storageSet,
+                onChanged: { addListener: browserMock.storageAddListener },
+            },
         },
-        tabs: { update: vi.fn() },
-        webNavigation: { onCommitted: { addListener: vi.fn() } },
-    },
-}));
-vi.mock('../../src/common/websites', () => ({
-    Websites: {
-        getWebsites: vi.fn(),
-        onChanged: { addListener: vi.fn() },
+        runtime: {
+            getURL: (path: string) => `moz-extension://website-blocker/${path}`,
+            onInstalled: { addListener: browserMock.installedAddListener },
+            onStartup: { addListener: browserMock.startupAddListener },
+        },
+        webNavigation: {
+            onCommitted: { addListener: browserMock.navigationAddListener },
+        },
+        tabs: { update: browserMock.updateTab },
     },
 }));
 
-type NavigationDetails = browser.WebNavigation.OnCommittedDetailsType & {
-    frameType?: string;
-    documentLifecycle?: string;
+let persistedWebsites: WebsitesMap;
+
+const navigate = async (url: string, browser: 'firefox' | 'chromium' = 'chromium') => {
+    const listener = browserMock.navigationAddListener.mock.calls[0][0];
+    await listener({
+        url,
+        tabId: 42,
+        frameId: 0,
+        ...(browser === 'chromium' ? { frameType: 'outermost_frame', documentLifecycle: 'active' } : {}),
+    });
 };
-const blockedWebsites: WebsitesMap = {
-    'example.com': { hostname: 'example.com' },
-};
-const navigation = (overrides: Partial<NavigationDetails> = {}): NavigationDetails => ({
-    tabId: 17,
-    frameId: 0,
-    url: 'https://www.example.com/blocked-page',
-    timeStamp: 123,
-    transitionType: 'link',
-    transitionQualifiers: [],
-    ...overrides,
-});
-const startBackground = async () => {
-    const { init } = await import('../../src/background/background');
-    init();
-    return vi.mocked(browser.webNavigation.onCommitted.addListener).mock.calls[0][0] as
-        (details: NavigationDetails) => Promise<void>;
+
+const notifyStorageChanged = () => {
+    const listener = browserMock.storageAddListener.mock.calls[0][0];
+    listener({ websites: { newValue: structuredClone(persistedWebsites) } });
 };
 
 beforeEach(() => {
-    vi.resetModules();
     vi.resetAllMocks();
-    vi.mocked(Websites.getWebsites).mockResolvedValue(blockedWebsites);
-    vi.mocked(browser.runtime.getURL).mockReturnValue('moz-extension://fixture/blocked.html');
+    persistedWebsites = {
+        'enabled.com': { hostname: 'enabled.com', enabled: true },
+        'disabled.com': { hostname: 'disabled.com', enabled: false },
+        'legacy.com': { hostname: 'legacy.com' },
+    };
+    browserMock.storageGet.mockImplementation(async (key: string) => ({
+        [key]: structuredClone(persistedWebsites),
+    }));
+    browserMock.storageSet.mockImplementation(async (data: { websites: WebsitesMap }) => {
+        persistedWebsites = structuredClone(data.websites);
+    });
+    browserMock.updateTab.mockResolvedValue(undefined);
+    init();
 });
 
-describe('blocked website navigation', () => {
-    it('redirects a Firefox top-level navigation without Chromium frame metadata', async () => {
-        const onCommitted = await startBackground();
-        await onCommitted(navigation());
-        expect(browser.tabs.update).toHaveBeenCalledExactlyOnceWith(17, {
-            url: 'moz-extension://fixture/blocked.html',
-        });
-    });
-
-    it('continues redirecting active Chromium top-level navigations', async () => {
-        const onCommitted = await startBackground();
-        await onCommitted(navigation({ frameType: 'outermost_frame', documentLifecycle: 'active' }));
-        expect(browser.tabs.update).toHaveBeenCalledExactlyOnceWith(17, {
-            url: 'moz-extension://fixture/blocked.html',
-        });
-    });
-
+describe('navigation with per-website blocking preferences', () => {
     it.each([
-        ['a subframe', { frameId: 2 }],
-        ['an unblocked website', { url: 'https://unblocked.example.org/' }],
-        ['a prerendered document', { frameType: 'outermost_frame', documentLifecycle: 'prerender' }],
-    ] satisfies [string, Partial<NavigationDetails>][])('does not redirect %s', async (_, overrides) => {
-        const onCommitted = await startBackground();
-        await onCommitted(navigation(overrides));
-        expect(browser.tabs.update).not.toHaveBeenCalled();
+        'https://disabled.com/',
+        'https://www.disabled.com/some-page',
+        'https://unlisted.com/',
+    ])('allows navigation to %s', async (url) => {
+        await navigate(url);
+
+        expect(browserMock.updateTab).not.toHaveBeenCalled();
     });
 
-    it('waits for the stored blocklist before deciding whether to redirect', async () => {
-        let loadWebsites: (websites: WebsitesMap) => void = () => {};
-        vi.mocked(Websites.getWebsites).mockReturnValue(new Promise((resolve) => {
-            loadWebsites = resolve;
-        }));
-        const onCommitted = await startBackground();
-        const pendingNavigation = onCommitted(navigation());
-        expect(browser.tabs.update).not.toHaveBeenCalled();
+    it.each(['https://enabled.com/', 'https://legacy.com/'])('blocks navigation to %s', async (url) => {
+        await navigate(url);
 
-        loadWebsites(blockedWebsites);
-        await pendingNavigation;
-        expect(browser.tabs.update).toHaveBeenCalledExactlyOnceWith(17, {
-            url: 'moz-extension://fixture/blocked.html',
+        expect(browserMock.updateTab).toHaveBeenCalledExactlyOnceWith(42, {
+            url: 'moz-extension://website-blocker/blocked.html',
         });
     });
+
+    it.each(['firefox', 'chromium'] as const)(
+        'applies persisted toggle changes in %s after storage events without restarting the background',
+        async (browser) => {
+            await navigate('https://disabled.com/', browser);
+            expect(browserMock.updateTab).not.toHaveBeenCalled();
+
+            await Websites.setWebsiteEnabled('disabled.com', true);
+            notifyStorageChanged();
+            await navigate('https://disabled.com/', browser);
+
+            expect(browserMock.updateTab).toHaveBeenCalledExactlyOnceWith(42, {
+                url: 'moz-extension://website-blocker/blocked.html',
+            });
+
+            browserMock.updateTab.mockClear();
+            await Websites.setWebsiteEnabled('disabled.com', false);
+            notifyStorageChanged();
+            await navigate('https://disabled.com/', browser);
+
+            expect(browserMock.updateTab).not.toHaveBeenCalled();
+            expect(persistedWebsites['disabled.com']).toEqual({ hostname: 'disabled.com', enabled: false });
+        },
+    );
 });

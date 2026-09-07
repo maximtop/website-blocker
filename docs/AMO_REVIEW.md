@@ -1,9 +1,10 @@
 # Firefox Add-ons reviewer notes
 
 Website Blocker lets users maintain a list of distracting website domains.
-When a top-level page navigation matches that list, the extension redirects
-the tab to its bundled blocked page. Users can add and remove domains through
-the popup and options page.
+When a top-level page navigation matches an enabled entry, the extension
+redirects the tab to its bundled blocked page. Users can add and remove
+domains through the popup and options page, and switch blocking off for an
+individual domain without deleting it.
 
 No extension account, payment, advertising, analytics, telemetry, remote code
 or developer-operated service is used. Navigation URLs are evaluated in the
@@ -59,9 +60,13 @@ retained across browser variants; matching tabs are redirected with
 2. Navigate a top-level tab to `https://example.com`. The bundled blocked
    page should replace the destination.
 3. Navigate to another domain. It should remain available.
-4. Remove `example.com` from the list and open it again. It should load.
-5. Add it again and restart Firefox. The configured list should persist.
-6. If testing private windows, first allow the extension in private windows
+4. Turn off the switch for `example.com` and open it again. It should load
+   while its entry stays in the list. Turn it back on and reload: blocking
+   should resume.
+5. Remove `example.com` from the list and open it again. It should load.
+6. Add it again and restart Firefox. The configured list and each switch
+   should persist.
+7. If testing private windows, first allow the extension in private windows
    through Firefox's add-on settings. Without that permission it does not
    operate in private windows.
 
