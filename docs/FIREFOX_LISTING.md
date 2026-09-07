@@ -24,6 +24,7 @@ get back to what you were doing.
 
 - Open settings from the toolbar popup and add a website to block.
 - Manage your blocked websites from the options page.
+- Switch blocking off or on for each website without deleting its entry.
 - Remove a website whenever you want to allow it again.
 - Keep your block list across browser restarts.
 

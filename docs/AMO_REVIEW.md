@@ -34,8 +34,9 @@ minified, but it is generated, so the original source is attached.
    page saying "Oops! This website is blocked".
 4. Open an unrelated website. It should remain accessible. Subframe navigation
    should not redirect its containing tab.
-5. Open the extension's options page, remove `example.com`, and navigate to it
-   again. The site should now load normally.
+5. Open the extension's options page and switch `example.com` off. The site
+   should load normally while its entry remains saved. Switch it back on and
+   confirm blocking resumes. Delete the entry and confirm the site loads again.
 6. With a persistent/signed installation, add it again and restart the browser.
    The saved block list should still apply. A temporary `about:debugging`
    installation is removed when Firefox closes and cannot test this step.
@@ -67,3 +68,19 @@ navigation, with Chrome's prerender exclusion retained.
 
 License: MIT. Source and support:
 https://github.com/maximtop/website-blocker
+
+## Automated validator warnings
+
+The stock React DOM 18.3.1 renderer contains `innerHTML` assignments. The
+extension does not use `innerHTML` or `dangerouslySetInnerHTML`; user-entered
+hostnames are rendered as React text. The renderer is unmodified npm code.
+
+The generated options bundle also includes webpack's global-object detection
+fallback using `Function` (the earlier `globalThis` branch is taken in supported
+Firefox) and MobX 6.13.7's debugger trace helper. The production bundle has no
+callers of that helper and the extension does not use MobX tracing. No CSP
+exception for dynamic evaluation is added.
+
+AMO also warns that the data consent declaration needs Firefox for Android 142,
+while the desktop minimum is 140. This submission selects desktop Firefox only;
+Firefox for Android is not selected.

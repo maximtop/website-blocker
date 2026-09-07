@@ -48,6 +48,7 @@ const navigate = async (url: string) => {
     await listener({
         url,
         tabId: 42,
+        frameId: 0,
         frameType: 'outermost_frame',
         documentLifecycle: 'active',
     });
