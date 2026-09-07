@@ -3,10 +3,11 @@
 ## Listing fields
 
 - Name: Website Blocker: MT
-- Suggested slug: website-blocker-mt
+- AMO slug: website-blocker-mt
 - Locale: English (US), matching the extension's only UI language
 - Summary: Stay focused by blocking distracting websites.
-- Category: Productivity
+- Category: Other (AMO's "My add-on doesn't fit into any of the categories";
+  Productivity is not offered in this submission form)
 - Platforms: Firefox for desktop (Windows, macOS, Linux), version 140 or newer
 - License: MIT
 - Homepage: https://github.com/maximtop/website-blocker
@@ -38,6 +39,23 @@ your browser. The developer does not receive your list or browsing history.
 There are no ads, analytics, or paid features.
 
 Free and open source under the MIT license.
+
+## Privacy policy
+
+Website Blocker: MT does not send your browsing history or block list to the
+developer and has no analytics, advertising, or developer-operated backend.
+
+The extension checks website hostnames inside your browser to apply your blocking
+rules. It stores the websites you add and their enabled/disabled settings in
+browser.storage.sync. Firefox may synchronize these preferences between your
+devices when Firefox Sync is enabled; that browser service is controlled by your
+Firefox settings and Mozilla's policies.
+
+You can remove entries from the extension's settings page. The developer has no
+access to your stored settings.
+
+If you contact support, the information you choose to send is used to respond to
+your request. Contact: me@maximtop.dev.
 
 ## First submission
 
