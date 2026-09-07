@@ -52,10 +52,10 @@ export class Websites {
      *
      * @param originalHostname - Existing normalized hostname to replace.
      * @param rawWebsite - New hostname or URL to normalize and save.
-     * @returns Resolves after saving, or without writing when the hostname is unchanged.
+     * @returns The saved map, or the current map without writing when the hostname is unchanged.
      * @throws If the address is invalid, the original is missing, a duplicate exists, or storage fails.
      */
-    public static async updateWebsite(originalHostname: string, rawWebsite: string): Promise<void> {
+    public static async updateWebsite(originalHostname: string, rawWebsite: string): Promise<WebsitesMap> {
         const hostname = getHostname(rawWebsite);
         if (!hostname) {
             throw new Error(`Invalid website: ${rawWebsite}`);
@@ -66,7 +66,7 @@ export class Websites {
             throw new Error(`Website no longer exists in the list: ${originalHostname}`);
         }
         if (hostname === originalHostname) {
-            return;
+            return websites;
         }
         if (Object.prototype.hasOwnProperty.call(websites, hostname)) {
             throw new Error(`Website already exists in the list: ${hostname}`);
@@ -80,6 +80,7 @@ export class Websites {
             }),
         );
         await Storage.set(Websites.STORAGE_KEY, updatedWebsites);
+        return updatedWebsites;
     }
 
     /**

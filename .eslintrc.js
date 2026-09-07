@@ -41,6 +41,9 @@ module.exports = {
                         'TSTypeAliasDeclaration TSPropertySignature',
                         'TSTypeAliasDeclaration TSMethodSignature',
                         'VariableDeclarator > ArrowFunctionExpression',
+                        'FunctionExpression[id!=null], '
+                            + ':matches(VariableDeclarator, AssignmentExpression, Property, PropertyDefinition)'
+                            + ' > FunctionExpression',
                         'ExportNamedDeclaration[declaration.type="VariableDeclaration"]',
                     ],
                     checkGetters: true,

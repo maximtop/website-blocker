@@ -73,7 +73,18 @@ export const WebsiteList = observer(() => {
                     {websitesList.map(({ hostname, enabled }) => (
                         <li key={hostname} className="list-group-item">
                             {editingWebsite === hostname ? (
-                                <form onSubmit={handleSaveWebsite} aria-busy={isPending}>
+                                // Escape from native controls bubbles here; the form keeps its native semantics.
+                                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+                                <form
+                                    onSubmit={handleSaveWebsite}
+                                    onKeyDown={(event) => {
+                                        if (event.key === 'Escape' && !settingsStore.isPending) {
+                                            event.preventDefault();
+                                            settingsStore.cancelEdit();
+                                        }
+                                    }}
+                                    aria-busy={isPending}
+                                >
                                     <div className="input-group">
                                         <input
                                             ref={editInput}
@@ -81,12 +92,6 @@ export const WebsiteList = observer(() => {
                                             className={`form-control${editError ? ' is-invalid' : ''}`}
                                             value={editedWebsite}
                                             onChange={(event) => settingsStore.setEditedWebsite(event.target.value)}
-                                            onKeyDown={(e) => {
-                                                if (e.key === 'Escape' && !isPending) {
-                                                    e.preventDefault();
-                                                    settingsStore.cancelEdit();
-                                                }
-                                            }}
                                             aria-label={`Edit website ${hostname}`}
                                             aria-invalid={!!editError}
                                             aria-describedby={editError ? 'website-edit-error' : undefined}
