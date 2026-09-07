@@ -56,75 +56,68 @@ export const WebsiteList = observer(() => {
     };
 
     /**
-     * Saves the add-form draft and reports any failure without clearing the input.
+     * Runs one mutation at a time and reports failures to the relevant form.
      *
-     * @param e - Submit event from the add form.
-     * @returns Resolves after the save attempt and pending-state cleanup.
+     * @param save Mutation and its operation-specific success handling.
+     * @param onError Receives the failure message; defaults to the list error.
+     * @returns Resolves after the mutation is handled or immediately when one is already pending.
+     */
+    const saveChanges = async (save: () => Promise<void>, onError: (message: string) => void = setError) => {
+        if (isPendingRef.current) {
+            return;
+        }
+        isPendingRef.current = true;
+        setIsPending(true);
+        try {
+            await save();
+        } catch (ex) {
+            onError(getErrorMessage(ex));
+        } finally {
+            isPendingRef.current = false;
+            setIsPending(false);
+        }
+    };
+
+    /**
+     * Adds the draft domain and clears the form only after it is saved.
+     *
+     * @param e Add form submission event.
+     * @returns Resolves after the add attempt is handled.
      */
     const handleAddNewWebsite = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (isPendingRef.current) {
-            return;
-        }
-        isPendingRef.current = true;
-        setIsPending(true);
-        try {
+        await saveChanges(async () => {
             await settingsStore.addNewWebsite(newWebsite);
             setNewWebsite('');
             setError('');
-        } catch (ex) {
-            setError(getErrorMessage(ex));
-        } finally {
-            isPendingRef.current = false;
-            setIsPending(false);
-        }
+        });
     };
 
     /**
-     * Removes an entry while preventing overlapping list changes.
+     * Deletes the selected domain and clears an earlier list error on success.
      *
-     * @param websiteToDelete - Normalized hostname of the entry to remove.
-     * @returns Resolves after the deletion attempt and pending-state cleanup.
+     * @param websiteToDelete Domain to remove from the blocklist.
+     * @returns Resolves after the delete attempt is handled.
      */
     const handleDeleteWebsite = async (websiteToDelete: string) => {
-        if (isPendingRef.current) {
-            return;
-        }
-        isPendingRef.current = true;
-        setIsPending(true);
-        try {
+        await saveChanges(async () => {
             await settingsStore.deleteWebsite(websiteToDelete);
             setError('');
-        } catch (ex) {
-            setError(getErrorMessage(ex));
-        } finally {
-            isPendingRef.current = false;
-            setIsPending(false);
-        }
+        });
     };
 
     /**
-     * Saves an entry's blocking state while preventing overlapping list changes.
+     * Persists the selected domain's blocking state.
      *
-     * @param hostname - Normalized hostname of the entry to update.
-     * @param enabled - Whether the switch should enable blocking.
-     * @returns Resolves after the save attempt and pending-state cleanup.
+     * @param hostname Domain whose blocking state should change.
+     * @param enabled Whether the domain should be blocked.
+     * @returns Resolves after the toggle attempt is handled.
      */
     const handleToggleWebsite = async (hostname: string, enabled: boolean) => {
-        if (isPendingRef.current) {
-            return;
-        }
-        isPendingRef.current = true;
-        setIsPending(true);
-        try {
+        await saveChanges(async () => {
             await settingsStore.setWebsiteEnabled(hostname, enabled);
             setError('');
-        } catch (ex) {
-            setError(getErrorMessage(ex));
-        } finally {
-            isPendingRef.current = false;
-            setIsPending(false);
-        }
+        });
     };
 
     /**
@@ -148,27 +141,33 @@ export const WebsiteList = observer(() => {
     };
 
     /**
-     * Saves an edited address, preserving the draft when saving fails.
+     * Cancels editing from any form control unless a mutation is pending.
      *
-     * @param e - Submit event from the inline edit form.
-     * @returns Resolves after the save attempt and pending-state cleanup.
+     * @param e Keyboard event bubbling from an edit form control.
+     * @returns Nothing.
+     */
+    const handleEditKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+        if (e.key === 'Escape' && !isPendingRef.current) {
+            e.preventDefault();
+            handleCancelEdit();
+        }
+    };
+
+    /**
+     * Saves the edited domain, keeping the draft visible if the update fails.
+     *
+     * @param e Edit form submission event.
+     * @returns Resolves after the save attempt is handled, or immediately if no entry is being edited.
      */
     const handleSaveWebsite = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (editingWebsite === null || isPendingRef.current) {
+        if (editingWebsite === null) {
             return;
         }
-        isPendingRef.current = true;
-        setIsPending(true);
-        try {
+        await saveChanges(async () => {
             await settingsStore.updateWebsite(editingWebsite, editedWebsite);
             handleCancelEdit();
-        } catch (ex) {
-            setEditError(getErrorMessage(ex));
-        } finally {
-            isPendingRef.current = false;
-            setIsPending(false);
-        }
+        }, setEditError);
     };
 
     return (
@@ -191,7 +190,13 @@ export const WebsiteList = observer(() => {
                     {websitesList.map(({ hostname, enabled }) => (
                         <li key={hostname} className="list-group-item">
                             {editingWebsite === hostname ? (
-                                <form onSubmit={handleSaveWebsite} aria-busy={isPending}>
+                                // Delegate Escape from the native controls without changing the form's semantics.
+                                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+                                <form
+                                    onSubmit={handleSaveWebsite}
+                                    onKeyDown={handleEditKeyDown}
+                                    aria-busy={isPending}
+                                >
                                     <div className="input-group">
                                         <input
                                             ref={editInput}
@@ -201,12 +206,6 @@ export const WebsiteList = observer(() => {
                                             onChange={(e) => {
                                                 setEditedWebsite(e.target.value);
                                                 setEditError('');
-                                            }}
-                                            onKeyDown={(e) => {
-                                                if (e.key === 'Escape' && !isPending) {
-                                                    e.preventDefault();
-                                                    handleCancelEdit();
-                                                }
                                             }}
                                             aria-label={`Edit website ${hostname}`}
                                             aria-invalid={!!editError}

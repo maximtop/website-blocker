@@ -38,7 +38,7 @@ describe('Websites.updateWebsite', () => {
     it('replaces the selected website in one write, preserving other entries and list order', async () => {
         const originalWebsites = persistedWebsites;
 
-        await Websites.updateWebsite('old.com', 'new.com');
+        const savedWebsites = await Websites.updateWebsite('old.com', 'new.com');
 
         expect(Storage.set).toHaveBeenCalledExactlyOnceWith('websites', {
             'first.com': { hostname: 'first.com' },
@@ -46,6 +46,8 @@ describe('Websites.updateWebsite', () => {
             'last.com': { hostname: 'last.com' },
         });
         expect(Object.keys(persistedWebsites)).toEqual(['first.com', 'new.com', 'last.com']);
+        expect(savedWebsites).toEqual(persistedWebsites);
+        expect(Storage.get).toHaveBeenCalledTimes(1);
         expect(originalWebsites['old.com']).toEqual({ hostname: 'old.com' });
         expect(originalWebsites['new.com']).toBeUndefined();
     });
@@ -83,7 +85,7 @@ describe('Websites.updateWebsite', () => {
     });
 
     it('accepts an unchanged normalized hostname without writing storage', async () => {
-        await expect(Websites.updateWebsite('old.com', 'https://www.OLD.com/path')).resolves.toBeUndefined();
+        await expect(Websites.updateWebsite('old.com', 'https://www.OLD.com/path')).resolves.toEqual(persistedWebsites);
 
         expect(Storage.set).not.toHaveBeenCalled();
         expect(persistedWebsites['old.com']).toEqual({ hostname: 'old.com' });
