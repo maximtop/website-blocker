@@ -184,19 +184,38 @@ describe('SettingsStore website forms', () => {
         expect(store.editingWebsite).toBe('other.com');
     });
 
-    it('keeps the edit draft after a failed list reload', async () => {
+    it('keeps the edit draft when reading the original website fails', async () => {
         store.editWebsite('old.com');
         store.setEditedWebsite('new.com');
-        vi.mocked(Storage.get)
-            .mockResolvedValueOnce(structuredClone(persistedWebsites))
-            .mockRejectedValueOnce(new Error('Cannot reload'));
+        vi.mocked(Storage.get).mockRejectedValueOnce(new Error('Cannot load websites'));
 
         await store.updateWebsite();
 
         expect(store.websitesList.map(({ hostname }) => hostname)).toEqual(['old.com', 'other.com']);
         expect(store.editingWebsite).toBe('old.com');
         expect(store.editedWebsite).toBe('new.com');
-        expect(store.editError).toBe('Cannot reload');
+        expect(store.editError).toBe('Cannot load websites');
+        expect(store.isPending).toBe(false);
+        expect(Storage.set).not.toHaveBeenCalled();
+    });
+
+    it('closes the editor with the committed list even when subsequent storage reads fail', async () => {
+        store.editWebsite('old.com');
+        store.setEditedWebsite('new.com');
+        vi.mocked(Storage.get)
+            .mockClear()
+            .mockResolvedValueOnce(structuredClone(persistedWebsites))
+            .mockRejectedValue(new Error('Cannot reload'));
+
+        await store.updateWebsite();
+
+        expect(Storage.set).toHaveBeenCalledTimes(1);
+        expect(Storage.get).toHaveBeenCalledTimes(1);
+        expect(store.websitesList.map(({ hostname }) => hostname)).toEqual(['new.com', 'other.com']);
+        expect(persistedWebsites).toEqual(store.websites);
+        expect(store.editingWebsite).toBeNull();
+        expect(store.editedWebsite).toBe('');
+        expect(store.editError).toBe('');
         expect(store.isPending).toBe(false);
     });
 

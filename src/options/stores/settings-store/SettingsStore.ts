@@ -86,26 +86,14 @@ export class SettingsStore {
      */
     @action
     async addNewWebsite() {
-        if (this.isPending) {
-            return;
-        }
-        this.isPending = true;
-        try {
+        await this.runOperation(async () => {
             await Websites.addWebsite(this.newWebsite);
             await this.loadWebsites();
             runInAction(() => {
                 this.newWebsite = '';
                 this.error = '';
             });
-        } catch (ex) {
-            runInAction(() => {
-                this.error = getErrorMessage(ex);
-            });
-        } finally {
-            runInAction(() => {
-                this.isPending = false;
-            });
-        }
+        });
     }
 
     /**
@@ -116,25 +104,13 @@ export class SettingsStore {
      */
     @action
     async deleteWebsite(hostname: string) {
-        if (this.isPending) {
-            return;
-        }
-        this.isPending = true;
-        try {
+        await this.runOperation(async () => {
             await Websites.deleteWebsite(hostname);
             await this.loadWebsites();
             runInAction(() => {
                 this.error = '';
             });
-        } catch (ex) {
-            runInAction(() => {
-                this.error = getErrorMessage(ex);
-            });
-        } finally {
-            runInAction(() => {
-                this.isPending = false;
-            });
-        }
+        });
     }
 
     /**
@@ -146,25 +122,13 @@ export class SettingsStore {
      */
     @action
     async setWebsiteEnabled(hostname: string, enabled: boolean) {
-        if (this.isPending) {
-            return;
-        }
-        this.isPending = true;
-        try {
+        await this.runOperation(async () => {
             await Websites.setWebsiteEnabled(hostname, enabled);
             await this.loadWebsites();
             runInAction(() => {
                 this.error = '';
             });
-        } catch (ex) {
-            runInAction(() => {
-                this.error = getErrorMessage(ex);
-            });
-        } finally {
-            runInAction(() => {
-                this.isPending = false;
-            });
-        }
+        });
     }
 
     /**
@@ -213,19 +177,44 @@ export class SettingsStore {
      */
     @action
     async updateWebsite() {
-        if (this.editingWebsite === null || this.isPending) {
+        const hostname = this.editingWebsite;
+        if (hostname === null) {
+            return;
+        }
+        await this.runOperation(async () => {
+            const websites = await Websites.updateWebsite(hostname, this.editedWebsite);
+            runInAction(() => {
+                this.websites = websites;
+                this.resetEditor();
+            });
+        }, (message) => {
+            this.editError = message;
+        });
+    }
+
+    /**
+     * Prevents overlapping website changes and reports failures in the operation's form.
+     *
+     * @param operation - Storage change and success state updates to run.
+     * @param onError - Form state update that receives a failure message inside an action.
+     * @returns Resolves after pending state is cleared, or immediately when another change is pending.
+     */
+    @action
+    private async runOperation(
+        operation: () => Promise<void>,
+        onError: (message: string) => void = (message) => {
+            this.error = message;
+        },
+    ) {
+        if (this.isPending) {
             return;
         }
         this.isPending = true;
         try {
-            await Websites.updateWebsite(this.editingWebsite, this.editedWebsite);
-            await this.loadWebsites();
-            runInAction(() => {
-                this.resetEditor();
-            });
+            await operation();
         } catch (ex) {
             runInAction(() => {
-                this.editError = getErrorMessage(ex);
+                onError(getErrorMessage(ex));
             });
         } finally {
             runInAction(() => {
