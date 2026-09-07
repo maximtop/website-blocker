@@ -3,9 +3,10 @@ import { createContext } from 'react';
 import { configure } from 'mobx';
 
 import { SettingsStore } from '../settings-store';
+import { MOBX_ACTION_MODE } from '../mobx-config';
 
 configure({
-    enforceActions: 'always',
+    enforceActions: MOBX_ACTION_MODE.ALWAYS,
     computedRequiresReaction: true,
     reactionRequiresObservable: true,
     observableRequiresReaction: true,

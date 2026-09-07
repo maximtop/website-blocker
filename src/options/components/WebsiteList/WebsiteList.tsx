@@ -78,7 +78,7 @@ export const WebsiteList = observer(() => {
                                 <form
                                     onSubmit={handleSaveWebsite}
                                     onKeyDown={(event) => {
-                                        if (event.key === 'Escape' && !settingsStore.isPending) {
+                                        if (event.key === 'Escape') {
                                             event.preventDefault();
                                             settingsStore.cancelEdit();
                                         }

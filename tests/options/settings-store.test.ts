@@ -15,6 +15,7 @@ import { Storage } from '../../src/common/storage';
 import { WebsitesMap } from '../../src/common/websites';
 import { SettingsStore } from '../../src/options/stores/settings-store/SettingsStore';
 import { type RootStore } from '../../src/options/stores/root-store';
+import { MOBX_ACTION_MODE } from '../../src/options/stores/mobx-config';
 
 vi.mock('../../src/common/storage', () => ({
     Storage: {
@@ -30,7 +31,7 @@ let warnings: MockInstance;
 
 beforeEach(async () => {
     vi.resetAllMocks();
-    configure({ enforceActions: 'always' });
+    configure({ enforceActions: MOBX_ACTION_MODE.ALWAYS });
     warnings = vi.spyOn(console, 'warn').mockImplementation(() => {});
     persistedWebsites = {
         'old.com': { hostname: 'old.com' },
@@ -47,7 +48,7 @@ beforeEach(async () => {
 afterEach(() => {
     expect(warnings).not.toHaveBeenCalled();
     vi.restoreAllMocks();
-    configure({ enforceActions: 'observed' });
+    configure({ enforceActions: MOBX_ACTION_MODE.OBSERVED });
 });
 
 describe('SettingsStore website forms', () => {
