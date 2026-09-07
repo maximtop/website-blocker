@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "ko",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "웹사이트 차단기: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "주의를 분산시키는 웹사이트를 차단하여 집중력을 유지하세요.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "차단하려는 웹사이트를 설정에서 관리하세요.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "설정 열기"
+    },
+    "optionsTitle": {
+        "message": "설정 — 웹사이트 차단기: MT"
+    },
+    "blockedTitle": {
+        "message": "웹사이트 차단됨 — 웹사이트 차단기: MT"
+    },
+    "blockedWebsites": {
+        "message": "웹사이트 차단"
+    },
+    "websiteInputPlaceholder": {
+        "message": "차단할 웹사이트 입력"
+    },
+    "addWebsite": {
+        "message": "추가"
+    },
+    "deleteWebsite": {
+        "message": "삭제"
+    },
+    "deleteWebsiteLabel": {
+        "message": "차단 목록에서 $WEBSITE$ 삭제",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "추가된 웹사이트가 없습니다."
+    },
+    "blockedHeading": {
+        "message": "앗! 이 웹사이트는 차단되어 있습니다"
+    },
+    "blockedMessage": {
+        "message": "집중력을 유지하며 하던 일을 계속하세요!"
+    },
+    "closeTab": {
+        "message": "닫기"
+    },
+    "invalidWebsite": {
+        "message": "유효하지 않은 웹사이트: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "이미 목록에 있는 웹사이트: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "변경 사항을 저장하지 못했습니다. 다시 시도해 주세요."
+    },
+    "loadError": {
+        "message": "차단된 웹사이트를 불러오지 못했습니다. 다시 시도해 주세요."
+    },
+    "blockWebsiteLabel": {
+        "message": "$WEBSITE$ 차단",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "차단 켜짐"
+    },
+    "blockingOff": {
+        "message": "차단 꺼짐"
+    },
+    "missingWebsite": {
+        "message": "목록에 없는 웹사이트: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

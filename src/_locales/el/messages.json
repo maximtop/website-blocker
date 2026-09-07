@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "el",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Αποκλεισμός ιστοτόπων: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Μείνετε συγκεντρωμένοι αποκλείοντας ιστοτόπους που σας αποσπούν την προσοχή.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Διαχειριστείτε στις ρυθμίσεις τους ιστοτόπους που θέλετε να αποκλείσετε.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Άνοιγμα ρυθμίσεων"
+    },
+    "optionsTitle": {
+        "message": "Ρυθμίσεις — Αποκλεισμός ιστοτόπων: MT"
+    },
+    "blockedTitle": {
+        "message": "Ο ιστότοπος έχει αποκλειστεί — Αποκλεισμός ιστοτόπων: MT"
+    },
+    "blockedWebsites": {
+        "message": "Αποκλεισμός ιστοτόπων"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Εισαγάγετε έναν ιστότοπο για αποκλεισμό"
+    },
+    "addWebsite": {
+        "message": "Προσθήκη"
+    },
+    "deleteWebsite": {
+        "message": "Διαγραφή"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Αφαίρεση του $WEBSITE$ από τη λίστα αποκλεισμού",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Δεν έχουν προστεθεί ιστότοποι."
+    },
+    "blockedHeading": {
+        "message": "Ωχ! Αυτός ο ιστότοπος έχει αποκλειστεί"
+    },
+    "blockedMessage": {
+        "message": "Μείνετε συγκεντρωμένοι και συνεχίστε την καλή δουλειά!"
+    },
+    "closeTab": {
+        "message": "Κλείσιμο"
+    },
+    "invalidWebsite": {
+        "message": "Μη έγκυρος ιστότοπος: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Ο ιστότοπος υπάρχει ήδη στη λίστα: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Δεν ήταν δυνατή η αποθήκευση των αλλαγών σας. Δοκιμάστε ξανά."
+    },
+    "loadError": {
+        "message": "Δεν ήταν δυνατή η φόρτωση των αποκλεισμένων ιστοτόπων. Δοκιμάστε ξανά."
+    },
+    "blockWebsiteLabel": {
+        "message": "Αποκλεισμός του $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Αποκλεισμός ενεργός"
+    },
+    "blockingOff": {
+        "message": "Αποκλεισμός ανενεργός"
+    },
+    "missingWebsite": {
+        "message": "Ο ιστότοπος δεν υπάρχει στη λίστα: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

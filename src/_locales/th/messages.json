@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "th",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "ตัวบล็อกเว็บไซต์: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "รักษาสมาธิด้วยการบล็อกเว็บไซต์ที่ทำให้เสียสมาธิ",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "จัดการเว็บไซต์ที่คุณต้องการบล็อกได้ในการตั้งค่า",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "เปิดการตั้งค่า"
+    },
+    "optionsTitle": {
+        "message": "การตั้งค่า — ตัวบล็อกเว็บไซต์: MT"
+    },
+    "blockedTitle": {
+        "message": "เว็บไซต์ถูกบล็อก — ตัวบล็อกเว็บไซต์: MT"
+    },
+    "blockedWebsites": {
+        "message": "การบล็อกเว็บไซต์"
+    },
+    "websiteInputPlaceholder": {
+        "message": "ป้อนเว็บไซต์ที่ต้องการบล็อก"
+    },
+    "addWebsite": {
+        "message": "เพิ่ม"
+    },
+    "deleteWebsite": {
+        "message": "ลบ"
+    },
+    "deleteWebsiteLabel": {
+        "message": "นำ $WEBSITE$ ออกจากรายการบล็อก",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "ไม่มีเว็บไซต์ที่เพิ่มไว้"
+    },
+    "blockedHeading": {
+        "message": "อุ๊ปส์! เว็บไซต์นี้ถูกบล็อก"
+    },
+    "blockedMessage": {
+        "message": "ตั้งสมาธิและทำต่อไปให้ดีนะ!"
+    },
+    "closeTab": {
+        "message": "ปิด"
+    },
+    "invalidWebsite": {
+        "message": "เว็บไซต์ไม่ถูกต้อง: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "เว็บไซต์นี้อยู่ในรายการแล้ว: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "บันทึกการเปลี่ยนแปลงไม่ได้ โปรดลองอีกครั้ง"
+    },
+    "loadError": {
+        "message": "โหลดเว็บไซต์ที่ถูกบล็อกไม่ได้ โปรดลองอีกครั้ง"
+    },
+    "blockWebsiteLabel": {
+        "message": "บล็อก $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "การบล็อกเปิดอยู่"
+    },
+    "blockingOff": {
+        "message": "การบล็อกปิดอยู่"
+    },
+    "missingWebsite": {
+        "message": "เว็บไซต์ไม่อยู่ในรายการ: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "ro",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Blocare site-uri: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Rămâi concentrat blocând site-urile care îți distrag atenția.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Gestionează din setări site-urile pe care vrei să le blochezi.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Deschide setările"
+    },
+    "optionsTitle": {
+        "message": "Setări — Blocare site-uri: MT"
+    },
+    "blockedTitle": {
+        "message": "Site blocat — Blocare site-uri: MT"
+    },
+    "blockedWebsites": {
+        "message": "Blocarea site-urilor"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Introdu un site de blocat"
+    },
+    "addWebsite": {
+        "message": "Adaugă"
+    },
+    "deleteWebsite": {
+        "message": "Șterge"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Elimină $WEBSITE$ din lista de blocare",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Niciun site adăugat."
+    },
+    "blockedHeading": {
+        "message": "Ups! Acest site este blocat"
+    },
+    "blockedMessage": {
+        "message": "Rămâi concentrat și continuă tot așa!"
+    },
+    "closeTab": {
+        "message": "Închide"
+    },
+    "invalidWebsite": {
+        "message": "Site nevalid: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Site-ul este deja în listă: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Modificările nu au putut fi salvate. Încearcă din nou."
+    },
+    "loadError": {
+        "message": "Site-urile blocate nu au putut fi încărcate. Încearcă din nou."
+    },
+    "blockWebsiteLabel": {
+        "message": "Blochează $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Blocare activată"
+    },
+    "blockingOff": {
+        "message": "Blocare dezactivată"
+    },
+    "missingWebsite": {
+        "message": "Site-ul nu este în listă: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

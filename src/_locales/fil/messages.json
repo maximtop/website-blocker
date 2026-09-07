@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "fil",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Pangharang ng Website: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Manatiling nakatuon sa gawain sa pamamagitan ng pagharang sa mga website na nakakaabala.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Pamahalaan sa mga setting ang mga website na gusto mong harangin.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Buksan ang mga setting"
+    },
+    "optionsTitle": {
+        "message": "Mga setting — Pangharang ng Website: MT"
+    },
+    "blockedTitle": {
+        "message": "Naka-block ang website — Pangharang ng Website: MT"
+    },
+    "blockedWebsites": {
+        "message": "Pagharang sa mga website"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Maglagay ng website na haharangin"
+    },
+    "addWebsite": {
+        "message": "Idagdag"
+    },
+    "deleteWebsite": {
+        "message": "Tanggalin"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Alisin ang $WEBSITE$ sa listahan ng mga hinaharang",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Wala pang naidagdag na website."
+    },
+    "blockedHeading": {
+        "message": "Naku! Naka-block ang website na ito"
+    },
+    "blockedMessage": {
+        "message": "Manatiling nakatuon at ipagpatuloy ang magandang trabaho!"
+    },
+    "closeTab": {
+        "message": "Isara"
+    },
+    "invalidWebsite": {
+        "message": "Hindi wastong website: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Nasa listahan na ang website: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Hindi na-save ang mga pagbabago mo. Pakisubukan muli."
+    },
+    "loadError": {
+        "message": "Hindi na-load ang mga naka-block na website. Pakisubukan muli."
+    },
+    "blockWebsiteLabel": {
+        "message": "Harangin ang $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Naka-on ang pagharang"
+    },
+    "blockingOff": {
+        "message": "Naka-off ang pagharang"
+    },
+    "missingWebsite": {
+        "message": "Wala sa listahan ang website: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

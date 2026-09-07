@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "uk",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Блокувальник сайтів: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Блокуйте сайти, що відволікають, і зберігайте зосередженість.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Керуйте сайтами, які хочете заблокувати, у налаштуваннях.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Відкрити налаштування"
+    },
+    "optionsTitle": {
+        "message": "Налаштування — Блокувальник сайтів: MT"
+    },
+    "blockedTitle": {
+        "message": "Сайт заблоковано — Блокувальник сайтів: MT"
+    },
+    "blockedWebsites": {
+        "message": "Блокування сайтів"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Введіть сайт для блокування"
+    },
+    "addWebsite": {
+        "message": "Додати"
+    },
+    "deleteWebsite": {
+        "message": "Видалити"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Видалити $WEBSITE$ зі списку блокування",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Немає доданих сайтів."
+    },
+    "blockedHeading": {
+        "message": "Отакої! Цей сайт заблоковано"
+    },
+    "blockedMessage": {
+        "message": "Зосередьтеся й продовжуйте в тому ж дусі!"
+    },
+    "closeTab": {
+        "message": "Закрити"
+    },
+    "invalidWebsite": {
+        "message": "Некоректний сайт: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Сайт уже є в списку: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Не вдалося зберегти зміни. Спробуйте ще раз."
+    },
+    "loadError": {
+        "message": "Не вдалося завантажити заблоковані сайти. Спробуйте ще раз."
+    },
+    "blockWebsiteLabel": {
+        "message": "Блокувати $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Блокування ввімкнено"
+    },
+    "blockingOff": {
+        "message": "Блокування вимкнено"
+    },
+    "missingWebsite": {
+        "message": "Сайту немає в списку: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

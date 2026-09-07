@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "it",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Blocco siti web: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Mantieni la concentrazione bloccando i siti web che ti distraggono.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Gestisci nelle impostazioni i siti web che vuoi bloccare.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Apri impostazioni"
+    },
+    "optionsTitle": {
+        "message": "Impostazioni — Blocco siti web: MT"
+    },
+    "blockedTitle": {
+        "message": "Sito web bloccato — Blocco siti web: MT"
+    },
+    "blockedWebsites": {
+        "message": "Blocco dei siti web"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Inserisci un sito web da bloccare"
+    },
+    "addWebsite": {
+        "message": "Aggiungi"
+    },
+    "deleteWebsite": {
+        "message": "Elimina"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Rimuovi $WEBSITE$ dall’elenco dei siti bloccati",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Nessun sito web aggiunto."
+    },
+    "blockedHeading": {
+        "message": "Ops! Questo sito web è bloccato"
+    },
+    "blockedMessage": {
+        "message": "Mantieni la concentrazione e continua così!"
+    },
+    "closeTab": {
+        "message": "Chiudi"
+    },
+    "invalidWebsite": {
+        "message": "Sito web non valido: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Il sito web è già nell’elenco: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Impossibile salvare le modifiche. Riprova."
+    },
+    "loadError": {
+        "message": "Impossibile caricare i siti web bloccati. Riprova."
+    },
+    "blockWebsiteLabel": {
+        "message": "Blocca $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Blocco attivo"
+    },
+    "blockingOff": {
+        "message": "Blocco disattivato"
+    },
+    "missingWebsite": {
+        "message": "Il sito web non è nell’elenco: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

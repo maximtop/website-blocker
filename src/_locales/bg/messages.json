@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "bg",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Блокиране на сайтове: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Запазете концентрацията си, като блокирате разсейващите сайтове.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Управлявайте сайтовете, които искате да блокирате, в настройките.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Отворете настройките"
+    },
+    "optionsTitle": {
+        "message": "Настройки — Блокиране на сайтове: MT"
+    },
+    "blockedTitle": {
+        "message": "Сайтът е блокиран — Блокиране на сайтове: MT"
+    },
+    "blockedWebsites": {
+        "message": "Блокиране на сайтове"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Въведете сайт за блокиране"
+    },
+    "addWebsite": {
+        "message": "Добавяне"
+    },
+    "deleteWebsite": {
+        "message": "Изтриване"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Премахване на $WEBSITE$ от списъка с блокирани сайтове",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Няма добавени сайтове."
+    },
+    "blockedHeading": {
+        "message": "Опа! Този сайт е блокиран"
+    },
+    "blockedMessage": {
+        "message": "Запазете концентрацията си и продължавайте в същия дух!"
+    },
+    "closeTab": {
+        "message": "Затваряне"
+    },
+    "invalidWebsite": {
+        "message": "Невалиден сайт: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Сайтът вече е в списъка: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Промените не можаха да бъдат запазени. Моля, опитайте отново."
+    },
+    "loadError": {
+        "message": "Блокираните сайтове не можаха да бъдат заредени. Моля, опитайте отново."
+    },
+    "blockWebsiteLabel": {
+        "message": "Блокиране на $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Блокирането е включено"
+    },
+    "blockingOff": {
+        "message": "Блокирането е изключено"
+    },
+    "missingWebsite": {
+        "message": "Сайтът не е в списъка: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "pt-BR",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Bloqueador de sites: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Mantenha o foco bloqueando sites que causam distrações.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Gerencie os sites que você quer bloquear nas configurações.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Abrir configurações"
+    },
+    "optionsTitle": {
+        "message": "Configurações — Bloqueador de sites: MT"
+    },
+    "blockedTitle": {
+        "message": "Site bloqueado — Bloqueador de sites: MT"
+    },
+    "blockedWebsites": {
+        "message": "Bloqueio de sites"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Digite um site para bloquear"
+    },
+    "addWebsite": {
+        "message": "Adicionar"
+    },
+    "deleteWebsite": {
+        "message": "Excluir"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Remover $WEBSITE$ da lista de bloqueio",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Nenhum site adicionado."
+    },
+    "blockedHeading": {
+        "message": "Ops! Este site está bloqueado"
+    },
+    "blockedMessage": {
+        "message": "Mantenha o foco e continue assim!"
+    },
+    "closeTab": {
+        "message": "Fechar"
+    },
+    "invalidWebsite": {
+        "message": "Site inválido: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "O site já está na lista: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Não foi possível salvar suas alterações. Tente novamente."
+    },
+    "loadError": {
+        "message": "Não foi possível carregar os sites bloqueados. Tente novamente."
+    },
+    "blockWebsiteLabel": {
+        "message": "Bloquear $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Bloqueio ativado"
+    },
+    "blockingOff": {
+        "message": "Bloqueio desativado"
+    },
+    "missingWebsite": {
+        "message": "O site não está na lista: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

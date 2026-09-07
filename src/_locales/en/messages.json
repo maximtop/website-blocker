@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "en",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Website Blocker: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Stay focused by blocking distracting websites.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Manage the websites you want to block in settings.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Open settings"
+    },
+    "optionsTitle": {
+        "message": "Settings — Website Blocker: MT"
+    },
+    "blockedTitle": {
+        "message": "Website blocked — Website Blocker: MT"
+    },
+    "blockedWebsites": {
+        "message": "Website blocking"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Enter a website to block"
+    },
+    "addWebsite": {
+        "message": "Add"
+    },
+    "deleteWebsite": {
+        "message": "Delete"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Remove $WEBSITE$ from the block list",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "No websites added."
+    },
+    "blockedHeading": {
+        "message": "Oops! This website is blocked"
+    },
+    "blockedMessage": {
+        "message": "Stay focused and keep up the good work!"
+    },
+    "closeTab": {
+        "message": "Close"
+    },
+    "invalidWebsite": {
+        "message": "Invalid website: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Website already in the list: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Could not save your changes. Please try again."
+    },
+    "loadError": {
+        "message": "Could not load the blocked websites. Please try again."
+    },
+    "blockWebsiteLabel": {
+        "message": "Block $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Blocking on"
+    },
+    "blockingOff": {
+        "message": "Blocking off"
+    },
+    "missingWebsite": {
+        "message": "Website is not in the list: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

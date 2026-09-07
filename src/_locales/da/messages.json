@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "da",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Hjemmesideblokering: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Hold fokus ved at blokere distraherende hjemmesider.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Administrer de hjemmesider, du vil blokere, i indstillingerne.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Åbn indstillinger"
+    },
+    "optionsTitle": {
+        "message": "Indstillinger — Hjemmesideblokering: MT"
+    },
+    "blockedTitle": {
+        "message": "Hjemmeside blokeret — Hjemmesideblokering: MT"
+    },
+    "blockedWebsites": {
+        "message": "Blokering af hjemmesider"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Indtast en hjemmeside, du vil blokere"
+    },
+    "addWebsite": {
+        "message": "Tilføj"
+    },
+    "deleteWebsite": {
+        "message": "Slet"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Fjern $WEBSITE$ fra blokeringslisten",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Ingen hjemmesider er tilføjet."
+    },
+    "blockedHeading": {
+        "message": "Hov! Denne hjemmeside er blokeret"
+    },
+    "blockedMessage": {
+        "message": "Hold fokus, og fortsæt det gode arbejde!"
+    },
+    "closeTab": {
+        "message": "Luk"
+    },
+    "invalidWebsite": {
+        "message": "Ugyldig hjemmeside: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Hjemmesiden er allerede på listen: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Dine ændringer kunne ikke gemmes. Prøv igen."
+    },
+    "loadError": {
+        "message": "De blokerede hjemmesider kunne ikke indlæses. Prøv igen."
+    },
+    "blockWebsiteLabel": {
+        "message": "Bloker $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Blokering slået til"
+    },
+    "blockingOff": {
+        "message": "Blokering slået fra"
+    },
+    "missingWebsite": {
+        "message": "Hjemmesiden er ikke på listen: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

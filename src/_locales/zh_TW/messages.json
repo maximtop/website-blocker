@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "zh-TW",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "網站封鎖工具：MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "封鎖讓人分心的網站，幫助你保持專注。",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "在設定中管理你想封鎖的網站。",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "開啟設定"
+    },
+    "optionsTitle": {
+        "message": "設定 — 網站封鎖工具：MT"
+    },
+    "blockedTitle": {
+        "message": "網站已封鎖 — 網站封鎖工具：MT"
+    },
+    "blockedWebsites": {
+        "message": "網站封鎖"
+    },
+    "websiteInputPlaceholder": {
+        "message": "輸入要封鎖的網站"
+    },
+    "addWebsite": {
+        "message": "新增"
+    },
+    "deleteWebsite": {
+        "message": "刪除"
+    },
+    "deleteWebsiteLabel": {
+        "message": "從封鎖清單中移除 $WEBSITE$",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "沒有已新增的網站。"
+    },
+    "blockedHeading": {
+        "message": "哎呀！這個網站已被封鎖"
+    },
+    "blockedMessage": {
+        "message": "保持專注，繼續加油！"
+    },
+    "closeTab": {
+        "message": "關閉"
+    },
+    "invalidWebsite": {
+        "message": "無效的網站：$WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "網站已在清單中：$WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "無法儲存變更，請再試一次。"
+    },
+    "loadError": {
+        "message": "無法載入已封鎖的網站，請再試一次。"
+    },
+    "blockWebsiteLabel": {
+        "message": "封鎖 $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "封鎖已開啟"
+    },
+    "blockingOff": {
+        "message": "封鎖已關閉"
+    },
+    "missingWebsite": {
+        "message": "網站不在清單中：$WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

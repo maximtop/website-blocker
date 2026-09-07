@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "id",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Pemblokir Situs Web: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Tetap fokus dengan memblokir situs web yang mengalihkan perhatian.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Kelola situs web yang ingin Anda blokir di pengaturan.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Buka pengaturan"
+    },
+    "optionsTitle": {
+        "message": "Pengaturan — Pemblokir Situs Web: MT"
+    },
+    "blockedTitle": {
+        "message": "Situs web diblokir — Pemblokir Situs Web: MT"
+    },
+    "blockedWebsites": {
+        "message": "Pemblokiran situs web"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Masukkan situs web yang ingin diblokir"
+    },
+    "addWebsite": {
+        "message": "Tambah"
+    },
+    "deleteWebsite": {
+        "message": "Hapus"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Hapus $WEBSITE$ dari daftar blokir",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Belum ada situs web yang ditambahkan."
+    },
+    "blockedHeading": {
+        "message": "Ups! Situs web ini diblokir"
+    },
+    "blockedMessage": {
+        "message": "Tetap fokus dan teruskan kerja bagus Anda!"
+    },
+    "closeTab": {
+        "message": "Tutup"
+    },
+    "invalidWebsite": {
+        "message": "Situs web tidak valid: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Situs web sudah ada dalam daftar: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Perubahan Anda tidak dapat disimpan. Silakan coba lagi."
+    },
+    "loadError": {
+        "message": "Situs web yang diblokir tidak dapat dimuat. Silakan coba lagi."
+    },
+    "blockWebsiteLabel": {
+        "message": "Blokir $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Pemblokiran aktif"
+    },
+    "blockingOff": {
+        "message": "Pemblokiran nonaktif"
+    },
+    "missingWebsite": {
+        "message": "Situs web tidak ada dalam daftar: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

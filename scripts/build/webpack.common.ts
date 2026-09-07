@@ -10,6 +10,7 @@ import {
     BuildTargetEnv,
     BUILD_ENV,
     BrowserConfig,
+    Browser,
 } from './constants';
 
 import { getEnvConf } from './helpers';
@@ -98,6 +99,15 @@ export const genCommonConfig = (
             new CleanWebpackPlugin({}),
             new CopyWebpackPlugin({
                 patterns: [
+                    {
+                        from: path.resolve(__dirname, '../../src/_locales'),
+                        to: '_locales',
+                    },
+                    ...(browserConfig.browser === Browser.Firefox ? [] : [{
+                        // Chromium's store uses no for the Norwegian Bokmal catalog.
+                        from: path.resolve(__dirname, '../../src/_locales/nb'),
+                        to: '_locales/no',
+                    }]),
                     {
                         from: path.resolve(__dirname, '../../src/assets'),
                         to: 'assets',

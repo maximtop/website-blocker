@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "nl",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Websiteblokkeerder: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Blijf gefocust door afleidende websites te blokkeren.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Beheer de websites die je wilt blokkeren in de instellingen.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Instellingen openen"
+    },
+    "optionsTitle": {
+        "message": "Instellingen — Websiteblokkeerder: MT"
+    },
+    "blockedTitle": {
+        "message": "Website geblokkeerd — Websiteblokkeerder: MT"
+    },
+    "blockedWebsites": {
+        "message": "Websites blokkeren"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Voer een website in om te blokkeren"
+    },
+    "addWebsite": {
+        "message": "Toevoegen"
+    },
+    "deleteWebsite": {
+        "message": "Verwijderen"
+    },
+    "deleteWebsiteLabel": {
+        "message": "$WEBSITE$ uit de blokkeerlijst verwijderen",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Geen websites toegevoegd."
+    },
+    "blockedHeading": {
+        "message": "Oeps! Deze website is geblokkeerd"
+    },
+    "blockedMessage": {
+        "message": "Blijf gefocust en ga zo door!"
+    },
+    "closeTab": {
+        "message": "Sluiten"
+    },
+    "invalidWebsite": {
+        "message": "Ongeldige website: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Website staat al in de lijst: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Je wijzigingen konden niet worden opgeslagen. Probeer het opnieuw."
+    },
+    "loadError": {
+        "message": "De geblokkeerde websites konden niet worden geladen. Probeer het opnieuw."
+    },
+    "blockWebsiteLabel": {
+        "message": "Blokkeer $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Blokkering aan"
+    },
+    "blockingOff": {
+        "message": "Blokkering uit"
+    },
+    "missingWebsite": {
+        "message": "Website staat niet in de lijst: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

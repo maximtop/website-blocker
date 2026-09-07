@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "hi",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "वेबसाइट ब्लॉकर: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "ध्यान भटकाने वाली वेबसाइटें ब्लॉक करके अपने काम पर ध्यान दें।",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "सेटिंग में उन वेबसाइटों को प्रबंधित करें जिन्हें आप ब्लॉक करना चाहते हैं।",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "सेटिंग खोलें"
+    },
+    "optionsTitle": {
+        "message": "सेटिंग — वेबसाइट ब्लॉकर: MT"
+    },
+    "blockedTitle": {
+        "message": "वेबसाइट ब्लॉक है — वेबसाइट ब्लॉकर: MT"
+    },
+    "blockedWebsites": {
+        "message": "वेबसाइट ब्लॉक करना"
+    },
+    "websiteInputPlaceholder": {
+        "message": "ब्लॉक करने के लिए वेबसाइट दर्ज करें"
+    },
+    "addWebsite": {
+        "message": "जोड़ें"
+    },
+    "deleteWebsite": {
+        "message": "हटाएँ"
+    },
+    "deleteWebsiteLabel": {
+        "message": "$WEBSITE$ को ब्लॉक सूची से हटाएँ",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "कोई वेबसाइट नहीं जोड़ी गई है।"
+    },
+    "blockedHeading": {
+        "message": "ओह! यह वेबसाइट ब्लॉक है"
+    },
+    "blockedMessage": {
+        "message": "ध्यान बनाए रखें और अच्छा काम जारी रखें!"
+    },
+    "closeTab": {
+        "message": "बंद करें"
+    },
+    "invalidWebsite": {
+        "message": "अमान्य वेबसाइट: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "वेबसाइट पहले से सूची में है: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "आपके बदलाव सहेजे नहीं जा सके। कृपया फिर से कोशिश करें।"
+    },
+    "loadError": {
+        "message": "ब्लॉक की गई वेबसाइटें लोड नहीं हो सकीं। कृपया फिर से कोशिश करें।"
+    },
+    "blockWebsiteLabel": {
+        "message": "$WEBSITE$ को ब्लॉक करें",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "ब्लॉकिंग चालू है"
+    },
+    "blockingOff": {
+        "message": "ब्लॉकिंग बंद है"
+    },
+    "missingWebsite": {
+        "message": "वेबसाइट सूची में नहीं है: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

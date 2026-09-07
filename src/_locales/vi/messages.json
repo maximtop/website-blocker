@@ -1,0 +1,113 @@
+{
+    "catalogLocale": {
+        "message": "vi",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Trình chặn trang web: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Giữ tập trung bằng cách chặn các trang web gây xao nhãng.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Quản lý các trang web bạn muốn chặn trong phần cài đặt.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Mở cài đặt"
+    },
+    "optionsTitle": {
+        "message": "Cài đặt — Trình chặn trang web: MT"
+    },
+    "blockedTitle": {
+        "message": "Trang web bị chặn — Trình chặn trang web: MT"
+    },
+    "blockedWebsites": {
+        "message": "Chặn trang web"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Nhập trang web cần chặn"
+    },
+    "addWebsite": {
+        "message": "Thêm"
+    },
+    "deleteWebsite": {
+        "message": "Xóa"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Xóa $WEBSITE$ khỏi danh sách chặn",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Không có trang web nào được thêm."
+    },
+    "blockedHeading": {
+        "message": "Rất tiếc! Trang web này đã bị chặn"
+    },
+    "blockedMessage": {
+        "message": "Hãy tập trung và tiếp tục phát huy nhé!"
+    },
+    "closeTab": {
+        "message": "Đóng"
+    },
+    "invalidWebsite": {
+        "message": "Trang web không hợp lệ: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Trang web đã có trong danh sách: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Không thể lưu thay đổi. Vui lòng thử lại."
+    },
+    "loadError": {
+        "message": "Không thể tải các trang web bị chặn. Vui lòng thử lại."
+    },
+    "blockWebsiteLabel": {
+        "message": "Chặn $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Đã bật chặn"
+    },
+    "blockingOff": {
+        "message": "Đã tắt chặn"
+    },
+    "missingWebsite": {
+        "message": "Trang web không có trong danh sách: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}
