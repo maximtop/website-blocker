@@ -18,7 +18,12 @@ type NavigationDetails = browser.WebNavigation.OnCommittedDetailsType & {
  */
 function isBlocked(url: string): boolean {
     const normalizedHostname = getHostname(url);
-    return !!blockedWebsites[normalizedHostname];
+    if (!normalizedHostname) {
+        return false;
+    }
+
+    const website = blockedWebsites[normalizedHostname];
+    return !!website && website.enabled !== false;
 }
 
 /**

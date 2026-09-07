@@ -6,7 +6,7 @@ import {
 } from 'mobx';
 
 import { type RootStore } from '../root-store';
-import { Websites, WebsitesMap } from '../../../common/websites';
+import { Websites, WebsitesMap, Website } from '../../../common/websites';
 
 export class SettingsStore {
     private rootStore: RootStore;
@@ -37,9 +37,13 @@ export class SettingsStore {
         await this.loadWebsites();
     }
 
+    async setWebsiteEnabled(hostname: string, enabled: boolean) {
+        await Websites.setWebsiteEnabled(hostname, enabled);
+        await this.loadWebsites();
+    }
+
     @computed
-    get websitesList() {
-        return Object.values(this.websites)
-            .map((website) => website.hostname);
+    get websitesList(): Website[] {
+        return Object.values(this.websites);
     }
 }
