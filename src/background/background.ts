@@ -13,7 +13,12 @@ let blockedWebsitesPromise: Promise<void> | null = null;
  */
 function isBlocked(url: string): boolean {
     const normalizedHostname = getHostname(url);
-    return !!blockedWebsites[normalizedHostname];
+    if (!normalizedHostname) {
+        return false;
+    }
+
+    const website = blockedWebsites[normalizedHostname];
+    return !!website && website.enabled !== false;
 }
 
 /**

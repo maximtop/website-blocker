@@ -3,6 +3,8 @@ import { getHostname } from './utils/url';
 
 export type Website = {
     hostname: string;
+    // Websites saved before the toggle was added are enabled by default.
+    enabled?: boolean;
 };
 export type WebsitesMap = Record<string, Website>;
 
@@ -19,7 +21,7 @@ export class Websites {
         if (websites[hostname]) {
             throw new Error(`Website already exists in the list: ${websites[hostname].hostname}`);
         }
-        websites[hostname] = { hostname };
+        websites[hostname] = { hostname, enabled: true };
 
         await Storage.set(Websites.STORAGE_KEY, websites);
     }
@@ -27,6 +29,17 @@ export class Websites {
     public static async deleteWebsite(hostname: string): Promise<void> {
         const websites = await Storage.get(Websites.STORAGE_KEY) as WebsitesMap || {};
         delete websites[hostname];
+        await Storage.set(Websites.STORAGE_KEY, websites);
+    }
+
+    public static async setWebsiteEnabled(hostname: string, enabled: boolean): Promise<void> {
+        const websites = await Websites.getWebsites();
+        const website = websites[hostname];
+        if (!website) {
+            throw new Error(`Website does not exist in the list: ${hostname}`);
+        }
+
+        websites[hostname] = { ...website, enabled };
         await Storage.set(Websites.STORAGE_KEY, websites);
     }
 
