@@ -56,8 +56,8 @@ listing must preserve the configured Gecko ID on all later updates.
 publishes `website-blocker-<version>-<browser>.zip`, a source ZIP of the tagged
 commit, and `SHA256SUMS.txt`. Store workflows consume those published bytes.
 
-The Edge and Firefox workflows, deploy helpers and their tests are kept
-identical to the shared implementation in the other extension repositories.
+The Edge and Firefox workflows, deploy helpers and their tests follow the
+shared deployment contract used by the other extension repositories.
 Repository-specific values belong in `scripts/deploy/constants.ts`, the
 Release workflow's top-level environment, or GitHub variables and secrets.
 Preserve this boundary when moving the shared code into reusable actions.
