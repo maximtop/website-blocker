@@ -1,6 +1,5 @@
 /**
- * @file Store deployment constants of this repository. Every other file under scripts/deploy
- * and tests/deploy is identical across the extension repositories; only this file differs.
+ * @file Configuration for this repository's shared extension deployment flow.
  */
 
 /**
@@ -49,6 +48,9 @@ export const SOURCE_REQUIRED_FILES = [
  * Reviewer notes inside the source archive, submitted to AMO with every new Firefox version.
  */
 export const AMO_REVIEW_NOTES_PATH = 'docs/AMO_REVIEW.md';
+
+/** Filename of the extracted reviewer notes consumed by preflight and the upload workflow. */
+export const AMO_APPROVAL_NOTES_FILENAME = 'approval-notes.txt';
 
 /**
  * Shape of a release tag; the version is the tag without the `v` prefix.

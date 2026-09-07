@@ -1,6 +1,6 @@
 /**
  * @file Resolve one published release and verify its immutable store upload inputs.
- * Identical in every extension repository; repository specifics live in ./constants.
+ * Follows the shared extension deployment flow; repository specifics live in ./constants.
  */
 
 import { execFileSync } from 'node:child_process';
@@ -12,6 +12,7 @@ import {
 } from 'node:fs';
 import path from 'node:path';
 import {
+    AMO_APPROVAL_NOTES_FILENAME,
     RELEASE_ASSET_PREFIX,
     RELEASE_TAG_PATTERN,
     STORE_TARGETS,
@@ -128,7 +129,7 @@ export const prepare = (env: NodeJS.ProcessEnv = process.env): void => {
     if (store === 'firefox') {
         const sourceBytes = readFileSync(path.join(STORE_UPLOAD_DIRECTORY, source));
         const notes = verifySource(sourceBytes, version, false);
-        writeFileSync(path.join(STORE_UPLOAD_DIRECTORY, 'approval-notes.txt'), notes);
+        writeFileSync(path.join(STORE_UPLOAD_DIRECTORY, AMO_APPROVAL_NOTES_FILENAME), notes);
     }
     appendFileSync(
         output,

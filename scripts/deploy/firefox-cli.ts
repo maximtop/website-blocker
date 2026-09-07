@@ -10,9 +10,15 @@ import {
     writeFileSync,
 } from 'node:fs';
 import path from 'node:path';
-import { GECKO_ID, RELEASE_TAG_PATTERN, STORE_UPLOAD_DIRECTORY } from './constants';
+import {
+    AMO_APPROVAL_NOTES_FILENAME,
+    GECKO_ID,
+    RELEASE_TAG_PATTERN,
+    STORE_UPLOAD_DIRECTORY,
+} from './constants';
 import {
     AMO_REQUEST_TIMEOUT_MS,
+    AMO_STATUS,
     amoToken,
     describeAmoStatus,
     readAmo,
@@ -23,6 +29,9 @@ import type { AmoAddon, AmoVersion } from './firefox';
 import { requireConfiguration } from './release';
 
 const HUB_URL = 'https://addons.mozilla.org/en-US/developers/addon/';
+
+/** AMO_OPERATION value that checks whether a version can be submitted. */
+export const AMO_PREFLIGHT_OPERATION = 'preflight';
 
 /**
  * Check exact-version state, without ever submitting a second copy.
@@ -41,7 +50,7 @@ export const run = async (env: NodeJS.ProcessEnv = process.env): Promise<void> =
     if (!RELEASE_TAG_PATTERN.test(`v${version}`)) {
         throw new Error('Invalid version');
     }
-    const preflight = env.AMO_OPERATION === 'preflight';
+    const preflight = env.AMO_OPERATION === AMO_PREFLIGHT_OPERATION;
     const token = amoToken(env.FIREFOX_CLIENT_ID ?? '', env.FIREFOX_CLIENT_SECRET ?? '');
     const addon = await readAmo<AmoAddon>(listing, '', token);
     if (!addon || addon.guid !== GECKO_ID || addon.is_disabled) {
@@ -53,7 +62,7 @@ export const run = async (env: NodeJS.ProcessEnv = process.env): Promise<void> =
     }
     if (preflight) {
         const submit = shouldSubmit(result);
-        const notesPath = path.join(STORE_UPLOAD_DIRECTORY, 'approval-notes.txt');
+        const notesPath = path.join(STORE_UPLOAD_DIRECTORY, AMO_APPROVAL_NOTES_FILENAME);
         if (submit && !readFileSync(notesPath, 'utf8').trim()) {
             throw new Error('New submissions require docs/AMO_REVIEW.md in the release source ZIP');
         }
@@ -74,7 +83,7 @@ export const run = async (env: NodeJS.ProcessEnv = process.env): Promise<void> =
     if (env.GITHUB_STEP_SUMMARY) {
         appendFileSync(env.GITHUB_STEP_SUMMARY, report);
     }
-    if (result?.file.status !== 'public' || result.is_disabled) {
+    if (result?.file.status !== AMO_STATUS.Public || result.is_disabled) {
         return;
     }
     if (!result.file.url || !result.file.hash) {

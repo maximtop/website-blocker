@@ -65,8 +65,8 @@ rebuild, verifies their SHA-256 checksums against `SHA256SUMS.txt`, and checks
 the manifest inside the archive: exactly one root `manifest.json`, manifest
 version 3, the release version, and the background format of the target
 browser. Only then does the store-specific part start. The validation code and
-its tests (`tests/deploy`) are identical across the repositories; the
-repository specifics live in `scripts/deploy/constants.ts`.
+its tests (`tests/deploy`) follow the shared extension deployment flow;
+repository configuration and shared file contracts live in `scripts/deploy/constants.ts`.
 
 ### Chrome Web Store
 

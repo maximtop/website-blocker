@@ -2,7 +2,6 @@
 
 /**
  * @file Verify Firefox preflight and status orchestration with simulated AMO responses.
- * Identical in every extension repository that deploys to Firefox.
  */
 
 import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
@@ -15,7 +14,7 @@ import {
     vi,
 } from 'vitest';
 import { GECKO_ID } from '../../scripts/deploy/constants';
-import { run } from '../../scripts/deploy/firefox-cli';
+import { AMO_PREFLIGHT_OPERATION, run } from '../../scripts/deploy/firefox-cli';
 
 vi.mock('node:fs', async (original) => ({
     ...await original<Record<string, unknown>>(),
@@ -58,20 +57,20 @@ afterEach(() => {
 describe('Firefox deployment orchestration', () => {
     it('permits one new version only when source reviewer notes are ready', async () => {
         request.mockResolvedValueOnce(new Response(null, { status: 404 }));
-        await run({ ...env, AMO_OPERATION: 'preflight' });
+        await run({ ...env, AMO_OPERATION: AMO_PREFLIGHT_OPERATION });
         expect(appendFileSync).toHaveBeenCalledWith('fixture-output', 'submit=true\n');
         expect(request).toHaveBeenCalledTimes(2);
     });
     it('refuses new submission without reviewer notes', async () => {
         request.mockResolvedValueOnce(new Response(null, { status: 404 }));
         vi.mocked(readFileSync).mockReturnValue('');
-        await expect(run({ ...env, AMO_OPERATION: 'preflight' })).rejects
+        await expect(run({ ...env, AMO_OPERATION: AMO_PREFLIGHT_OPERATION })).rejects
             .toThrow('AMO_REVIEW.md');
         expect(appendFileSync).not.toHaveBeenCalled();
     });
     it('skips an existing historical version without requiring new source notes', async () => {
         request.mockResolvedValueOnce(json(pending));
-        await run({ ...env, AMO_OPERATION: 'preflight' });
+        await run({ ...env, AMO_OPERATION: AMO_PREFLIGHT_OPERATION });
         expect(readFileSync).not.toHaveBeenCalled();
         expect(appendFileSync).toHaveBeenCalledWith('fixture-output', 'submit=false\n');
     });
@@ -87,13 +86,13 @@ describe('Firefox deployment orchestration', () => {
     });
     it('never treats a status outage as permission to upload', async () => {
         request.mockResolvedValueOnce(new Response(null, { status: 503 }));
-        await expect(run({ ...env, AMO_OPERATION: 'preflight' })).rejects
+        await expect(run({ ...env, AMO_OPERATION: AMO_PREFLIGHT_OPERATION })).rejects
             .toThrow('HTTP 503');
         expect(appendFileSync).not.toHaveBeenCalled();
     });
     it('rejects an unexpected listing identity before looking up versions', async () => {
         request.mockReset().mockResolvedValueOnce(json({ ...addon, guid: 'wrong@test' }));
-        await expect(run({ ...env, AMO_OPERATION: 'preflight' })).rejects
+        await expect(run({ ...env, AMO_OPERATION: AMO_PREFLIGHT_OPERATION })).rejects
             .toThrow('Gecko ID mismatch');
         expect(request).toHaveBeenCalledTimes(1);
     });

@@ -55,27 +55,12 @@ const mainBuild = async (options: CommanderOptions) => {
     }
 };
 
-const main = async (options: CommanderOptions) => {
+const runBuildCommand = async (
+    build: (options: CommanderOptions) => Promise<unknown>,
+    options: CommanderOptions,
+) => {
     try {
-        await mainBuild(options);
-    } catch (e) {
-        console.error(e);
-        process.exit(1);
-    }
-};
-
-const chrome = async (options: CommanderOptions) => {
-    try {
-        await bundleChrome(options);
-    } catch (e) {
-        console.error(e);
-        process.exit(1);
-    }
-};
-
-const firefox = async (options: CommanderOptions) => {
-    try {
-        await bundleFirefox(options);
+        await build(options);
     } catch (e) {
         console.error(e);
         process.exit(1);
@@ -91,23 +76,23 @@ program
     );
 
 program
-    .command('chrome')
+    .command(Browser.Chrome)
     .description('Builds extension for chrome browser')
     .action(async () => {
-        await chrome(program.opts());
+        await runBuildCommand(bundleChrome, program.opts());
     });
 
 program
-    .command('firefox')
+    .command(Browser.Firefox)
     .description('Builds extension for Firefox browser')
     .action(async () => {
-        await firefox(program.opts());
+        await runBuildCommand(bundleFirefox, program.opts());
     });
 
 program
     .description('By default builds for all platforms')
     .action(async () => {
-        await main(program.opts());
+        await runBuildCommand(mainBuild, program.opts());
     });
 
 program.parse(process.argv);
