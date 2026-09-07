@@ -1,35 +1,30 @@
-import React, {
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { RootStoreContext } from '../../stores/root-store';
-import { getErrorMessage } from '../../../common/utils/error';
 
 /**
- * Displays saved websites with controls to add, edit, remove, and toggle blocking.
+ * Renders the observable blocked website list with add and edit forms.
+ *
+ * @returns Website controls and their current validation feedback.
  */
 export const WebsiteList = observer(() => {
     const { settingsStore } = useContext(RootStoreContext);
-    const { websitesList } = settingsStore;
-
-    const [newWebsite, setNewWebsite] = useState('');
-    const [error, setError] = useState('');
-    const [editingWebsite, setEditingWebsite] = useState<string | null>(null);
-    const [editedWebsite, setEditedWebsite] = useState('');
-    const [editError, setEditError] = useState('');
-    const [isPending, setIsPending] = useState(false);
-    const editInput = useRef<HTMLInputElement>(null);
-    const isPendingRef = useRef(false);
+    const {
+        websitesList,
+        newWebsite,
+        error,
+        editingWebsite,
+        editedWebsite,
+        editError,
+        isPending,
+    } = settingsStore;
 
     useEffect(() => {
-        settingsStore.loadWebsites().catch((ex) => {
-            setError(getErrorMessage(ex));
-        });
+        settingsStore.loadWebsites().catch((ex) => settingsStore.reportError(ex));
     }, [settingsStore]);
+
+    const editInput = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (editingWebsite !== null && !isPending) {
@@ -38,135 +33,24 @@ export const WebsiteList = observer(() => {
         }
     }, [editingWebsite, isPending]);
 
-    useEffect(() => {
-        if (editingWebsite !== null && !websitesList.some((website) => website.hostname === editingWebsite)) {
-            setEditingWebsite(null);
-            setEditedWebsite('');
-            setEditError('');
-        }
-    }, [editingWebsite, websitesList]);
-
     /**
-     * Updates the draft address in the add form.
+     * Submits the add form through the settings store.
      *
-     * @param e - Change event containing the user's current input.
+     * @param event - Form submission to prevent from navigating the page.
      */
-    const handleNewWebsiteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewWebsite(e.target.value);
+    const handleAddNewWebsite = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        settingsStore.addNewWebsite();
     };
 
     /**
-     * Runs one mutation at a time and reports failures to the relevant form.
+     * Submits the edit form through the settings store.
      *
-     * @param save Mutation and its operation-specific success handling.
-     * @param onError Receives the failure message; defaults to the list error.
-     * @returns Resolves after the mutation is handled or immediately when one is already pending.
+     * @param event - Form submission to prevent from navigating the page.
      */
-    const saveChanges = async (save: () => Promise<void>, onError: (message: string) => void = setError) => {
-        if (isPendingRef.current) {
-            return;
-        }
-        isPendingRef.current = true;
-        setIsPending(true);
-        try {
-            await save();
-        } catch (ex) {
-            onError(getErrorMessage(ex));
-        } finally {
-            isPendingRef.current = false;
-            setIsPending(false);
-        }
-    };
-
-    /**
-     * Adds the draft domain and clears the form only after it is saved.
-     *
-     * @param e Add form submission event.
-     * @returns Resolves after the add attempt is handled.
-     */
-    const handleAddNewWebsite = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        await saveChanges(async () => {
-            await settingsStore.addNewWebsite(newWebsite);
-            setNewWebsite('');
-            setError('');
-        });
-    };
-
-    /**
-     * Deletes the selected domain and clears an earlier list error on success.
-     *
-     * @param websiteToDelete Domain to remove from the blocklist.
-     * @returns Resolves after the delete attempt is handled.
-     */
-    const handleDeleteWebsite = async (websiteToDelete: string) => {
-        await saveChanges(async () => {
-            await settingsStore.deleteWebsite(websiteToDelete);
-            setError('');
-        });
-    };
-
-    /**
-     * Persists the selected domain's blocking state.
-     *
-     * @param hostname Domain whose blocking state should change.
-     * @param enabled Whether the domain should be blocked.
-     * @returns Resolves after the toggle attempt is handled.
-     */
-    const handleToggleWebsite = async (hostname: string, enabled: boolean) => {
-        await saveChanges(async () => {
-            await settingsStore.setWebsiteEnabled(hostname, enabled);
-            setError('');
-        });
-    };
-
-    /**
-     * Opens an inline editor with the selected entry's current hostname.
-     *
-     * @param website - Normalized hostname of the entry to edit.
-     */
-    const handleEditWebsite = (website: string) => {
-        setEditingWebsite(website);
-        setEditedWebsite(website);
-        setEditError('');
-    };
-
-    /**
-     * Discards the edit draft and closes the inline editor.
-     */
-    const handleCancelEdit = () => {
-        setEditingWebsite(null);
-        setEditedWebsite('');
-        setEditError('');
-    };
-
-    /**
-     * Cancels editing from any form control unless a mutation is pending.
-     *
-     * @param e Keyboard event bubbling from an edit form control.
-     */
-    const handleEditKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
-        if (e.key === 'Escape' && !isPendingRef.current) {
-            e.preventDefault();
-            handleCancelEdit();
-        }
-    };
-
-    /**
-     * Saves the edited domain, keeping the draft visible if the update fails.
-     *
-     * @param e Edit form submission event.
-     * @returns Resolves after the save attempt is handled, or immediately if no entry is being edited.
-     */
-    const handleSaveWebsite = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (editingWebsite === null) {
-            return;
-        }
-        await saveChanges(async () => {
-            await settingsStore.updateWebsite(editingWebsite, editedWebsite);
-            handleCancelEdit();
-        }, setEditError);
+    const handleSaveWebsite = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        settingsStore.updateWebsite();
     };
 
     return (
@@ -177,7 +61,7 @@ export const WebsiteList = observer(() => {
                     type="text"
                     className="form-control"
                     value={newWebsite}
-                    onChange={handleNewWebsiteChange}
+                    onChange={(event) => settingsStore.setNewWebsite(event.target.value)}
                     placeholder="Enter website to block"
                     aria-label="Enter website to block"
                     disabled={isPending}
@@ -189,11 +73,16 @@ export const WebsiteList = observer(() => {
                     {websitesList.map(({ hostname, enabled }) => (
                         <li key={hostname} className="list-group-item">
                             {editingWebsite === hostname ? (
-                                // Delegate Escape from the native controls without changing the form's semantics.
+                                // Escape from native controls bubbles here; the form keeps its native semantics.
                                 // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
                                 <form
                                     onSubmit={handleSaveWebsite}
-                                    onKeyDown={handleEditKeyDown}
+                                    onKeyDown={(event) => {
+                                        if (event.key === 'Escape') {
+                                            event.preventDefault();
+                                            settingsStore.cancelEdit();
+                                        }
+                                    }}
                                     aria-busy={isPending}
                                 >
                                     <div className="input-group">
@@ -202,10 +91,7 @@ export const WebsiteList = observer(() => {
                                             type="text"
                                             className={`form-control${editError ? ' is-invalid' : ''}`}
                                             value={editedWebsite}
-                                            onChange={(e) => {
-                                                setEditedWebsite(e.target.value);
-                                                setEditError('');
-                                            }}
+                                            onChange={(event) => settingsStore.setEditedWebsite(event.target.value)}
                                             aria-label={`Edit website ${hostname}`}
                                             aria-invalid={!!editError}
                                             aria-describedby={editError ? 'website-edit-error' : undefined}
@@ -217,7 +103,7 @@ export const WebsiteList = observer(() => {
                                         <button
                                             type="button"
                                             className="btn btn-outline-secondary"
-                                            onClick={handleCancelEdit}
+                                            onClick={() => settingsStore.cancelEdit()}
                                             disabled={isPending}
                                         >
                                             Cancel
@@ -239,7 +125,9 @@ export const WebsiteList = observer(() => {
                                             role="switch"
                                             checked={enabled !== false}
                                             disabled={isPending}
-                                            onChange={(event) => handleToggleWebsite(hostname, event.target.checked)}
+                                            onChange={(event) => {
+                                                settingsStore.setWebsiteEnabled(hostname, event.target.checked);
+                                            }}
                                         />
                                         <label className="form-check-label text-break" htmlFor={`block-${hostname}`}>
                                             Block
@@ -254,7 +142,7 @@ export const WebsiteList = observer(() => {
                                         <button
                                             type="button"
                                             className="btn btn-outline-primary btn-sm"
-                                            onClick={() => handleEditWebsite(hostname)}
+                                            onClick={() => settingsStore.editWebsite(hostname)}
                                             aria-label={`Edit ${hostname}`}
                                             disabled={isPending || editingWebsite !== null}
                                         >
@@ -263,7 +151,7 @@ export const WebsiteList = observer(() => {
                                         <button
                                             type="button"
                                             className="btn btn-danger btn-sm"
-                                            onClick={() => handleDeleteWebsite(hostname)}
+                                            onClick={() => settingsStore.deleteWebsite(hostname)}
                                             aria-label={`Delete ${hostname}`}
                                             disabled={isPending}
                                         >
