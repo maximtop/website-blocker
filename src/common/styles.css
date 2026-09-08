@@ -1,0 +1,28 @@
+/* Long translations and hostnames must stay within each page's layout. */
+body {
+    overflow-wrap: anywhere;
+}
+
+.website-toggle {
+    min-width: 0;
+}
+
+.list-group {
+    padding-inline-start: 0;
+}
+
+.website-input {
+    min-width: 0;
+    text-align: start;
+}
+
+[dir="rtl"] .form-switch {
+    padding-left: 0;
+    padding-right: 2.5em;
+}
+
+[dir="rtl"] .form-switch .form-check-input {
+    float: right;
+    margin-left: 0;
+    margin-right: -2.5em;
+}

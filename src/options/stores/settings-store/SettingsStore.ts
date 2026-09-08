@@ -9,6 +9,9 @@ import {
 import { type RootStore } from '../root-store';
 import { Websites, WebsitesMap, Website } from '../../../common/websites';
 import { getErrorMessage } from '../../../common/utils/error';
+import { t } from '../../../common/i18n';
+import { WebsiteError } from '../../../common/website-error';
+import { BlockDurationError } from '../../../common/block-duration-error';
 import { BLOCK_DURATION } from '../../block-duration';
 
 /**
@@ -165,13 +168,15 @@ export class SettingsStore {
     }
 
     /**
-     * Reports a loading or storage failure above the website list.
+     * Reports an initial loading failure above the website list and preserves its cause.
      *
      * @param error - Failure whose message should be displayed to the user.
      */
     @action
     reportError(error: unknown) {
-        this.error = getErrorMessage(error);
+        // eslint-disable-next-line no-console
+        console.error('Failed to load websites', error);
+        this.error = t('loadError');
     }
 
     /**
@@ -327,6 +332,11 @@ export class SettingsStore {
         try {
             await operation();
         } catch (ex) {
+            if (!(ex instanceof WebsiteError) && !(ex instanceof BlockDurationError)) {
+                // Preserve unexpected storage failures for local troubleshooting.
+                // eslint-disable-next-line no-console
+                console.error('Failed to save websites', ex);
+            }
             runInAction(() => {
                 onError(getErrorMessage(ex));
             });

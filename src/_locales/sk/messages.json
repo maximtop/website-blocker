@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "sk",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Blokovanie webových stránok: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Sústreďte sa vďaka blokovaniu rušivých webových stránok.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "V nastaveniach spravujte webové stránky, ktoré chcete blokovať.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Otvoriť nastavenia"
+    },
+    "optionsTitle": {
+        "message": "Nastavenia — Blokovanie webových stránok: MT"
+    },
+    "blockedTitle": {
+        "message": "Stránka je zablokovaná — Blokovanie webových stránok: MT"
+    },
+    "blockedWebsites": {
+        "message": "Blokovanie webových stránok"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Zadajte webovú stránku, ktorú chcete blokovať"
+    },
+    "addWebsite": {
+        "message": "Pridať"
+    },
+    "deleteWebsite": {
+        "message": "Odstrániť"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Odstrániť $WEBSITE$ zo zoznamu blokovaných stránok",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Žiadne pridané webové stránky."
+    },
+    "blockedHeading": {
+        "message": "Ups! Táto webová stránka je zablokovaná"
+    },
+    "blockedMessage": {
+        "message": "Sústreďte sa a pokračujte v dobrej práci!"
+    },
+    "closeTab": {
+        "message": "Zavrieť"
+    },
+    "invalidWebsite": {
+        "message": "Neplatná webová stránka: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Webová stránka už je v zozname: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Zmeny sa nepodarilo uložiť. Skúste to znova."
+    },
+    "loadError": {
+        "message": "Blokované webové stránky sa nepodarilo načítať. Skúste to znova."
+    },
+    "blockWebsiteLabel": {
+        "message": "Blokovať $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Blokovanie zapnuté"
+    },
+    "blockingOff": {
+        "message": "Blokovanie vypnuté"
+    },
+    "missingWebsite": {
+        "message": "Webová stránka nie je v zozname: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "Upraviť"
+    },
+    "saveWebsite": {
+        "message": "Uložiť"
+    },
+    "cancelEdit": {
+        "message": "Zrušiť"
+    },
+    "editWebsiteLabel": {
+        "message": "Upraviť $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

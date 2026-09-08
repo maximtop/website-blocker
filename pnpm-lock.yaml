@@ -41,12 +41,6 @@ importers:
       webextension-polyfill:
         specifier: ^0.12.0
         version: 0.12.0
-      zod:
-        specifier: ^3.23.8
-        version: 3.25.13
-      zod-validation-error:
-        specifier: ^3.4.0
-        version: 3.4.1(zod@3.25.13)
     devDependencies:
       '@swc-node/register':
         specifier: ^1.10.9
@@ -3383,15 +3377,6 @@ packages:
       webpack: ^4.0.0 || ^5.0.0
       webpack-sources: '*'
 
-  zod-validation-error@3.4.1:
-    resolution: {integrity: sha512-1KP64yqDPQ3rupxNv7oXhf7KdhHHgaqbKuspVoiN93TT0xrBjql+Svjkdjq/Qh/7GSMmgQs3AfvBT0heE35thw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      zod: ^3.24.4
-
-  zod@3.25.13:
-    resolution: {integrity: sha512-Q8mvk2iWi7rTDfpQBsu4ziE7A6AxgzJ5hzRyRYQkoV3A3niYsXVwDaP1Kbz3nWav6S+VZ6k2OznFn8ZyDHvIrg==}
-
 snapshots:
 
   '@babel/code-frame@7.27.1':
@@ -6679,9 +6664,3 @@ snapshots:
       webpack: 5.99.9(@swc/core@1.11.24)(esbuild@0.28.2)
       webpack-sources: 3.2.3
       yazl: 2.5.1
-
-  zod-validation-error@3.4.1(zod@3.25.13):
-    dependencies:
-      zod: 3.25.13
-
-  zod@3.25.13: {}

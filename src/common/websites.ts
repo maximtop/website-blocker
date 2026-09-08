@@ -1,5 +1,7 @@
+import { BlockDurationError } from './block-duration-error';
 import { Storage } from './storage';
 import { getHostname } from './utils/url';
+import { WEBSITE_ERROR_CODE, WebsiteError } from './website-error';
 
 /**
  * A saved website with independent blocking preferences and an optional deadline.
@@ -101,21 +103,21 @@ export class Websites {
     public static async addWebsite(rawWebsite: string, durationMinutes?: number): Promise<WebsitesMap> {
         const hostname = getHostname(rawWebsite);
         if (!hostname) {
-            throw new Error(`Invalid website: ${rawWebsite}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Invalid, rawWebsite);
         }
         if (durationMinutes !== undefined && (!Number.isSafeInteger(durationMinutes) || durationMinutes <= 0)) {
-            throw new Error('Duration must be a positive whole number of minutes.');
+            throw new BlockDurationError('Duration must be a positive whole number of minutes.');
         }
         const websites = await Websites.readEntries();
         if (websites[hostname]) {
-            throw new Error(`Website already exists in the list: ${hostname}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Duplicate, hostname);
         }
         const position = Math.max(Date.now(), ...Object.values(websites).map((website) => (website.position ?? 0) + 1));
         const website: StoredWebsite = { hostname, enabled: true, position };
         if (durationMinutes !== undefined) {
             const blockedUntil = Date.now() + durationMinutes * 60_000;
             if (!Number.isSafeInteger(blockedUntil) || Number.isNaN(new Date(blockedUntil).getTime())) {
-                throw new Error('Duration is too long.');
+                throw new BlockDurationError('Duration is too long.');
             }
             website.blockedUntil = blockedUntil;
         }
@@ -134,18 +136,18 @@ export class Websites {
     public static async updateWebsite(originalHostname: string, rawWebsite: string): Promise<WebsitesMap> {
         const hostname = getHostname(rawWebsite);
         if (!hostname) {
-            throw new Error(`Invalid website: ${rawWebsite}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Invalid, rawWebsite);
         }
         const websites = await Websites.readEntries();
         const original = websites[originalHostname];
         if (!original) {
-            throw new Error(`Website no longer exists in the list: ${originalHostname}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Missing, originalHostname);
         }
         if (hostname === originalHostname) {
             return Websites.visibleEntries(websites);
         }
         if (websites[hostname]) {
-            throw new Error(`Website already exists in the list: ${hostname}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Duplicate, hostname);
         }
         const renamed = { ...original, hostname };
         await Storage.setMany({
@@ -183,7 +185,7 @@ export class Websites {
         const websites = await Websites.readEntries();
         const website = websites[hostname];
         if (!website) {
-            throw new Error(`Website does not exist in the list: ${hostname}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Missing, hostname);
         }
         const updated = { ...website, enabled };
         await Storage.set(`${Websites.STORAGE_PREFIX}${hostname}`, updated);

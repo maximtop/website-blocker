@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "ms",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Penyekat Laman Web: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Kekal fokus dengan menyekat laman web yang mengganggu tumpuan.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Urus laman web yang ingin anda sekat dalam tetapan.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Buka tetapan"
+    },
+    "optionsTitle": {
+        "message": "Tetapan — Penyekat Laman Web: MT"
+    },
+    "blockedTitle": {
+        "message": "Laman web disekat — Penyekat Laman Web: MT"
+    },
+    "blockedWebsites": {
+        "message": "Penyekatan laman web"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Masukkan laman web untuk disekat"
+    },
+    "addWebsite": {
+        "message": "Tambah"
+    },
+    "deleteWebsite": {
+        "message": "Padam"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Alih keluar $WEBSITE$ daripada senarai sekatan",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Tiada laman web ditambahkan."
+    },
+    "blockedHeading": {
+        "message": "Alamak! Laman web ini disekat"
+    },
+    "blockedMessage": {
+        "message": "Kekal fokus dan teruskan usaha yang baik!"
+    },
+    "closeTab": {
+        "message": "Tutup"
+    },
+    "invalidWebsite": {
+        "message": "Laman web tidak sah: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Laman web sudah ada dalam senarai: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Perubahan anda tidak dapat disimpan. Sila cuba lagi."
+    },
+    "loadError": {
+        "message": "Laman web yang disekat tidak dapat dimuatkan. Sila cuba lagi."
+    },
+    "blockWebsiteLabel": {
+        "message": "Sekat $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Sekatan aktif"
+    },
+    "blockingOff": {
+        "message": "Sekatan tidak aktif"
+    },
+    "missingWebsite": {
+        "message": "Laman web tiada dalam senarai: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "Edit"
+    },
+    "saveWebsite": {
+        "message": "Simpan"
+    },
+    "cancelEdit": {
+        "message": "Batal"
+    },
+    "editWebsiteLabel": {
+        "message": "Edit $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "sr",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Блокатор сајтова: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Останите усредсређени блокирањем сајтова који вам одвлаче пажњу.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Управљајте сајтовима које желите да блокирате у подешавањима.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Отвори подешавања"
+    },
+    "optionsTitle": {
+        "message": "Подешавања — Блокатор сајтова: MT"
+    },
+    "blockedTitle": {
+        "message": "Сајт је блокиран — Блокатор сајтова: MT"
+    },
+    "blockedWebsites": {
+        "message": "Блокирање сајтова"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Унесите сајт који желите да блокирате"
+    },
+    "addWebsite": {
+        "message": "Додај"
+    },
+    "deleteWebsite": {
+        "message": "Избриши"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Уклони $WEBSITE$ са листе блокираних сајтова",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Нема додатих сајтова."
+    },
+    "blockedHeading": {
+        "message": "Упс! Овај сајт је блокиран"
+    },
+    "blockedMessage": {
+        "message": "Останите усредсређени и само тако наставите!"
+    },
+    "closeTab": {
+        "message": "Затвори"
+    },
+    "invalidWebsite": {
+        "message": "Неважећи сајт: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Сајт је већ на листи: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Није могуће сачувати измене. Покушајте поново."
+    },
+    "loadError": {
+        "message": "Није могуће учитати блокиране сајтове. Покушајте поново."
+    },
+    "blockWebsiteLabel": {
+        "message": "Блокирај $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Блокирање укључено"
+    },
+    "blockingOff": {
+        "message": "Блокирање искључено"
+    },
+    "missingWebsite": {
+        "message": "Сајт није на листи: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "Измени"
+    },
+    "saveWebsite": {
+        "message": "Сачувај"
+    },
+    "cancelEdit": {
+        "message": "Откажи"
+    },
+    "editWebsiteLabel": {
+        "message": "Измени $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

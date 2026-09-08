@@ -10,6 +10,7 @@ import {
 
 import { Storage } from '../../src/common/storage';
 import { Websites, WebsitesMap } from '../../src/common/websites';
+import { WEBSITE_ERROR_CODE } from '../../src/common/website-error';
 
 vi.mock('../../src/common/storage', () => ({
     Storage: {
@@ -78,7 +79,9 @@ describe('Websites.updateWebsite', () => {
     });
 
     it.each(['', 'not-a-website', 'https://'])('rejects invalid input %j without changing storage', async (input) => {
-        await expect(Websites.updateWebsite('old.com', input)).rejects.toThrow('Invalid website');
+        await expect(Websites.updateWebsite('old.com', input)).rejects.toMatchObject({
+            code: WEBSITE_ERROR_CODE.Invalid, website: input,
+        });
 
         expect(Storage.setMany).not.toHaveBeenCalled();
         expect(persistedWebsites['old.com']).toEqual({ hostname: 'old.com' });
@@ -86,7 +89,7 @@ describe('Websites.updateWebsite', () => {
 
     it('rejects a duplicate normalized hostname and preserves both websites', async () => {
         await expect(Websites.updateWebsite('old.com', 'https://www.FIRST.com/path'))
-            .rejects.toThrow('Website already exists in the list: first.com');
+            .rejects.toMatchObject({ code: WEBSITE_ERROR_CODE.Duplicate, website: 'first.com' });
 
         expect(Storage.setMany).not.toHaveBeenCalled();
         expect(persistedWebsites['old.com']).toEqual({ hostname: 'old.com' });
@@ -102,7 +105,7 @@ describe('Websites.updateWebsite', () => {
 
     it.each(['new.com', 'missing.com'])('rejects a missing original when replacing it with %s', async (input) => {
         await expect(Websites.updateWebsite('missing.com', input))
-            .rejects.toThrow('Website no longer exists in the list: missing.com');
+            .rejects.toMatchObject({ code: WEBSITE_ERROR_CODE.Missing, website: 'missing.com' });
 
         expect(Storage.setMany).not.toHaveBeenCalled();
         expect(persistedWebsites['missing.com']).toBeUndefined();
@@ -112,7 +115,7 @@ describe('Websites.updateWebsite', () => {
         vi.mocked(Storage.getAll).mockResolvedValue({});
 
         await expect(Websites.updateWebsite('old.com', 'new.com'))
-            .rejects.toThrow('Website no longer exists in the list: old.com');
+            .rejects.toMatchObject({ code: WEBSITE_ERROR_CODE.Missing, website: 'old.com' });
 
         expect(Storage.setMany).not.toHaveBeenCalled();
     });

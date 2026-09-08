@@ -1,4 +1,5 @@
 import React from 'react';
+import { t } from '../../../common/i18n';
 
 /**
  * Renders the blocked-page notice and the control for closing its tab.
@@ -18,21 +19,21 @@ export function App() {
 
     return (
         <div
-            className="d-flex align-items-center justify-content-center"
+            className="d-flex align-items-center justify-content-center p-3"
             style={{
-                height: '100vh',
+                minHeight: '100vh',
                 textAlign: 'center',
             }}
         >
             <div>
-                <h1 className="display-4 text-success">Oops! This website is blocked</h1>
-                <p>Stay focused and keep up the good work!</p>
+                <h1 className="display-4 text-success">{t('blockedHeading')}</h1>
+                <p>{t('blockedMessage')}</p>
                 <button
                     type="button"
                     className="btn btn-primary mt-3"
                     onClick={handleCloseClick}
                 >
-                    Close
+                    {t('closeTab')}
                 </button>
             </div>
         </div>

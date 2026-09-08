@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "fa",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "مسدودکنندهٔ وب‌سایت: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "با مسدود کردن وب‌سایت‌های حواس‌پرت‌کن، تمرکزتان را حفظ کنید.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "وب‌سایت‌هایی را که می‌خواهید مسدود کنید در تنظیمات مدیریت کنید.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "باز کردن تنظیمات"
+    },
+    "optionsTitle": {
+        "message": "تنظیمات — مسدودکنندهٔ وب‌سایت: MT"
+    },
+    "blockedTitle": {
+        "message": "وب‌سایت مسدود است — مسدودکنندهٔ وب‌سایت: MT"
+    },
+    "blockedWebsites": {
+        "message": "مسدودسازی وب‌سایت‌ها"
+    },
+    "websiteInputPlaceholder": {
+        "message": "وب‌سایتی را برای مسدود کردن وارد کنید"
+    },
+    "addWebsite": {
+        "message": "افزودن"
+    },
+    "deleteWebsite": {
+        "message": "حذف"
+    },
+    "deleteWebsiteLabel": {
+        "message": "حذف $WEBSITE$ از فهرست مسدودسازی",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "هیچ وب‌سایتی اضافه نشده است."
+    },
+    "blockedHeading": {
+        "message": "اوه! این وب‌سایت مسدود شده است"
+    },
+    "blockedMessage": {
+        "message": "تمرکزتان را حفظ کنید و به کار خوبتان ادامه دهید!"
+    },
+    "closeTab": {
+        "message": "بستن"
+    },
+    "invalidWebsite": {
+        "message": "وب‌سایت نامعتبر: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "وب‌سایت از قبل در فهرست است: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "ذخیرهٔ تغییرات شما ممکن نشد. لطفاً دوباره تلاش کنید."
+    },
+    "loadError": {
+        "message": "بارگذاری وب‌سایت‌های مسدودشده ممکن نشد. لطفاً دوباره تلاش کنید."
+    },
+    "blockWebsiteLabel": {
+        "message": "مسدود کردن $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "مسدودسازی فعال"
+    },
+    "blockingOff": {
+        "message": "مسدودسازی غیرفعال"
+    },
+    "missingWebsite": {
+        "message": "وب‌سایت در فهرست نیست: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "ویرایش"
+    },
+    "saveWebsite": {
+        "message": "ذخیره"
+    },
+    "cancelEdit": {
+        "message": "انصراف"
+    },
+    "editWebsiteLabel": {
+        "message": "ویرایش $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

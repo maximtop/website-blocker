@@ -7,6 +7,7 @@ import {
     vi,
 } from 'vitest';
 
+import { WEBSITE_ERROR_CODE } from '../../src/common/website-error';
 import { Storage } from '../../src/common/storage';
 import {
     isWebsiteBlocked,
@@ -119,7 +120,7 @@ describe('Websites', () => {
     it.each([undefined, NOW + MINUTE])('rejects a duplicate active block expiring at %s', async (blockedUntil) => {
         persisted = { 'example.com': { hostname: 'example.com', blockedUntil } };
 
-        await expect(Websites.addWebsite('https://www.example.com/', 30)).rejects.toThrow('already exists');
+        await expect(Websites.addWebsite('https://www.example.com/', 30)).rejects.toMatchObject({ code: WEBSITE_ERROR_CODE.Duplicate });
 
         expect(Storage.set).not.toHaveBeenCalled();
         expect(persisted['example.com'].blockedUntil).toBe(blockedUntil);
@@ -158,7 +159,8 @@ describe('Websites', () => {
     });
 
     it('rejects an invalid hostname without writing storage', async () => {
-        await expect(Websites.addWebsite('not a hostname', 30)).rejects.toThrow('Invalid website');
+        await expect(Websites.addWebsite('not a hostname', 30))
+            .rejects.toMatchObject({ code: WEBSITE_ERROR_CODE.Invalid });
         expect(Storage.set).not.toHaveBeenCalled();
     });
 
@@ -242,7 +244,8 @@ describe('Websites', () => {
     it('rejects a duplicate active per-host block without overwriting its deadline', async () => {
         overrides = { 'website:example.com': { hostname: 'example.com', blockedUntil: NOW + MINUTE } };
 
-        await expect(Websites.addWebsite('example.com', 30)).rejects.toThrow('already exists');
+        await expect(Websites.addWebsite('example.com', 30))
+            .rejects.toMatchObject({ code: WEBSITE_ERROR_CODE.Duplicate });
 
         expect(Storage.set).not.toHaveBeenCalled();
     });
