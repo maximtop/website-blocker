@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "ja",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "ウェブサイトブロッカー: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "気が散るウェブサイトをブロックして、集中力を保ちましょう。",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "ブロックしたいウェブサイトは設定で管理できます。",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "設定を開く"
+    },
+    "optionsTitle": {
+        "message": "設定 — ウェブサイトブロッカー: MT"
+    },
+    "blockedTitle": {
+        "message": "ウェブサイトをブロックしました — ウェブサイトブロッカー: MT"
+    },
+    "blockedWebsites": {
+        "message": "ウェブサイトのブロック"
+    },
+    "websiteInputPlaceholder": {
+        "message": "ブロックするウェブサイトを入力"
+    },
+    "addWebsite": {
+        "message": "追加"
+    },
+    "deleteWebsite": {
+        "message": "削除"
+    },
+    "deleteWebsiteLabel": {
+        "message": "$WEBSITE$ をブロックリストから削除",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "ウェブサイトは追加されていません。"
+    },
+    "blockedHeading": {
+        "message": "おっと！このウェブサイトはブロックされています"
+    },
+    "blockedMessage": {
+        "message": "集中して、その調子で頑張りましょう！"
+    },
+    "closeTab": {
+        "message": "閉じる"
+    },
+    "invalidWebsite": {
+        "message": "無効なウェブサイトです: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "このウェブサイトはすでにリストにあります: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "変更を保存できませんでした。もう一度お試しください。"
+    },
+    "loadError": {
+        "message": "ブロック中のウェブサイトを読み込めませんでした。もう一度お試しください。"
+    },
+    "blockWebsiteLabel": {
+        "message": "$WEBSITE$ をブロック",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "ブロック有効"
+    },
+    "blockingOff": {
+        "message": "ブロック無効"
+    },
+    "missingWebsite": {
+        "message": "このウェブサイトはリストにありません: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "編集"
+    },
+    "saveWebsite": {
+        "message": "保存"
+    },
+    "cancelEdit": {
+        "message": "キャンセル"
+    },
+    "editWebsiteLabel": {
+        "message": "$WEBSITE$ を編集",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

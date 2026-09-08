@@ -1,7 +1,7 @@
 /**
  * @file Minimal read-only AMO client for duplicate prevention and signed artifact verification.
- * Identical in every extension repository that deploys to Firefox; repository specifics live
- * in ./constants.
+ * Shared deployment contract for extension repositories; repository specifics live in
+ * ./constants.
  */
 
 import { createHash, createHmac, randomUUID } from 'node:crypto';
@@ -21,6 +21,16 @@ export const AMO_REQUEST_TIMEOUT_MS = 30000;
 const AMO_JWT_LIFETIME_SECONDS = 60;
 
 const MILLISECONDS_PER_SECOND = 1000;
+
+/**
+ * AMO states understood by status reporting and signed artifact checks. Unknown API states
+ * remain valid input and are reported conservatively.
+ */
+export const AMO_STATUS = {
+    Public: 'public',
+    Disabled: 'disabled',
+    Unreviewed: 'unreviewed',
+} as const;
 
 /**
  * AMO fields needed to distinguish review, approval, signing and publication.
@@ -166,14 +176,14 @@ export const describeAmoStatus = (addon: AmoAddon, version: AmoVersion | null): 
     if (!version) {
         return 'Version not submitted';
     }
-    if (version.is_disabled || addon.is_disabled || version.file.status === 'disabled') {
+    if (version.is_disabled || addon.is_disabled || version.file.status === AMO_STATUS.Disabled) {
         return 'Disabled, rejected or unavailable; inspect Developer Hub';
     }
-    if (version.file.status === 'unreviewed') {
+    if (version.file.status === AMO_STATUS.Unreviewed) {
         return 'Submitted; awaiting Mozilla review and signing';
     }
-    if (version.file.status === 'public') {
-        return addon.status === 'public' && addon.current_version?.version === version.version
+    if (version.file.status === AMO_STATUS.Public) {
+        return addon.status === AMO_STATUS.Public && addon.current_version?.version === version.version
             ? 'Approved and published on AMO'
             : 'Approved; not the current publicly listed version';
     }

@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "ar",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "حاجب المواقع: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "حافظ على تركيزك بحجب المواقع التي تشتت انتباهك.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "أدر المواقع التي تريد حجبها من الإعدادات.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "فتح الإعدادات"
+    },
+    "optionsTitle": {
+        "message": "الإعدادات — حاجب المواقع: MT"
+    },
+    "blockedTitle": {
+        "message": "الموقع محجوب — حاجب المواقع: MT"
+    },
+    "blockedWebsites": {
+        "message": "حجب المواقع"
+    },
+    "websiteInputPlaceholder": {
+        "message": "أدخل موقعًا لحجبه"
+    },
+    "addWebsite": {
+        "message": "إضافة"
+    },
+    "deleteWebsite": {
+        "message": "حذف"
+    },
+    "deleteWebsiteLabel": {
+        "message": "إزالة $WEBSITE$ من قائمة الحجب",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "لم تُضف أي مواقع."
+    },
+    "blockedHeading": {
+        "message": "عفوًا! هذا الموقع محجوب"
+    },
+    "blockedMessage": {
+        "message": "حافظ على تركيزك وواصل عملك الجيد!"
+    },
+    "closeTab": {
+        "message": "إغلاق"
+    },
+    "invalidWebsite": {
+        "message": "موقع غير صالح: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "الموقع موجود بالفعل في القائمة: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "تعذّر حفظ تغييراتك. يُرجى المحاولة مجددًا."
+    },
+    "loadError": {
+        "message": "تعذّر تحميل المواقع المحجوبة. يُرجى المحاولة مجددًا."
+    },
+    "blockWebsiteLabel": {
+        "message": "حجب $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "الحجب مفعّل"
+    },
+    "blockingOff": {
+        "message": "الحجب معطّل"
+    },
+    "missingWebsite": {
+        "message": "الموقع غير موجود في القائمة: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "تعديل"
+    },
+    "saveWebsite": {
+        "message": "حفظ"
+    },
+    "cancelEdit": {
+        "message": "إلغاء"
+    },
+    "editWebsiteLabel": {
+        "message": "تعديل $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "hu",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Webhelyblokkoló: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Blokkolja a figyelmét elterelő webhelyeket, hogy könnyebben összpontosíthasson.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "A blokkolni kívánt webhelyeket a beállításokban kezelheti.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Beállítások megnyitása"
+    },
+    "optionsTitle": {
+        "message": "Beállítások — Webhelyblokkoló: MT"
+    },
+    "blockedTitle": {
+        "message": "Blokkolt webhely — Webhelyblokkoló: MT"
+    },
+    "blockedWebsites": {
+        "message": "Webhelyek blokkolása"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Adjon meg egy blokkolni kívánt webhelyet"
+    },
+    "addWebsite": {
+        "message": "Hozzáadás"
+    },
+    "deleteWebsite": {
+        "message": "Törlés"
+    },
+    "deleteWebsiteLabel": {
+        "message": "$WEBSITE$ eltávolítása a tiltólistáról",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Nincsenek hozzáadott webhelyek."
+    },
+    "blockedHeading": {
+        "message": "Hoppá! Ez a webhely blokkolva van"
+    },
+    "blockedMessage": {
+        "message": "Összpontosítson továbbra is, és folytassa a jó munkát!"
+    },
+    "closeTab": {
+        "message": "Bezárás"
+    },
+    "invalidWebsite": {
+        "message": "Érvénytelen webhely: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "A webhely már szerepel a listán: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Nem sikerült menteni a módosításokat. Próbálja újra."
+    },
+    "loadError": {
+        "message": "Nem sikerült betölteni a blokkolt webhelyeket. Próbálja újra."
+    },
+    "blockWebsiteLabel": {
+        "message": "$WEBSITE$ blokkolása",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Blokkolás bekapcsolva"
+    },
+    "blockingOff": {
+        "message": "Blokkolás kikapcsolva"
+    },
+    "missingWebsite": {
+        "message": "A webhely nem szerepel a listán: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "Szerkesztés"
+    },
+    "saveWebsite": {
+        "message": "Mentés"
+    },
+    "cancelEdit": {
+        "message": "Mégse"
+    },
+    "editWebsiteLabel": {
+        "message": "$WEBSITE$ szerkesztése",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

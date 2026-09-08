@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "he",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "חוסם אתרים: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "חסמו אתרים מסיחי דעת כדי לשמור על הריכוז.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "נהלו בהגדרות את האתרים שברצונכם לחסום.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "פתיחת הגדרות"
+    },
+    "optionsTitle": {
+        "message": "הגדרות — חוסם אתרים: MT"
+    },
+    "blockedTitle": {
+        "message": "האתר נחסם — חוסם אתרים: MT"
+    },
+    "blockedWebsites": {
+        "message": "חסימת אתרים"
+    },
+    "websiteInputPlaceholder": {
+        "message": "הזינו אתר לחסימה"
+    },
+    "addWebsite": {
+        "message": "הוספה"
+    },
+    "deleteWebsite": {
+        "message": "מחיקה"
+    },
+    "deleteWebsiteLabel": {
+        "message": "הסרת $WEBSITE$ מרשימת החסימה",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "לא נוספו אתרים."
+    },
+    "blockedHeading": {
+        "message": "אופס! האתר הזה חסום"
+    },
+    "blockedMessage": {
+        "message": "שמרו על הריכוז והמשיכו בעבודה הטובה!"
+    },
+    "closeTab": {
+        "message": "סגירה"
+    },
+    "invalidWebsite": {
+        "message": "אתר לא תקין: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "האתר כבר נמצא ברשימה: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "לא ניתן לשמור את השינויים. נסו שוב."
+    },
+    "loadError": {
+        "message": "לא ניתן לטעון את האתרים החסומים. נסו שוב."
+    },
+    "blockWebsiteLabel": {
+        "message": "חסימת $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "החסימה פעילה"
+    },
+    "blockingOff": {
+        "message": "החסימה אינה פעילה"
+    },
+    "missingWebsite": {
+        "message": "האתר אינו ברשימה: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "עריכה"
+    },
+    "saveWebsite": {
+        "message": "שמירה"
+    },
+    "cancelEdit": {
+        "message": "ביטול"
+    },
+    "editWebsiteLabel": {
+        "message": "עריכת $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

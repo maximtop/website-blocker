@@ -1,35 +1,19 @@
-import { ZodError } from 'zod';
-import { fromZodError } from 'zod-validation-error';
+import { t } from '../i18n';
+import { WebsiteError } from '../website-error';
+import { BlockDurationError } from '../block-duration-error';
 
-type ErrorWithMessage = {
-    message: string
-};
-
-function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
-    return (
-        typeof error === 'object'
-        && error !== null
-        && 'message' in error
-        && typeof (error as Record<string, unknown>).message === 'string'
-    );
-}
-
-function toErrorWithMessage(maybeError: unknown): ErrorWithMessage {
-    if (isErrorWithMessage(maybeError)) {
-        return maybeError;
-    }
-
-    try {
-        return new Error(JSON.stringify(maybeError));
-    } catch {
-        return new Error(String(maybeError));
-    }
-}
-
+/**
+ * Translates expected validation errors and uses a localized fallback for storage failures.
+ *
+ * @param error - Failure to describe in the interface.
+ * @returns A translated validation message or generic save error.
+ */
 export function getErrorMessage(error: unknown): string {
-    if (error instanceof ZodError) {
-        return fromZodError(error).toString();
+    if (error instanceof BlockDurationError) {
+        return error.message;
     }
-
-    return toErrorWithMessage(error).message;
+    if (error instanceof WebsiteError) {
+        return t(error.code, error.website);
+    }
+    return t('saveError');
 }

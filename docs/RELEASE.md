@@ -78,8 +78,10 @@ version 3, the release version, and the background format of the target
 browser (Firefox additionally the Gecko ID and the source archive metadata).
 What users can verify is exactly what the store receives. Only then does the
 store-specific part start. The validation code and its tests (`tests/deploy`)
-are identical across the repositories; the repository specifics live in
-`scripts/deploy/constants.ts`.
+follow the shared deployment contract used by the other extension repositories;
+the repository specifics live in `scripts/deploy/constants.ts`. Until shared
+actions are extracted, port changes to shared helpers and their tests to the
+other repositories together.
 
 ### Chrome Web Store
 
@@ -243,11 +245,18 @@ filled in, and resolve the credentials for one command with `op run`:
 | `op run --env-file=.env.1password -- make chrome_status` | Print the published and submitted state of the Chrome item. |
 | `op run --env-file=.env.1password -- make chrome_update` | Build the Chrome release archive and upload it as the store draft. |
 | `op run --env-file=.env.1password -- make chrome_publish` | Submit the Chrome draft for review with deferred publishing. |
-| `op run --env-file=.env.1password -- sh -c 'go-webext status edge -a "$EDGE_PRODUCT_ID"'` | Print the Edge product state. |
-| `op run --env-file=.env.1password -- go-webext status firefox` | Print the AMO listing state (limited by the `categories` parsing issue above). |
+| `op run --env-file=.env.1password -- sh -c 'go-webext status firefox -a "$FIREFOX_AMO_ID"'` | Print the AMO listing state (limited by the `categories` parsing issue above). |
 
-Without 1Password, a `.env` filled in from `.env.example` works the same way;
-`go-webext` reads it itself. Never commit either file.
+Check the Edge product state in Partner Center; `go-webext` v0.4.2 has no
+`status edge` command.
+
+Without 1Password, fill in `.env` from `.env.example`; `go-webext` reads it
+itself. Run the Chrome Makefile commands without the `op run` prefix. For
+Firefox, pass the listing slug or numeric ID explicitly, for example
+`go-webext status firefox -a '<listing-slug-or-numeric-id>'`. A value stored
+only in `.env` is not available for shell expansion of `$FIREFOX_AMO_ID`:
+`go-webext` loads that file after the shell has expanded the command. Never
+commit `.env` or `.env.1password`.
 
 ## Failure playbook
 

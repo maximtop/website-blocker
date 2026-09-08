@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "hr",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Blokator web-stranica: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Ostanite usredotočeni blokiranjem web-stranica koje vam odvlače pažnju.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "U postavkama upravljajte web-stranicama koje želite blokirati.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Otvori postavke"
+    },
+    "optionsTitle": {
+        "message": "Postavke — Blokator web-stranica: MT"
+    },
+    "blockedTitle": {
+        "message": "Web-stranica blokirana — Blokator web-stranica: MT"
+    },
+    "blockedWebsites": {
+        "message": "Blokiranje web-stranica"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Unesite web-stranicu koju želite blokirati"
+    },
+    "addWebsite": {
+        "message": "Dodaj"
+    },
+    "deleteWebsite": {
+        "message": "Izbriši"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Ukloni $WEBSITE$ s popisa blokiranih stranica",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Nema dodanih web-stranica."
+    },
+    "blockedHeading": {
+        "message": "Ups! Ova je web-stranica blokirana"
+    },
+    "blockedMessage": {
+        "message": "Ostanite usredotočeni i nastavite s dobrim radom!"
+    },
+    "closeTab": {
+        "message": "Zatvori"
+    },
+    "invalidWebsite": {
+        "message": "Neispravna web-stranica: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Web-stranica je već na popisu: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Nije moguće spremiti promjene. Pokušajte ponovno."
+    },
+    "loadError": {
+        "message": "Nije moguće učitati blokirane web-stranice. Pokušajte ponovno."
+    },
+    "blockWebsiteLabel": {
+        "message": "Blokiraj $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Blokiranje uključeno"
+    },
+    "blockingOff": {
+        "message": "Blokiranje isključeno"
+    },
+    "missingWebsite": {
+        "message": "Web-stranica nije na popisu: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "Uredi"
+    },
+    "saveWebsite": {
+        "message": "Spremi"
+    },
+    "cancelEdit": {
+        "message": "Odustani"
+    },
+    "editWebsiteLabel": {
+        "message": "Uredi $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

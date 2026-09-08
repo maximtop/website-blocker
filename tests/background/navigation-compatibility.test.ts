@@ -19,9 +19,11 @@ vi.mock('webextension-polyfill', () => ({
         },
         tabs: { update: vi.fn() },
         webNavigation: { onCommitted: { addListener: vi.fn() } },
+        storage: { sync: { onChanged: { addListener: vi.fn() } } },
     },
 }));
-vi.mock('../../src/common/websites', () => ({
+vi.mock('../../src/common/websites', async (importOriginal) => ({
+    ...await importOriginal<typeof import('../../src/common/websites')>(),
     Websites: {
         getWebsites: vi.fn(),
         onChanged: { addListener: vi.fn() },

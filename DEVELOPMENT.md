@@ -44,16 +44,14 @@ Deployment helpers execute with `tsx`, matching the other extensions.
 - The blocklist uses `browser.storage.sync`. Browser account and sync
   settings determine whether it synchronizes between devices. The extension
   has no developer-operated backend, telemetry or remote code.
-- Blocklist additions, deletions and switches share a Web Lock across
-  extension pages in the same browser profile. Keep each read and write
-  inside that lock so concurrent edits preserve one another. This does not
-  coordinate writes from different devices. Options pages observe storage
-  changes and apply successful writes directly, without a follow-up read.
-- Website settings are edited in regular windows. Private options pages
-  offer a button to open the shared settings in a regular window: Chrome's
-  split incognito processes share extension storage but have separate Web
-  Lock managers. Split mode remains enabled for private blocked-page
-  navigation; opening settings does not pass private browsing URLs.
+- Website mutations write independent `website:<hostname>` records over the
+  legacy map, so edits to different sites cannot overwrite each other.
+  Changes to the same site share a Web Lock within a browsing session;
+  renames acquire both host locks in sorted order. Private sessions and
+  other synchronized devices have separate lock managers, so same-site
+  conflicts between them remain last-writer-wins.
+- Options pages apply confirmed writes immediately and observe storage
+  changes. Older load responses and failures cannot overwrite newer state.
 
 Load `dist/dev/chrome` or `dist/dev/edge` as an unpacked extension. In Firefox,
 use `about:debugging#/runtime/this-firefox` and load
@@ -66,8 +64,8 @@ listing must preserve the configured Gecko ID on all later updates.
 publishes `website-blocker-<version>-<browser>.zip`, a source ZIP of the tagged
 commit, and `SHA256SUMS.txt`. Store workflows consume those published bytes.
 
-The Edge and Firefox workflows, deploy helpers and their tests are kept
-identical to the shared implementation in the other extension repositories.
+The Edge and Firefox workflows, deploy helpers and their tests follow the
+shared deployment contract used by the other extension repositories.
 Repository-specific values belong in `scripts/deploy/constants.ts`, the
 Release workflow's top-level environment, or GitHub variables and secrets.
 Preserve this boundary when moving the shared code into reusable actions.

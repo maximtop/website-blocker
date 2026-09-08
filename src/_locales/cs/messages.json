@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "cs",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Blokování webů: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Soustřeďte se na práci díky blokování rušivých webů.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Weby, které chcete blokovat, spravujte v nastavení.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Otevřít nastavení"
+    },
+    "optionsTitle": {
+        "message": "Nastavení — Blokování webů: MT"
+    },
+    "blockedTitle": {
+        "message": "Web je zablokován — Blokování webů: MT"
+    },
+    "blockedWebsites": {
+        "message": "Blokování webů"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Zadejte web, který chcete blokovat"
+    },
+    "addWebsite": {
+        "message": "Přidat"
+    },
+    "deleteWebsite": {
+        "message": "Smazat"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Odebrat $WEBSITE$ ze seznamu blokovaných webů",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Nebyly přidány žádné weby."
+    },
+    "blockedHeading": {
+        "message": "Jejda! Tento web je zablokován"
+    },
+    "blockedMessage": {
+        "message": "Soustřeďte se a pokračujte v dobré práci!"
+    },
+    "closeTab": {
+        "message": "Zavřít"
+    },
+    "invalidWebsite": {
+        "message": "Neplatný web: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Web už je v seznamu: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Změny se nepodařilo uložit. Zkuste to znovu."
+    },
+    "loadError": {
+        "message": "Blokované weby se nepodařilo načíst. Zkuste to znovu."
+    },
+    "blockWebsiteLabel": {
+        "message": "Blokovat $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Blokování zapnuto"
+    },
+    "blockingOff": {
+        "message": "Blokování vypnuto"
+    },
+    "missingWebsite": {
+        "message": "Web není v seznamu: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "Upravit"
+    },
+    "saveWebsite": {
+        "message": "Uložit"
+    },
+    "cancelEdit": {
+        "message": "Zrušit"
+    },
+    "editWebsiteLabel": {
+        "message": "Upravit $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

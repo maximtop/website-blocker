@@ -1,40 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { WebsiteList } from '../WebsiteList';
-import { canEditWebsiteSettings, openRegularWebsiteSettings } from '../../../common/settings-context';
-import { getErrorMessage } from '../../../common/utils/error';
+import { t } from '../../../common/i18n';
 
-function RegularWindowPrompt() {
-    const [isOpening, setIsOpening] = useState(false);
-    const [error, setError] = useState('');
-
-    const handleOpenSettings = async () => {
-        setIsOpening(true);
-        try {
-            await openRegularWebsiteSettings();
-            setError('');
-        } catch (ex) {
-            setError(getErrorMessage(ex));
-        } finally {
-            setIsOpening(false);
-        }
-    };
-
-    return (
-        <div>
-            <p>Your website list is shared between regular and private browsing. Edit it in a regular window.</p>
-            {error && <div className="alert alert-danger" role="alert">{error}</div>}
-            <button type="button" className="btn btn-primary" onClick={handleOpenSettings} disabled={isOpening}>
-                Open settings in a regular window
-            </button>
-        </div>
-    );
-}
-
+/**
+ * Renders the options page for managing blocked websites.
+ *
+ * @returns The settings heading and editable website list.
+ */
 export function App() {
     return (
         <div className="container mt-5">
-            <h1 className="mb-4">Website Blocking</h1>
-            {canEditWebsiteSettings() ? <WebsiteList /> : <RegularWindowPrompt />}
+            <h1 className="mb-4">{t('blockedWebsites')}</h1>
+            <WebsiteList />
         </div>
     );
 }
