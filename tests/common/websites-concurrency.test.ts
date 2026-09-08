@@ -99,8 +99,8 @@ describe('website mutations across independent contexts', () => {
         await Promise.all([addingFirst, addingSecond]);
 
         const expected = {
-            'a.example.com': { hostname: 'a.example.com', blockedUntil: NOW + 30 * MINUTE },
-            'b.example.com': { hostname: 'b.example.com', blockedUntil: NOW + 60 * MINUTE },
+            'a.example.com': { hostname: 'a.example.com', enabled: true, blockedUntil: NOW + 30 * MINUTE },
+            'b.example.com': { hostname: 'b.example.com', enabled: true, blockedUntil: NOW + 60 * MINUTE },
         };
         expect(await first.getWebsites()).toEqual(expected);
         expect(await second.getWebsites()).toEqual(expected);
@@ -127,14 +127,16 @@ describe('website mutations across independent contexts', () => {
         );
         await Promise.all([adding, deleting]);
 
-        const expected = { 'new.example.com': { hostname: 'new.example.com', blockedUntil: NOW + 30 * MINUTE } };
+        const expected = {
+            'new.example.com': { hostname: 'new.example.com', enabled: true, blockedUntil: NOW + 30 * MINUTE },
+        };
         expect(await first.getWebsites()).toEqual(expected);
         expect(await second.getWebsites()).toEqual(expected);
         if (legacy) {
             expect(persisted.websites).toEqual(legacyMap);
             expect(persisted['website:old.example.com']).toBeNull();
         } else {
-            expect(persisted).not.toHaveProperty(['website:old.example.com']);
+            expect(persisted['website:old.example.com']).toBeNull();
         }
         expect(browser.storage.sync.set).not.toHaveBeenCalledWith(
             expect.objectContaining({ websites: expect.anything() }),

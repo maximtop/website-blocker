@@ -96,7 +96,9 @@ describe('Websites', () => {
     it('saves a normalized hostname permanently when no duration is supplied', async () => {
         await Websites.addWebsite('https://www.example.com/articles');
 
-        expect(Storage.set).toHaveBeenCalledWith('website:example.com', { hostname: 'example.com' });
+        expect(Storage.set).toHaveBeenCalledWith('website:example.com', {
+            hostname: 'example.com', enabled: true, position: NOW,
+        });
     });
 
     it('persists the absolute expiration for a 30 minute block and preserves active entries', async () => {
@@ -110,7 +112,7 @@ describe('Websites', () => {
         expect(await Websites.getWebsites()).toEqual({
             'permanent.com': { hostname: 'permanent.com' },
             'future.com': { hostname: 'future.com', blockedUntil: NOW + MINUTE },
-            'example.com': { hostname: 'example.com', blockedUntil: NOW + 30 * MINUTE },
+            'example.com': { hostname: 'example.com', enabled: true, blockedUntil: NOW + 30 * MINUTE },
         });
     });
 
@@ -130,8 +132,8 @@ describe('Websites', () => {
 
         expect(await Websites.getWebsites()).toEqual({
             'example.com': duration === undefined
-                ? { hostname: 'example.com' }
-                : { hostname: 'example.com', blockedUntil: NOW + duration * MINUTE },
+                ? { hostname: 'example.com', enabled: true }
+                : { hostname: 'example.com', enabled: true, blockedUntil: NOW + duration * MINUTE },
         });
     });
 
@@ -162,7 +164,7 @@ describe('Websites', () => {
 
     it('deletes only the requested entry and retains expiration data for the others', async () => {
         persisted = {
-            'example.com': { hostname: 'example.com', blockedUntil: NOW + 30 * MINUTE },
+            'example.com': { hostname: 'example.com', enabled: true, blockedUntil: NOW + 30 * MINUTE },
             'future.com': { hostname: 'future.com', blockedUntil: NOW + MINUTE },
             'expired.com': { hostname: 'expired.com', blockedUntil: NOW - 1 },
             'permanent.com': { hostname: 'permanent.com' },
@@ -175,7 +177,9 @@ describe('Websites', () => {
             'permanent.com': { hostname: 'permanent.com' },
         });
         expect(Storage.set).toHaveBeenCalledWith('website:example.com', null);
-        expect(persisted['example.com']).toEqual({ hostname: 'example.com', blockedUntil: NOW + 30 * MINUTE });
+        expect(persisted['example.com']).toEqual({
+            hostname: 'example.com', enabled: true, blockedUntil: NOW + 30 * MINUTE,
+        });
     });
 
     it('overlays per-host entries without falling back to a legacy block after expiry or deletion', async () => {
@@ -201,7 +205,7 @@ describe('Websites', () => {
         expect(Storage.remove).not.toHaveBeenCalled();
     });
 
-    it('deletes a new-format hostname by removing only its key', async () => {
+    it('deletes a new-format hostname with an independent tombstone', async () => {
         overrides = {
             'website:example.com': { hostname: 'example.com', blockedUntil: NOW + MINUTE },
             'website:other.com': { hostname: 'other.com' },
@@ -209,8 +213,8 @@ describe('Websites', () => {
 
         await Websites.deleteWebsite('example.com');
 
-        expect(Storage.remove).toHaveBeenCalledWith('website:example.com');
-        expect(Storage.set).not.toHaveBeenCalled();
+        expect(Storage.set).toHaveBeenCalledExactlyOnceWith('website:example.com', null);
+        expect(Storage.remove).not.toHaveBeenCalled();
         expect(await Websites.getWebsites()).toEqual({ 'other.com': { hostname: 'other.com' } });
     });
 
@@ -223,11 +227,13 @@ describe('Websites', () => {
             await Websites.addWebsite('example.com', 30);
 
             expect(await Websites.getWebsites()).toEqual({
-                'example.com': { hostname: 'example.com', blockedUntil: NOW + 30 * MINUTE },
+                'example.com': { hostname: 'example.com', enabled: true, blockedUntil: NOW + 30 * MINUTE },
             });
             expect(overrides['website:other.com']).toBeNull();
             expect(Storage.set).toHaveBeenCalledExactlyOnceWith('website:example.com', {
                 hostname: 'example.com',
+                enabled: true,
+                position: NOW,
                 blockedUntil: NOW + 30 * MINUTE,
             });
         },
@@ -251,7 +257,7 @@ describe('Websites', () => {
         expect(overrides).toEqual({});
 
         await Websites.addWebsite('example.com', 30);
-        vi.mocked(Storage.remove).mockRejectedValueOnce(new Error('delete failed'));
+        vi.mocked(Storage.set).mockRejectedValueOnce(new Error('delete failed'));
         await expect(Websites.deleteWebsite('example.com')).rejects.toThrow('delete failed');
         expect(await Websites.getWebsites()).toHaveProperty(['example.com']);
 
@@ -261,7 +267,7 @@ describe('Websites', () => {
 
     it('keeps legacy entries until a deletion is saved successfully and permits retry', async () => {
         persisted = { 'example.com': { hostname: 'example.com' } };
-        vi.mocked(Storage.get).mockRejectedValueOnce(new Error('legacy read failed'));
+        vi.mocked(Storage.getAll).mockRejectedValueOnce(new Error('legacy read failed'));
 
         await expect(Websites.deleteWebsite('example.com')).rejects.toThrow('legacy read failed');
         expect(Storage.set).not.toHaveBeenCalled();

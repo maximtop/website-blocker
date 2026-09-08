@@ -4,9 +4,10 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 
 ## Features
 
+- **Timed Blocking:** Choose 15, 30 or 60 minutes, custom whole minutes, or indefinite blocking. Deadlines survive browser restarts.
 - **Block Websites:** Easily block access to distracting websites.
-- **Timed Blocking:** Block a website for 15, 30, or 60 minutes, or enter a custom duration in whole minutes.
-- **Customizable:** Add or remove websites from the blocked list.
+- **Customizable:** Add, edit, or remove websites from the blocked list.
+- **Per-site Control:** Turn blocking off or on for individual websites without removing them from the list.
 - **Persistent Storage:** Blocked websites are saved and loaded from browser storage.
 - **Real-time Updates:** Automatically updates the list of blocked websites when changes are made.
 
@@ -31,15 +32,21 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 5. Load the extension in your browser:
     - Open your browser's extensions page.
     - Enable "Developer mode".
-    - Click "Load unpacked" and select the `dist` directory.
+    - Chrome: click "Load unpacked" and select `dist/dev/chrome`.
+    - Edge: click "Load unpacked" and select `dist/dev/edge`.
+    - Firefox: open `about:debugging#/runtime/this-firefox`, click "Load Temporary Add-on",
+      and select `dist/dev/firefox/manifest.json`.
 
 ## Usage
 
-- Open the extension's options page to add or remove websites from the blocked list.
-- Enter a website, select how long to block it, and click **Add**. **Indefinitely** is selected by default.
-- For a timed block, choose **15 minutes**, **30 minutes**, **60 minutes**, or **Custom duration** and enter a positive whole number of minutes.
-- Timed blocks show their expiry time and end automatically, even when the options page is closed or the browser is restarted. Permanent blocks remain until you delete them.
-- The extension will automatically block access to the specified websites.
+- Choose the blocking duration when adding a site. Timed entries disappear after their deadline.
+- Disabling blocking does not pause its timer; renaming a website preserves its deadline and blocking state.
+
+- Open the extension's options page to add, edit, or remove websites from the blocked list.
+- Click **Edit** next to a website to change its address, then **Save** (or press Enter). Click **Cancel** (or press Escape) to discard the change. Invalid addresses and duplicates leave the original entry unchanged.
+- Editing an address preserves its blocking switch setting.
+- Use the switch next to a website to turn blocking off or on. Disabled websites stay in the list for later.
+- The extension will automatically block access to websites whose switches are on. Your choices are saved across restarts.
 
 ## Download
 
@@ -57,9 +64,25 @@ To lint the code:
 pnpm lint
 ```
 
+ESLint checks both TypeScript and TSX files. Source classes, methods, functions,
+named arrow functions, exported variables, interfaces, type aliases, and their
+type properties and methods require descriptive multiline JSDoc. Describe
+parameters and returned values; keep types in TypeScript. Anonymous callbacks
+passed to hooks, event handlers, and array methods do not need separate blocks.
+
+Run `pnpm check` for lint, type checking, and tests, then `pnpm release` to verify
+the production build before submitting a change.
+
+Build an individual browser with `pnpm build chrome`, `pnpm build edge`, or
+`pnpm build firefox`. Run `pnpm check` for lint, TypeScript and tests. See
+[DEVELOPMENT.md](DEVELOPMENT.md) for browser differences and build instructions.
+
 ## Releasing
 
-Tagged releases publish a GitHub Release with the store archive and checksums; store submission is a separate manual workflow. See [docs/RELEASE.md](docs/RELEASE.md) for the release process, store configuration, and the failure playbook.
+Tagged releases publish Chrome, Edge and Firefox archives, matching source,
+and SHA-256 checksums in one GitHub Release. Each store has a separate manual
+deployment workflow. See [docs/RELEASE.md](docs/RELEASE.md) for first-time store
+setup, deployment modes and the failure playbook.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.

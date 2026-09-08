@@ -2,7 +2,15 @@ import React from 'react';
 import browser from 'webextension-polyfill';
 
 // TODO change the content of the popup depending on whether the site is blocked or not.
+/**
+ * Renders the extension popup with a link to website settings.
+ *
+ * @returns The popup content.
+ */
 export function App() {
+    /**
+     * Opens the options page in response to the settings button.
+     */
     const handleClick = () => {
         browser.runtime.openOptionsPage();
     };

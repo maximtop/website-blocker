@@ -24,7 +24,7 @@
     "build": "ts-node ./scripts/build/index.ts",
     "release": "cross-env BUILD_ENV=release ts-node ./scripts/build/index.ts",
     "start": "ts-node ./scripts/build/index.ts --watch",
-    "lint": "eslint . --ext .ts && tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx && tsc --noEmit",
     "test": "vitest run",
     "check": "pnpm lint && pnpm test"
   },
@@ -66,6 +66,7 @@
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-plugin-import": "^2.30.0",
     "eslint-plugin-import-newlines": "^1.4.0",
+    "eslint-plugin-jsdoc": "63.3.3",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.37.2",

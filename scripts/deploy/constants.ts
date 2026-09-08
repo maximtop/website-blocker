@@ -1,6 +1,5 @@
 /**
- * @file Store deployment constants of this repository. Every other file under scripts/deploy
- * and tests/deploy is identical across the extension repositories; only this file differs.
+ * @file Repository-specific values for the shared extension deployment contract.
  */
 
 /**
@@ -12,7 +11,7 @@ export const RELEASE_ASSET_PREFIX = 'website-blocker';
 /**
  * Stores this extension is deployed to; each one has a deploy-<store>.yml workflow.
  */
-export const STORE_TARGETS = ['chrome'] as const;
+export const STORE_TARGETS = ['chrome', 'edge', 'firefox'] as const;
 
 /**
  * Store this repository can deploy to.
@@ -22,12 +21,22 @@ export type StoreTarget = typeof STORE_TARGETS[number];
 /**
  * Firefox add-on ID (`browser_specific_settings.gecko.id`); empty when Firefox is not a target.
  */
-export const GECKO_ID = '';
+export const GECKO_ID = 'website-blocker@maximtop.dev';
 
 /**
  * Files the Firefox source archive must contain; unused when Firefox is not a target.
  */
-export const SOURCE_REQUIRED_FILES = ['package.json', 'pnpm-lock.yaml', 'src/manifest.json'];
+export const SOURCE_REQUIRED_FILES = [
+    'package.json',
+    'pnpm-lock.yaml',
+    'pnpm-workspace.yaml',
+    'tsconfig.json',
+    '.swcrc',
+    'src/manifest.json',
+    'scripts/build/index.ts',
+    'scripts/build/webpack.common.ts',
+    'DEVELOPMENT.md',
+];
 
 /**
  * Reviewer notes inside the source archive, submitted to AMO with every new Firefox version.

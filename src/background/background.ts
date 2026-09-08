@@ -16,11 +16,13 @@ let needsRefresh = true;
  */
 function isBlocked(url: string): boolean {
     const normalizedHostname = getHostname(url);
-    return isWebsiteBlocked(blockedWebsites[normalizedHostname]);
+    return normalizedHostname !== null && isWebsiteBlocked(blockedWebsites[normalizedHostname]);
 }
 
 /**
- * Updates the list of blocked websites from storage.
+ * Updates the cached list while ignoring results superseded by a newer read.
+ *
+ * @returns Resolves after handling either the storage response or its error.
  */
 function updateBlockedWebsites() {
     loadRequest += 1;
@@ -50,6 +52,11 @@ function updateBlockedWebsites() {
     return updatePromise;
 }
 
+/**
+ * Waits for the current refresh and any newer refresh that supersedes it.
+ *
+ * @returns Resolves once all currently relevant reads have settled.
+ */
 async function waitForUpdates() {
     // A storage event can start a newer read while navigation awaits an older one.
     while (blockedWebsitesPromise) {
@@ -58,6 +65,12 @@ async function waitForUpdates() {
     }
 }
 
+/**
+ * Loads current blocking preferences and redirects matching top-level navigation.
+ *
+ * @param details - Committed browser navigation to check.
+ * @returns Resolves after any required refresh and redirect.
+ */
 const handleOnCommitted = async (
     details: browser.WebNavigation.OnCommittedDetailsType,
 ) => {
@@ -75,8 +88,7 @@ const handleOnCommitted = async (
 
     // Check if the navigation is not in prerender state
     if (
-        // @ts-ignore
-        details.frameType === 'outermost_frame'
+        details.frameId === 0
         // @ts-ignore
         && details.documentLifecycle !== 'prerender'
         && isBlocked(details.url)
@@ -87,6 +99,9 @@ const handleOnCommitted = async (
     }
 };
 
+/**
+ * Registers browser lifecycle, storage and navigation listeners.
+ */
 const syncInit = () => {
     browser.runtime.onInstalled.addListener(updateBlockedWebsites);
     browser.runtime.onStartup.addListener(updateBlockedWebsites);
@@ -95,6 +110,9 @@ const syncInit = () => {
     browser.webNavigation.onCommitted.addListener(handleOnCommitted, { url: [{ schemes: ['http', 'https'] }] });
 };
 
+/**
+ * Starts listeners and the first handled storage refresh.
+ */
 const init = () => {
     syncInit();
     updateBlockedWebsites();
