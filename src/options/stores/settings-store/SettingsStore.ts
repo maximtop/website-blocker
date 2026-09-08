@@ -6,14 +6,18 @@ import {
 } from 'mobx';
 
 import { type RootStore } from '../root-store';
-import { Websites, WebsitesMap } from '../../../common/websites';
+import { isWebsiteBlocked, Websites, WebsitesMap } from '../../../common/websites';
 
 export class SettingsStore {
     private rootStore: RootStore;
 
     @observable websites: WebsitesMap = {};
 
-    @observable newWebsite: string = '';
+    @observable isLoading = true;
+
+    @observable private currentTime = Date.now();
+
+    private loadRequest = 0;
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
@@ -21,14 +25,57 @@ export class SettingsStore {
     }
 
     async loadWebsites() {
-        const websites = await Websites.getWebsites();
-        runInAction(() => {
-            this.websites = websites;
-        });
+        this.loadRequest += 1;
+        const request = this.loadRequest;
+        try {
+            const websites = await Websites.getWebsites();
+            runInAction(() => {
+                if (request === this.loadRequest) {
+                    this.websites = websites;
+                    this.currentTime = Date.now();
+                }
+            });
+        } finally {
+            runInAction(() => {
+                if (request === this.loadRequest) {
+                    this.isLoading = false;
+                }
+            });
+        }
     }
 
-    async addNewWebsite(value: string) {
-        await Websites.addWebsite(value);
+    watchWebsites(onError: (error: unknown) => void) {
+        let disposed = false;
+        const reload = () => {
+            this.loadWebsites().catch((error: unknown) => {
+                if (!disposed) {
+                    onError(error);
+                }
+            });
+        };
+        const handleStorageChange = (changes: Record<string, unknown>) => {
+            if (Websites.isWebsiteChange(changes)) {
+                reload();
+            }
+        };
+
+        Websites.onChanged.addListener(handleStorageChange);
+        const timer = window.setInterval(() => {
+            runInAction(() => {
+                this.currentTime = Date.now();
+            });
+        }, 1000);
+        reload();
+
+        return () => {
+            disposed = true;
+            window.clearInterval(timer);
+            Websites.onChanged.removeListener(handleStorageChange);
+        };
+    }
+
+    async addNewWebsite(value: string, durationMinutes?: number) {
+        await Websites.addWebsite(value, durationMinutes);
         await this.loadWebsites();
     }
 
@@ -40,6 +87,6 @@ export class SettingsStore {
     @computed
     get websitesList() {
         return Object.values(this.websites)
-            .map((website) => website.hostname);
+            .filter((website) => isWebsiteBlocked(website, this.currentTime));
     }
 }

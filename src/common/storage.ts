@@ -12,5 +12,13 @@ export class Storage {
         return Storage.storage.set({ [key]: value });
     }
 
+    public static async getAll(): Promise<Record<string, unknown>> {
+        return Storage.storage.get(null);
+    }
+
+    public static async remove(key: string): Promise<void> {
+        await Storage.storage.remove(key);
+    }
+
     public static onChanged = Storage.storage.onChanged;
 }

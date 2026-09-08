@@ -5,6 +5,7 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 ## Features
 
 - **Block Websites:** Easily block access to distracting websites.
+- **Timed Blocking:** Block a website for 15, 30, or 60 minutes, or enter a custom duration in whole minutes.
 - **Customizable:** Add or remove websites from the blocked list.
 - **Persistent Storage:** Blocked websites are saved and loaded from browser storage.
 - **Real-time Updates:** Automatically updates the list of blocked websites when changes are made.
@@ -35,6 +36,9 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 ## Usage
 
 - Open the extension's options page to add or remove websites from the blocked list.
+- Enter a website, select how long to block it, and click **Add**. **Indefinitely** is selected by default.
+- For a timed block, choose **15 minutes**, **30 minutes**, **60 minutes**, or **Custom duration** and enter a positive whole number of minutes.
+- Timed blocks show their expiry time and end automatically, even when the options page is closed or the browser is restarted. Permanent blocks remain until you delete them.
 - The extension will automatically block access to the specified websites.
 
 ## Download
