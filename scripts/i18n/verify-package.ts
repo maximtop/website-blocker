@@ -5,6 +5,7 @@ import AdmZip from 'adm-zip';
 import { Browser, BROWSERS } from '../build/constants';
 import {
     Catalog,
+    CHROMIUM_LOCALE_ALIAS,
     LOCALES,
     LOCALES_PATH,
     validateCatalog,
@@ -19,7 +20,7 @@ BROWSERS.forEach((browser) => {
     }
     const packaged = archive.getEntries().map((entry) => entry.entryName)
         .filter((name) => /^_locales\/[^/]+\/messages\.json$/.test(name)).sort();
-    const locales = browser === Browser.Firefox ? LOCALES : [...LOCALES, 'no'];
+    const locales = browser === Browser.Firefox ? LOCALES : [...LOCALES, CHROMIUM_LOCALE_ALIAS.target];
     const expected = locales.map((locale) => `_locales/${locale}/messages.json`).sort();
     if (JSON.stringify(packaged) !== JSON.stringify(expected)) {
         throw new Error(`${browser}: release ZIP does not contain the expected locales`);
@@ -34,9 +35,12 @@ BROWSERS.forEach((browser) => {
             throw new Error(`${browser}: packaged catalog differs from source: ${locale}`);
         }
     });
-    if (browser !== Browser.Firefox
-        && archive.readAsText('_locales/no/messages.json') !== archive.readAsText('_locales/nb/messages.json')) {
-        throw new Error(`${browser}: Norwegian no alias must exactly match nb`);
+    if (browser !== Browser.Firefox) {
+        const { source, target } = CHROMIUM_LOCALE_ALIAS;
+        if (archive.readAsText(`_locales/${target}/messages.json`)
+            !== archive.readAsText(`_locales/${source}/messages.json`)) {
+            throw new Error(`${browser}: Norwegian ${target} alias must exactly match ${source}`);
+        }
     }
     process.stdout.write(`Verified ${browser} ZIP: 40 complete languages in ${locales.length} directories.\n`);
 });

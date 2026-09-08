@@ -8,7 +8,13 @@ export const LOCALES = [
     'ar', 'bg', 'bn', 'ca', 'cs', 'da', 'de', 'el', 'en', 'es', 'es_419', 'fa', 'fi', 'fil',
     'fr', 'he', 'hi', 'hr', 'hu', 'id', 'it', 'ja', 'ko', 'ms', 'nb', 'nl', 'pl', 'pt_BR',
     'pt_PT', 'ro', 'ru', 'sk', 'sr', 'sv', 'th', 'tr', 'uk', 'vi', 'zh_CN', 'zh_TW',
-];
+] as const;
+
+/** Chromium requires a Norwegian catalog alias in addition to the shared source locale. */
+export const CHROMIUM_LOCALE_ALIAS = {
+    source: 'nb',
+    target: 'no',
+} as const satisfies { source: typeof LOCALES[number]; target: string };
 
 export type Catalog = Record<string, {
     message: string;

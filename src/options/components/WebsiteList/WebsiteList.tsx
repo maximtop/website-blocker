@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite';
 import { RootStoreContext } from '../../stores/root-store';
 import { getErrorMessage } from '../../../common/utils/error';
 import { t } from '../../../common/i18n';
+import { WebsiteError } from '../../../common/website-error';
 
 export const WebsiteList = observer(() => {
     const { settingsStore } = useContext(RootStoreContext);
@@ -20,7 +21,12 @@ export const WebsiteList = observer(() => {
     const isSavingRef = useRef(false);
 
     useEffect(() => {
-        settingsStore.loadWebsites().catch(() => setError(t('loadError')));
+        settingsStore.loadWebsites().catch((ex: unknown) => {
+            // Keep the original browser failure available for local troubleshooting.
+            // eslint-disable-next-line no-console
+            console.error('Failed to load websites', ex);
+            setError(t('loadError'));
+        });
     }, [settingsStore]);
 
     const handleNewWebsiteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +43,11 @@ export const WebsiteList = observer(() => {
             await update();
             setError('');
         } catch (ex) {
+            if (!(ex instanceof WebsiteError)) {
+                // Expected input errors stay in the UI; preserve unexpected failures for diagnosis.
+                // eslint-disable-next-line no-console
+                console.error('Failed to save websites', ex);
+            }
             setError(getErrorMessage(ex));
         } finally {
             isSavingRef.current = false;

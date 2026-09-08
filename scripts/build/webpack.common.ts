@@ -15,6 +15,7 @@ import {
 
 import { getEnvConf } from './helpers';
 import { updateManifest } from './manifest';
+import { CHROMIUM_LOCALE_ALIAS, LOCALES_PATH } from '../i18n/catalogs';
 
 const config = getEnvConf(BUILD_ENV);
 
@@ -100,13 +101,12 @@ export const genCommonConfig = (
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: path.resolve(__dirname, '../../src/_locales'),
+                        from: LOCALES_PATH,
                         to: '_locales',
                     },
                     ...(browserConfig.browser === Browser.Firefox ? [] : [{
-                        // Chromium's store uses no for the Norwegian Bokmal catalog.
-                        from: path.resolve(__dirname, '../../src/_locales/nb'),
-                        to: '_locales/no',
+                        from: path.join(LOCALES_PATH, CHROMIUM_LOCALE_ALIAS.source),
+                        to: `_locales/${CHROMIUM_LOCALE_ALIAS.target}`,
                     }]),
                     {
                         from: path.resolve(__dirname, '../../src/assets'),

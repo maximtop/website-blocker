@@ -1,10 +1,23 @@
 /** Browser-selected translations shared by all extension pages. */
 import browser from 'webextension-polyfill';
 import english from '../_locales/en/messages.json';
+import type { WebsiteErrorCode } from './website-error';
 
 export type MessageKey = keyof typeof english;
-type WebsiteMessageKey = 'deleteWebsiteLabel' | 'blockWebsiteLabel'
-| 'invalidWebsite' | 'duplicateWebsite' | 'missingWebsite';
+type WebsiteMessageKey = 'deleteWebsiteLabel' | 'blockWebsiteLabel' | WebsiteErrorCode;
+
+export const PAGE_TITLE = {
+    Popup: 'extensionName',
+    Options: 'optionsTitle',
+    Blocked: 'blockedTitle',
+} as const satisfies Record<string, MessageKey>;
+
+export type PageTitle = typeof PAGE_TITLE[keyof typeof PAGE_TITLE];
+
+export const DOCUMENT_DIRECTION = {
+    LTR: 'ltr',
+    RTL: 'rtl',
+} as const;
 
 /** Resolve the actual catalog, including when the browser falls back to English. */
 export const currentLocale = (): string => {
@@ -26,12 +39,12 @@ export function t(key: MessageKey, website?: string): string {
 
 /** Apply language, direction and translated title before rendering a page. */
 export const applyDocumentLocale = (
-    title: 'extensionName' | 'optionsTitle' | 'blockedTitle',
+    title: PageTitle,
     target: Document = document,
 ): void => {
     const locale = currentLocale();
     const page = target;
     page.documentElement.lang = locale;
-    page.documentElement.dir = /^(ar|fa|he)(-|$)/.test(locale) ? 'rtl' : 'ltr';
+    page.documentElement.dir = /^(ar|fa|he)(-|$)/.test(locale) ? DOCUMENT_DIRECTION.RTL : DOCUMENT_DIRECTION.LTR;
     page.title = t(title);
 };

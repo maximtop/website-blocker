@@ -2,14 +2,14 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './components/App';
 import { RootStore, RootStoreContext } from './stores/root-store';
-import { applyDocumentLocale } from '../common/i18n';
+import { applyDocumentLocale, PAGE_TITLE } from '../common/i18n';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../common/styles.css';
 
 export const options = {
     init: () => {
-        applyDocumentLocale('optionsTitle');
+        applyDocumentLocale(PAGE_TITLE.Options);
         const container = document.getElementById('root');
         if (!container) {
             throw new Error('Options page root is missing');

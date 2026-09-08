@@ -1,6 +1,6 @@
 import { Storage } from './storage';
 import { getHostname } from './utils/url';
-import { WebsiteError } from './website-error';
+import { WEBSITE_ERROR_CODE, WebsiteError } from './website-error';
 
 export type Website = {
     hostname: string;
@@ -15,12 +15,12 @@ export class Websites {
     public static async addWebsite(rawWebsite: string): Promise<void> {
         const hostname = getHostname(rawWebsite);
         if (!hostname) {
-            throw new WebsiteError('invalidWebsite', rawWebsite);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Invalid, rawWebsite);
         }
 
         const websites = await Storage.get(Websites.STORAGE_KEY) as WebsitesMap || {};
         if (websites[hostname]) {
-            throw new WebsiteError('duplicateWebsite', websites[hostname].hostname);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Duplicate, websites[hostname].hostname);
         }
         websites[hostname] = { hostname, enabled: true };
 
@@ -37,7 +37,7 @@ export class Websites {
         const websites = await Websites.getWebsites();
         const website = websites[hostname];
         if (!website) {
-            throw new WebsiteError('missingWebsite', hostname);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Missing, hostname);
         }
 
         websites[hostname] = { ...website, enabled };

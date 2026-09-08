@@ -8,7 +8,14 @@ import {
 import english from '../../src/_locales/en/messages.json';
 import arabic from '../../src/_locales/ar/messages.json';
 import russian from '../../src/_locales/ru/messages.json';
-import { applyDocumentLocale, currentLocale, t } from '../../src/common/i18n';
+import {
+    applyDocumentLocale,
+    currentLocale,
+    DOCUMENT_DIRECTION,
+    PAGE_TITLE,
+    t,
+} from '../../src/common/i18n';
+import { WEBSITE_ERROR_CODE } from '../../src/common/website-error';
 import { Websites } from '../../src/common/websites';
 import { getErrorMessage } from '../../src/common/utils/error';
 
@@ -38,7 +45,7 @@ beforeEach(() => {
 describe('browser-selected translations', () => {
     it('uses the selected catalog rather than the requested browser language', () => {
         const target = page();
-        applyDocumentLocale('optionsTitle', target as unknown as Document);
+        applyDocumentLocale(PAGE_TITLE.Options, target as unknown as Document);
         expect(currentLocale()).toBe('en');
         expect(target).toEqual({
             documentElement: { lang: 'en', dir: 'ltr' }, title: english.optionsTitle.message,
@@ -48,7 +55,7 @@ describe('browser-selected translations', () => {
     it('applies RTL direction and translated page titles for the Arabic catalog', () => {
         selectCatalog(arabic);
         const target = page();
-        applyDocumentLocale('blockedTitle', target as unknown as Document);
+        applyDocumentLocale(PAGE_TITLE.Blocked, target as unknown as Document);
         expect(target.documentElement).toEqual({ lang: 'ar', dir: 'rtl' });
         expect(target.title).toBe(arabic.blockedTitle.message);
     });
@@ -58,9 +65,11 @@ describe('browser-selected translations', () => {
         (locale) => {
             selectCatalog({ ...english, catalogLocale: { message: locale } });
             const target = page();
-            applyDocumentLocale('extensionName', target as unknown as Document);
+            applyDocumentLocale(PAGE_TITLE.Popup, target as unknown as Document);
             expect(target.documentElement.lang).toBe(locale);
-            expect(target.documentElement.dir).toBe(['fa', 'he'].includes(locale) ? 'rtl' : 'ltr');
+            expect(target.documentElement.dir).toBe(
+                ['fa', 'he'].includes(locale) ? DOCUMENT_DIRECTION.RTL : DOCUMENT_DIRECTION.LTR,
+            );
         },
     );
 
@@ -68,7 +77,7 @@ describe('browser-selected translations', () => {
         mocks.getMessage.mockReturnValue('');
         expect(currentLocale()).toBe('en');
         expect(t('openSettings')).toBe('Open settings');
-        expect(t('invalidWebsite', '$&.example')).toBe('Invalid website: \u2068$&.example\u2069');
+        expect(t(WEBSITE_ERROR_CODE.Invalid, '$&.example')).toBe('Invalid website: \u2068$&.example\u2069');
     });
 
     it('isolates technical values inside RTL messages', () => {
