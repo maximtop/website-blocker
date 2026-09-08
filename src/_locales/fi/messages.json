@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "fi",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Sivustojen esto: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Säilytä keskittymiskykysi estämällä häiritsevät sivustot.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Hallitse estettäviä sivustoja asetuksissa.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Avaa asetukset"
+    },
+    "optionsTitle": {
+        "message": "Asetukset — Sivustojen esto: MT"
+    },
+    "blockedTitle": {
+        "message": "Sivusto estetty — Sivustojen esto: MT"
+    },
+    "blockedWebsites": {
+        "message": "Sivustojen esto"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Anna estettävä sivusto"
+    },
+    "addWebsite": {
+        "message": "Lisää"
+    },
+    "deleteWebsite": {
+        "message": "Poista"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Poista $WEBSITE$ estolistalta",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Sivustoja ei ole lisätty."
+    },
+    "blockedHeading": {
+        "message": "Hups! Tämä sivusto on estetty"
+    },
+    "blockedMessage": {
+        "message": "Pysy keskittyneenä ja jatka samaan malliin!"
+    },
+    "closeTab": {
+        "message": "Sulje"
+    },
+    "invalidWebsite": {
+        "message": "Virheellinen sivusto: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Sivusto on jo listalla: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Muutoksia ei voitu tallentaa. Yritä uudelleen."
+    },
+    "loadError": {
+        "message": "Estettyjä sivustoja ei voitu ladata. Yritä uudelleen."
+    },
+    "blockWebsiteLabel": {
+        "message": "Estä $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Esto käytössä"
+    },
+    "blockingOff": {
+        "message": "Esto pois käytöstä"
+    },
+    "missingWebsite": {
+        "message": "Sivusto ei ole listalla: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "Muokkaa"
+    },
+    "saveWebsite": {
+        "message": "Tallenna"
+    },
+    "cancelEdit": {
+        "message": "Peruuta"
+    },
+    "editWebsiteLabel": {
+        "message": "Muokkaa sivustoa $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

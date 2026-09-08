@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "tr",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Web Sitesi Engelleyici: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Dikkatinizi dağıtan web sitelerini engelleyerek odaklanın.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Engellemek istediğiniz web sitelerini ayarlardan yönetin.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Ayarları aç"
+    },
+    "optionsTitle": {
+        "message": "Ayarlar — Web Sitesi Engelleyici: MT"
+    },
+    "blockedTitle": {
+        "message": "Web sitesi engellendi — Web Sitesi Engelleyici: MT"
+    },
+    "blockedWebsites": {
+        "message": "Web sitesi engelleme"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Engellenecek bir web sitesi girin"
+    },
+    "addWebsite": {
+        "message": "Ekle"
+    },
+    "deleteWebsite": {
+        "message": "Sil"
+    },
+    "deleteWebsiteLabel": {
+        "message": "$WEBSITE$ sitesini engelleme listesinden kaldır",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Eklenen web sitesi yok."
+    },
+    "blockedHeading": {
+        "message": "Hay aksi! Bu web sitesi engellendi"
+    },
+    "blockedMessage": {
+        "message": "Odaklanın ve böyle devam edin!"
+    },
+    "closeTab": {
+        "message": "Kapat"
+    },
+    "invalidWebsite": {
+        "message": "Geçersiz web sitesi: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Web sitesi zaten listede: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Değişiklikleriniz kaydedilemedi. Lütfen tekrar deneyin."
+    },
+    "loadError": {
+        "message": "Engellenen web siteleri yüklenemedi. Lütfen tekrar deneyin."
+    },
+    "blockWebsiteLabel": {
+        "message": "$WEBSITE$ sitesini engelle",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Engelleme açık"
+    },
+    "blockingOff": {
+        "message": "Engelleme kapalı"
+    },
+    "missingWebsite": {
+        "message": "Web sitesi listede değil: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "Düzenle"
+    },
+    "saveWebsite": {
+        "message": "Kaydet"
+    },
+    "cancelEdit": {
+        "message": "İptal"
+    },
+    "editWebsiteLabel": {
+        "message": "$WEBSITE$ sitesini düzenle",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

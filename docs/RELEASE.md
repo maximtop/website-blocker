@@ -183,9 +183,14 @@ build requirements change.
 
 The saved Website Blocker listing slug is `website-blocker-mt`. Complete that
 first listing in Developer Hub with the Firefox archive and matching source
-archive; the saved draft has not yet been submitted. [FIREFOX_LISTING.md](FIREFOX_LISTING.md)
-contains its listing copy and reviewer details. Use release `1.2.8` or later;
-do not upload a Chrome archive to AMO.
+archive; the saved draft has not yet been submitted and contains an older
+English-only build. Before submitting it, refresh its package, matching source,
+reviewer notes and listing metadata from the current release.
+[FIREFOX_LISTING.md](FIREFOX_LISTING.md) contains the Firefox-specific copy,
+privacy details and a link to the complete 40-locale pack in
+[STORE_DESCRIPTIONS.md](store/STORE_DESCRIPTIONS.md). Preserve all locales and
+review the newer timed-blocking behavior and its current English-only controls.
+Use release `1.2.8` or later; do not upload a Chrome archive to AMO.
 
 Set `FIREFOX_AMO_ID` to the saved listing slug or numeric ID, not the manifest's
 Gecko ID (`website-blocker@maximtop.dev`). The preflight checks that the listing

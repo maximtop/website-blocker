@@ -32,6 +32,10 @@ jobs:
         run: pnpm check
       - name: Build release extensions
         run: pnpm release
+      - name: Verify packaged translations
+        run: pnpm locales:verify-package
+      - name: Generate all store descriptions
+        run: pnpm store:descriptions
       - name: Verify built manifests
         run: |
           set -euo pipefail

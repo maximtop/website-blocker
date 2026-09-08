@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "bn",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "ওয়েবসাইট ব্লকার: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "মনোযোগে ব্যাঘাত ঘটায় এমন ওয়েবসাইট ব্লক করে কাজে মন দিন।",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "যেসব ওয়েবসাইট ব্লক করতে চান, সেগুলো সেটিংস থেকে পরিচালনা করুন।",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "সেটিংস খুলুন"
+    },
+    "optionsTitle": {
+        "message": "সেটিংস — ওয়েবসাইট ব্লকার: MT"
+    },
+    "blockedTitle": {
+        "message": "ওয়েবসাইট ব্লক করা হয়েছে — ওয়েবসাইট ব্লকার: MT"
+    },
+    "blockedWebsites": {
+        "message": "ওয়েবসাইট ব্লক করা"
+    },
+    "websiteInputPlaceholder": {
+        "message": "ব্লক করার জন্য একটি ওয়েবসাইট লিখুন"
+    },
+    "addWebsite": {
+        "message": "যোগ করুন"
+    },
+    "deleteWebsite": {
+        "message": "মুছুন"
+    },
+    "deleteWebsiteLabel": {
+        "message": "ব্লক তালিকা থেকে $WEBSITE$ সরান",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "কোনো ওয়েবসাইট যোগ করা হয়নি।"
+    },
+    "blockedHeading": {
+        "message": "ওহ! এই ওয়েবসাইটটি ব্লক করা আছে"
+    },
+    "blockedMessage": {
+        "message": "মনোযোগ ধরে রাখুন এবং ভালো কাজ চালিয়ে যান!"
+    },
+    "closeTab": {
+        "message": "বন্ধ করুন"
+    },
+    "invalidWebsite": {
+        "message": "ওয়েবসাইটের ঠিকানা সঠিক নয়: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "ওয়েবসাইটটি ইতিমধ্যেই তালিকায় আছে: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "আপনার পরিবর্তনগুলো সংরক্ষণ করা যায়নি। আবার চেষ্টা করুন।"
+    },
+    "loadError": {
+        "message": "ব্লক করা ওয়েবসাইটগুলো লোড করা যায়নি। আবার চেষ্টা করুন।"
+    },
+    "blockWebsiteLabel": {
+        "message": "$WEBSITE$ ব্লক করুন",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "ব্লকিং চালু"
+    },
+    "blockingOff": {
+        "message": "ব্লকিং বন্ধ"
+    },
+    "missingWebsite": {
+        "message": "ওয়েবসাইটটি তালিকায় নেই: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "সম্পাদনা"
+    },
+    "saveWebsite": {
+        "message": "সংরক্ষণ"
+    },
+    "cancelEdit": {
+        "message": "বাতিল"
+    },
+    "editWebsiteLabel": {
+        "message": "$WEBSITE$ সম্পাদনা করুন",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

@@ -177,3 +177,4 @@ dist
 
 # Store deployment downloads (deploy-*.yml)
 store-upload/
+build/store-descriptions/

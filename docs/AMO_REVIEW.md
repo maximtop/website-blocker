@@ -1,7 +1,10 @@
 # Firefox reviewer instructions
 
 Website Blocker: MT blocks the hostnames the user adds in its options page,
-opened through the toolbar popup. No account, payment, or external service is required.
+opened through the toolbar popup. Users can add, edit, remove and enable or
+disable individual entries. Blocking can last indefinitely, for 15, 30 or 60
+minutes, or for a custom positive whole number of minutes. No account,
+payment, or external service is required.
 
 ## Reproduce the package
 
@@ -31,26 +34,73 @@ The build uses TypeScript, React, SWC, and webpack. Dependencies are bundled;
 no remote scripts or executable code are loaded. Release JavaScript is not
 minified, but it is generated, so the original source is attached.
 
+The source includes all 40 locale catalogs in `src/_locales/`; the Firefox
+package includes all 40. English is the default, and Arabic, Persian and Hebrew
+use right-to-left layouts. The popup, blocked page and existing website controls
+follow the browser's language. The newer duration controls, duration errors and
+loading message currently remain in English. The complete locale list and
+package checks are documented in [README.md](../README.md#translations).
+
 ## Test the behavior
 
+The button names below use the English interface; localized labels have the
+same behavior. These are reviewer test instructions, not a record of a completed
+manual Firefox test.
+
 1. Install the Firefox package in Firefox 140 or newer on desktop.
-2. Open the toolbar popup, click "settings", and add `example.com` to the block list.
+2. Open the toolbar popup, click **Open settings**, leave **Block for** set to
+   **Indefinitely**, and add `example.com` to the block list.
 3. Open `https://example.com/` in a new tab. It should redirect to the packaged
    page saying "Oops! This website is blocked".
 4. Open an unrelated website. It should remain accessible. Subframe navigation
    should not redirect its containing tab.
-5. Open the extension's options page and switch `example.com` off. The site
-   should load normally while its entry remains saved. Switch it back on and
-   confirm blocking resumes. Delete the entry and confirm the site loads again.
-6. With a persistent/signed installation, add it again and restart the browser.
-   The saved block list should still apply. A temporary `about:debugging`
-   installation is removed when Firefox closes and cannot test this step.
-7. If testing private windows, first allow the extension in private windows
-   through Firefox's add-on settings. Without that permission it does not
-   operate in private windows.
+5. Switch `example.com` off and reload the site. It should load normally while
+   its entry remains saved. Switch it back on and reload to confirm blocking.
+6. Click **Edit** for `example.com`. Its address should be selected. Change it
+   to `example.org` and click **Save**. The old site should load and the new one
+   should be blocked. Reopen settings to confirm the edit persisted. Editing
+   without changing the address and pressing Enter should close the form.
+7. Edit the entry and change the draft, then click **Cancel**. The saved address
+   must remain unchanged. Repeat with Escape while focus is on the input,
+   **Save**, and **Cancel**. Each should discard the draft.
+8. Add `example.com` as a second entry. Try editing `example.org` to an empty
+   value, `not a domain`, and `example.com`. Each should show an inline error
+   and preserve the saved entries. Cancel the edit. Switch `example.org` off,
+   rename it to `example.net`, and confirm its switch remains off after reopening
+   settings. Switch it on and confirm `example.net` is blocked.
+9. Delete these test entries. Add `example.com` with **Custom duration** set
+   to **1** minute. Confirm the displayed deadline and blocking before it.
+   After the deadline, the entry should disappear from the visible list and
+   a new navigation or reload of `example.com` should load normally.
+10. Repeat with a two-minute entry. Switch it off and back on, then rename it.
+    Its original deadline must remain unchanged. A disabled timed entry should
+    still expire at that deadline. The duration selector affects newly added
+    sites; it does not change an existing entry's deadline.
+11. Select **Custom duration** and try zero, a negative value and a fractional
+    minute. The form must reject them without adding an entry. Check that the
+    15-, 30- and 60-minute presets show the corresponding deadlines.
+12. With a persistent/signed installation, add an indefinite entry and a timed
+    entry, note their switches and deadline, then restart Firefox. The entries
+    and switches should persist; the timed entry keeps its original deadline
+    and is absent if it expired while Firefox was closed. A temporary
+    `about:debugging` installation is removed when Firefox closes and cannot
+    test this step.
+13. Remove an indefinite entry and confirm the site loads again.
+14. Check the popup, options page and blocked page in a non-English browser
+    language, including a right-to-left language. Translated controls should
+    use the selected catalog without raw message keys. Duration controls,
+    duration errors and the loading message are currently English.
+15. If testing private windows, first allow the extension in private windows
+    through Firefox's add-on settings. Without that permission it does not
+    operate in private windows.
 
 Adding an already-open site's hostname does not redirect that tab until it
-navigates or reloads.
+navigates or reloads. Expiration stops future redirects; it does not automatically
+restore a tab already showing the blocked page. Deadlines use the browser's
+wall clock, continue while the browser is closed and are not paused by turning
+a site's blocking switch off. Renaming preserves the deadline, switch and list
+position. Expired entries are excluded from the visible list; expiration does
+not immediately erase their underlying sync-storage records.
 
 Blocking uses hostname matching with an optional `www.` prefix removed. Other
 subdomains require their own entries. Navigation is redirected after it commits;
@@ -64,9 +114,10 @@ this is a focus tool, not a network firewall or parental-control security bounda
   `tabs.update` does not require the `tabs` permission; sensitive tab fields
   are not read and that permission is not requested. No content scripts or
   host permissions are requested.
-- `storage`: save the user-configured block list in `browser.storage.sync`.
-  Firefox may synchronize this setting between the user's browsers when
-  Firefox Sync is enabled. The developer does not receive the block list.
+- `storage`: save hostnames, enabled/disabled settings, optional expiration
+  timestamps and list-order metadata in `browser.storage.sync`. Firefox may
+  synchronize these settings between the user's browsers when Firefox Sync is
+  enabled. The developer does not receive the block list or its preferences.
 - `blocked.html` is web-accessible so a blocked navigation can display it.
 
 There is no analytics, advertising, telemetry, browsing-history log, external

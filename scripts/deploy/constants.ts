@@ -33,6 +33,7 @@ export const SOURCE_REQUIRED_FILES = [
     'tsconfig.json',
     '.swcrc',
     'src/manifest.json',
+    'src/_locales/en/messages.json',
     'src/entrypoints/background/index.ts',
     'scripts/build/index.ts',
     'scripts/build/constants.ts',
@@ -41,6 +42,7 @@ export const SOURCE_REQUIRED_FILES = [
     'scripts/build/webpack-config.ts',
     'scripts/build/webpack.common.ts',
     'scripts/build/manifest.ts',
+    'scripts/i18n/catalogs.ts',
     'scripts/deploy/constants.ts',
     'DEVELOPMENT.md',
 ];
