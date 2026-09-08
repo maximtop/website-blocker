@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { RootStoreContext } from '../../stores/root-store';
+import { t } from '../../../common/i18n';
 
 /**
  * Renders the observable blocked website list with add and edit forms.
@@ -56,17 +57,20 @@ export const WebsiteList = observer(() => {
     return (
         <div>
             {error && <div className="alert alert-danger" role="alert">{error}</div>}
-            <form className="input-group mb-3" onSubmit={handleAddNewWebsite}>
+            <form className="d-flex gap-2 mb-3" onSubmit={handleAddNewWebsite}>
                 <input
                     type="text"
-                    className="form-control"
+                    className="form-control website-input"
                     value={newWebsite}
                     onChange={(event) => settingsStore.setNewWebsite(event.target.value)}
-                    placeholder="Enter website to block"
-                    aria-label="Enter website to block"
+                    placeholder={t('websiteInputPlaceholder')}
+                    aria-label={t('websiteInputPlaceholder')}
+                    dir="auto"
                     disabled={isPending}
                 />
-                <button type="submit" className="btn btn-primary" disabled={isPending}>Add</button>
+                <button type="submit" className="btn btn-primary flex-shrink-0" disabled={isPending}>
+                    {t('addWebsite')}
+                </button>
             </form>
             {websitesList.length > 0 ? (
                 <ul className="list-group">
@@ -85,20 +89,21 @@ export const WebsiteList = observer(() => {
                                     }}
                                     aria-busy={isPending}
                                 >
-                                    <div className="input-group">
+                                    <div className="d-flex flex-wrap gap-2">
                                         <input
                                             ref={editInput}
                                             type="text"
-                                            className={`form-control${editError ? ' is-invalid' : ''}`}
+                                            className={`form-control website-input${editError ? ' is-invalid' : ''}`}
+                                            dir="auto"
                                             value={editedWebsite}
                                             onChange={(event) => settingsStore.setEditedWebsite(event.target.value)}
-                                            aria-label={`Edit website ${hostname}`}
+                                            aria-label={t('editWebsiteLabel', hostname)}
                                             aria-invalid={!!editError}
                                             aria-describedby={editError ? 'website-edit-error' : undefined}
                                             disabled={isPending}
                                         />
                                         <button type="submit" className="btn btn-primary" disabled={isPending}>
-                                            Save
+                                            {t('saveWebsite')}
                                         </button>
                                         <button
                                             type="button"
@@ -106,7 +111,7 @@ export const WebsiteList = observer(() => {
                                             onClick={() => settingsStore.cancelEdit()}
                                             disabled={isPending}
                                         >
-                                            Cancel
+                                            {t('cancelEdit')}
                                         </button>
                                     </div>
                                     {editError && (
@@ -116,8 +121,8 @@ export const WebsiteList = observer(() => {
                                     )}
                                 </form>
                             ) : (
-                                <div className="d-flex justify-content-between align-items-center gap-2">
-                                    <div className="form-check form-switch mb-0">
+                                <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                    <div className="form-check form-switch mb-0 website-toggle">
                                         <input
                                             id={`block-${hostname}`}
                                             className="form-check-input"
@@ -130,12 +135,10 @@ export const WebsiteList = observer(() => {
                                             }}
                                         />
                                         <label className="form-check-label text-break" htmlFor={`block-${hostname}`}>
-                                            Block
-                                            {' '}
-                                            {hostname}
+                                            {t('blockWebsiteLabel', hostname)}
                                         </label>
                                         <span className="d-block small text-muted">
-                                            {enabled !== false ? 'Blocking on' : 'Blocking off'}
+                                            {enabled !== false ? t('blockingOn') : t('blockingOff')}
                                         </span>
                                     </div>
                                     <div className="d-flex gap-2 flex-shrink-0">
@@ -143,19 +146,19 @@ export const WebsiteList = observer(() => {
                                             type="button"
                                             className="btn btn-outline-primary btn-sm"
                                             onClick={() => settingsStore.editWebsite(hostname)}
-                                            aria-label={`Edit ${hostname}`}
+                                            aria-label={t('editWebsiteLabel', hostname)}
                                             disabled={isPending || editingWebsite !== null}
                                         >
-                                            Edit
+                                            {t('editWebsite')}
                                         </button>
                                         <button
                                             type="button"
                                             className="btn btn-danger btn-sm"
                                             onClick={() => settingsStore.deleteWebsite(hostname)}
-                                            aria-label={`Delete ${hostname}`}
+                                            aria-label={t('deleteWebsiteLabel', hostname)}
                                             disabled={isPending}
                                         >
-                                            Delete
+                                            {t('deleteWebsite')}
                                         </button>
                                     </div>
                                 </div>
@@ -164,7 +167,7 @@ export const WebsiteList = observer(() => {
                     ))}
                 </ul>
             ) : (
-                <p className="text-muted">No websites added.</p>
+                <p className="text-muted">{t('emptyList')}</p>
             )}
         </div>
     );

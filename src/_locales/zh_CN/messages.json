@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "zh-CN",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "网站屏蔽器：MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "屏蔽令人分心的网站，助你保持专注。",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "在设置中管理你想要屏蔽的网站。",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "打开设置"
+    },
+    "optionsTitle": {
+        "message": "设置 — 网站屏蔽器：MT"
+    },
+    "blockedTitle": {
+        "message": "网站已屏蔽 — 网站屏蔽器：MT"
+    },
+    "blockedWebsites": {
+        "message": "网站屏蔽"
+    },
+    "websiteInputPlaceholder": {
+        "message": "输入要屏蔽的网站"
+    },
+    "addWebsite": {
+        "message": "添加"
+    },
+    "deleteWebsite": {
+        "message": "删除"
+    },
+    "deleteWebsiteLabel": {
+        "message": "从屏蔽列表中移除 $WEBSITE$",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "没有已添加的网站。"
+    },
+    "blockedHeading": {
+        "message": "哎呀！此网站已被屏蔽"
+    },
+    "blockedMessage": {
+        "message": "保持专注，继续加油！"
+    },
+    "closeTab": {
+        "message": "关闭"
+    },
+    "invalidWebsite": {
+        "message": "无效网站：$WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "网站已在列表中：$WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "无法保存更改，请重试。"
+    },
+    "loadError": {
+        "message": "无法加载已屏蔽的网站，请重试。"
+    },
+    "blockWebsiteLabel": {
+        "message": "屏蔽 $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "屏蔽已开启"
+    },
+    "blockingOff": {
+        "message": "屏蔽已关闭"
+    },
+    "missingWebsite": {
+        "message": "网站不在列表中：$WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "编辑"
+    },
+    "saveWebsite": {
+        "message": "保存"
+    },
+    "cancelEdit": {
+        "message": "取消"
+    },
+    "editWebsiteLabel": {
+        "message": "编辑 $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}

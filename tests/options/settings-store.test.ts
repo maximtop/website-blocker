@@ -11,6 +11,8 @@ import {
     type MockInstance,
 } from 'vitest';
 
+import english from '../../src/_locales/en/messages.json';
+import russian from '../../src/_locales/ru/messages.json';
 import { Storage } from '../../src/common/storage';
 import { WebsitesMap } from '../../src/common/websites';
 import { SettingsStore } from '../../src/options/stores/settings-store/SettingsStore';
@@ -25,14 +27,19 @@ vi.mock('../../src/common/storage', () => ({
     },
 }));
 
+const translations = vi.hoisted(() => ({ getMessage: vi.fn() }));
+vi.mock('webextension-polyfill', () => ({ default: { i18n: { getMessage: translations.getMessage } } }));
+
 let persistedWebsites: WebsitesMap;
 let store: SettingsStore;
 let warnings: MockInstance;
+let diagnostics: MockInstance;
 
 beforeEach(async () => {
     vi.resetAllMocks();
     configure({ enforceActions: MOBX_ACTION_MODE.ALWAYS });
     warnings = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    diagnostics = vi.spyOn(console, 'error').mockImplementation(() => {});
     persistedWebsites = {
         'old.com': { hostname: 'old.com' },
         'other.com': { hostname: 'other.com' },
@@ -52,6 +59,22 @@ afterEach(() => {
 });
 
 describe('SettingsStore website forms', () => {
+    it('localizes edit validation without losing the draft or logging an expected input error', async () => {
+        translations.getMessage.mockImplementation((key: keyof typeof russian, website?: string) => {
+            return russian[key].message.replace('$WEBSITE$', website ?? '');
+        });
+        store.editWebsite('old.com');
+        store.setEditedWebsite('other.com');
+
+        await store.updateWebsite();
+
+        expect(store.editError).toBe(russian.duplicateWebsite.message.replace('$WEBSITE$', '\u2068other.com\u2069'));
+        expect(store.editedWebsite).toBe('other.com');
+        expect(store.editingWebsite).toBe('old.com');
+        expect(Storage.set).not.toHaveBeenCalled();
+        expect(diagnostics).not.toHaveBeenCalled();
+    });
+
     it('notifies observers when editing begins and cancelling discards the draft without storage writes', () => {
         const editingStates: Array<string | null> = [];
         const stop = autorun(() => editingStates.push(store.editingWebsite));
@@ -95,7 +118,7 @@ describe('SettingsStore website forms', () => {
 
     it.each([
         ['', 'Invalid website'],
-        ['https://www.OTHER.com/path', 'Website already exists'],
+        ['https://www.OTHER.com/path', 'Website already in the list'],
     ])('keeps the original and draft after rejecting %j, and clears the error on input', async (draft, message) => {
         store.editWebsite('old.com');
         store.setEditedWebsite(draft);
@@ -123,7 +146,8 @@ describe('SettingsStore website forms', () => {
         expect(store.websitesList.map(({ hostname }) => hostname)).toEqual(['old.com', 'other.com']);
         expect(store.editingWebsite).toBe('old.com');
         expect(store.editedWebsite).toBe('new.com');
-        expect(store.editError).toBe('Storage unavailable');
+        expect(store.editError).toBe(english.saveError.message);
+        expect(diagnostics).toHaveBeenCalledWith('Failed to save websites', new Error('Storage unavailable'));
         expect(store.isPending).toBe(false);
 
         await store.updateWebsite();
@@ -195,7 +219,7 @@ describe('SettingsStore website forms', () => {
         expect(store.websitesList.map(({ hostname }) => hostname)).toEqual(['old.com', 'other.com']);
         expect(store.editingWebsite).toBe('old.com');
         expect(store.editedWebsite).toBe('new.com');
-        expect(store.editError).toBe('Cannot load websites');
+        expect(store.editError).toBe(english.saveError.message);
         expect(store.isPending).toBe(false);
         expect(Storage.set).not.toHaveBeenCalled();
     });
@@ -251,7 +275,7 @@ describe('SettingsStore website forms', () => {
         await store.setWebsiteEnabled('other.com', false);
 
         expect(store.websites['other.com'].enabled).not.toBe(false);
-        expect(store.error).toBe('Cannot toggle');
+        expect(store.error).toBe(english.saveError.message);
         expect(store.isPending).toBe(false);
 
         await store.setWebsiteEnabled('other.com', false);
@@ -266,7 +290,8 @@ describe('SettingsStore website forms', () => {
 
         await store.loadWebsites().catch((error) => store.reportError(error));
 
-        expect(store.error).toBe('Cannot load websites');
+        expect(store.error).toBe(english.loadError.message);
+        expect(diagnostics).toHaveBeenCalledWith('Failed to load websites', expect.any(Error));
         expect(store.isPending).toBe(false);
     });
 
@@ -303,7 +328,7 @@ describe('SettingsStore website forms', () => {
         await store.deleteWebsite('other.com');
 
         expect(store.websitesList.map(({ hostname }) => hostname)).toEqual(['old.com', 'other.com']);
-        expect(store.error).toBe('Cannot delete');
+        expect(store.error).toBe(english.saveError.message);
         expect(store.isPending).toBe(false);
 
         await store.deleteWebsite('other.com');

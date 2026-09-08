@@ -6,6 +6,7 @@ import { program } from 'commander';
 import { bundleRunner } from './bundle-runner';
 import { Browser, BROWSERS } from './constants';
 import { getWebpackConfig } from './webpack-config';
+import { validateCatalogs } from '../i18n/catalogs';
 
 type CommanderOptions = {
     watch: boolean,
@@ -13,6 +14,7 @@ type CommanderOptions = {
 };
 
 const bundleBrowser = (browser: Browser, options: CommanderOptions) => {
+    validateCatalogs();
     const webpackConfig = getWebpackConfig(browser, options.watch);
     return bundleRunner(webpackConfig, { watch: options.watch, cache: options.cache });
 };

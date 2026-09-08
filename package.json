@@ -26,7 +26,9 @@
     "start": "ts-node ./scripts/build/index.ts --watch",
     "lint": "eslint . --ext .ts,.tsx && tsc --noEmit",
     "test": "vitest run",
-    "check": "pnpm lint && pnpm test"
+    "check": "pnpm lint && pnpm test",
+    "locales:verify-package": "ts-node scripts/i18n/verify-package.ts",
+    "store:descriptions": "ts-node scripts/store/descriptions.ts"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
@@ -39,9 +41,7 @@
     "tldts-core": "^6.1.60",
     "ts-node": "^10.9.2",
     "use-sync-external-store": "^1.2.2",
-    "webextension-polyfill": "^0.12.0",
-    "zod": "^3.23.8",
-    "zod-validation-error": "^3.4.0"
+    "webextension-polyfill": "^0.12.0"
   },
   "devDependencies": {
     "@swc-node/register": "^1.10.9",

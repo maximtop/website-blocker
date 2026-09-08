@@ -1,4 +1,4 @@
 body {
     width: 400px;
-    overflow: hidden;
+    max-width: 100vw;
 }

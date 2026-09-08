@@ -1,5 +1,6 @@
 import { Storage } from './storage';
 import { getHostname } from './utils/url';
+import { WEBSITE_ERROR_CODE, WebsiteError } from './website-error';
 
 /**
  * A normalized website entry saved in the blocked list.
@@ -35,12 +36,12 @@ export class Websites {
     public static async addWebsite(rawWebsite: string): Promise<void> {
         const hostname = getHostname(rawWebsite);
         if (!hostname) {
-            throw new Error(`Invalid website: ${rawWebsite}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Invalid, rawWebsite);
         }
 
         const websites = await Storage.get(Websites.STORAGE_KEY) as WebsitesMap || {};
         if (websites[hostname]) {
-            throw new Error(`Website already exists in the list: ${websites[hostname].hostname}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Duplicate, websites[hostname].hostname);
         }
         websites[hostname] = { hostname, enabled: true };
 
@@ -58,18 +59,18 @@ export class Websites {
     public static async updateWebsite(originalHostname: string, rawWebsite: string): Promise<WebsitesMap> {
         const hostname = getHostname(rawWebsite);
         if (!hostname) {
-            throw new Error(`Invalid website: ${rawWebsite}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Invalid, rawWebsite);
         }
 
         const websites = await Storage.get(Websites.STORAGE_KEY) as WebsitesMap || {};
         if (!Object.prototype.hasOwnProperty.call(websites, originalHostname)) {
-            throw new Error(`Website no longer exists in the list: ${originalHostname}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Missing, originalHostname);
         }
         if (hostname === originalHostname) {
             return websites;
         }
         if (Object.prototype.hasOwnProperty.call(websites, hostname)) {
-            throw new Error(`Website already exists in the list: ${hostname}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Duplicate, hostname);
         }
 
         const updatedWebsites: WebsitesMap = Object.fromEntries(
@@ -107,7 +108,7 @@ export class Websites {
         const websites = await Websites.getWebsites();
         const website = websites[hostname];
         if (!website) {
-            throw new Error(`Website does not exist in the list: ${hostname}`);
+            throw new WebsiteError(WEBSITE_ERROR_CODE.Missing, hostname);
         }
 
         websites[hostname] = { ...website, enabled };

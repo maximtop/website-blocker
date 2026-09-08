@@ -1,0 +1,132 @@
+{
+    "catalogLocale": {
+        "message": "pl",
+        "description": "BCP 47 language tag of this catalog; used for page language and text direction."
+    },
+    "extensionName": {
+        "message": "Blokowanie stron: MT",
+        "description": "Extension name, at most 75 characters. Keep MT unchanged."
+    },
+    "extensionDescription": {
+        "message": "Zachowaj koncentrację, blokując rozpraszające strony internetowe.",
+        "description": "Short store and manifest description, at most 132 characters."
+    },
+    "popupPrompt": {
+        "message": "Zarządzaj stronami, które chcesz zablokować, w ustawieniach.",
+        "description": "Popup explanation. The Open settings button is a separate sentence."
+    },
+    "openSettings": {
+        "message": "Otwórz ustawienia"
+    },
+    "optionsTitle": {
+        "message": "Ustawienia — Blokowanie stron: MT"
+    },
+    "blockedTitle": {
+        "message": "Strona zablokowana — Blokowanie stron: MT"
+    },
+    "blockedWebsites": {
+        "message": "Blokowanie stron"
+    },
+    "websiteInputPlaceholder": {
+        "message": "Wpisz stronę, którą chcesz zablokować"
+    },
+    "addWebsite": {
+        "message": "Dodaj"
+    },
+    "deleteWebsite": {
+        "message": "Usuń"
+    },
+    "deleteWebsiteLabel": {
+        "message": "Usuń $WEBSITE$ z listy blokowanych stron",
+        "description": "Accessible label for a site's delete button. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "emptyList": {
+        "message": "Nie dodano żadnych stron."
+    },
+    "blockedHeading": {
+        "message": "Ups! Ta strona jest zablokowana"
+    },
+    "blockedMessage": {
+        "message": "Zachowaj koncentrację i pracuj dalej — świetnie ci idzie!"
+    },
+    "closeTab": {
+        "message": "Zamknij"
+    },
+    "invalidWebsite": {
+        "message": "Nieprawidłowa strona: $WEBSITE$",
+        "description": "Validation error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "duplicateWebsite": {
+        "message": "Strona jest już na liście: $WEBSITE$",
+        "description": "Duplicate website error. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "saveError": {
+        "message": "Nie udało się zapisać zmian. Spróbuj ponownie."
+    },
+    "loadError": {
+        "message": "Nie udało się wczytać zablokowanych stron. Spróbuj ponownie."
+    },
+    "blockWebsiteLabel": {
+        "message": "Blokuj $WEBSITE$",
+        "description": "Label for the switch controlling whether this website is blocked. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "blockingOn": {
+        "message": "Blokowanie włączone"
+    },
+    "blockingOff": {
+        "message": "Blokowanie wyłączone"
+    },
+    "missingWebsite": {
+        "message": "Strony nie ma na liście: $WEBSITE$",
+        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "Edytuj"
+    },
+    "saveWebsite": {
+        "message": "Zapisz"
+    },
+    "cancelEdit": {
+        "message": "Anuluj"
+    },
+    "editWebsiteLabel": {
+        "message": "Edytuj $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    }
+}
