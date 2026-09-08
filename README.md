@@ -4,6 +4,7 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 
 ## Features
 
+- **Timed Blocking:** Choose 15, 30 or 60 minutes, custom whole minutes, or indefinite blocking. Deadlines survive browser restarts.
 - **Block Websites:** Easily block access to distracting websites.
 - **Customizable:** Add, edit, or remove websites from the blocked list.
 - **Per-site Control:** Turn blocking off or on for individual websites without removing them from the list.
@@ -38,6 +39,9 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
       and select `dist/dev/firefox/manifest.json`.
 
 ## Usage
+
+- Choose the blocking duration when adding a site. Timed entries disappear after their deadline.
+- Disabling blocking does not pause its timer; renaming a website preserves its deadline and blocking state.
 
 - Open the extension's options page to add, edit, or remove websites from the blocked list.
 - Click **Edit** next to a website to change its address, then **Save** (or press Enter). Click **Cancel** (or press Escape) to discard the change. Invalid addresses and duplicates leave the original entry unchanged.

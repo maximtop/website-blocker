@@ -11,6 +11,8 @@ import { Websites, WebsitesMap, Website } from '../../../common/websites';
 import { getErrorMessage } from '../../../common/utils/error';
 import { t } from '../../../common/i18n';
 import { WebsiteError } from '../../../common/website-error';
+import { BlockDurationError } from '../../../common/block-duration-error';
+import { BLOCK_DURATION } from '../../block-duration';
 
 /**
  * Owns the blocked website list, form drafts, validation errors and pending changes.
@@ -32,6 +34,18 @@ export class SettingsStore {
 
     @observable isPending: boolean = false;
 
+    @observable isLoading = true;
+
+    @observable duration: string = BLOCK_DURATION.INDEFINITELY;
+
+    @observable customMinutes: string = BLOCK_DURATION.THIRTY_MINUTES;
+
+    @observable private currentTime = Date.now();
+
+    private loadRequest = 0;
+
+    private refreshAfterOperation = false;
+
     /**
      * Registers observable form state and actions with MobX.
      *
@@ -49,14 +63,108 @@ export class SettingsStore {
      * @throws If reading persisted websites fails.
      */
     async loadWebsites() {
-        const websites = await Websites.getWebsites();
-        runInAction(() => {
-            this.websites = websites;
-            if (this.editingWebsite !== null
-                && !Object.prototype.hasOwnProperty.call(websites, this.editingWebsite)) {
-                this.resetEditor();
+        this.loadRequest += 1;
+        const request = this.loadRequest;
+        try {
+            const websites = await Websites.getWebsites();
+            runInAction(() => {
+                if (request === this.loadRequest) {
+                    this.applyWebsites(websites);
+                }
+            });
+        } finally {
+            runInAction(() => {
+                if (request === this.loadRequest) {
+                    this.isLoading = false;
+                }
+            });
+        }
+    }
+
+    /**
+     * Applies a confirmed snapshot and closes an editor whose entry disappeared.
+     *
+     * @param websites - Saved unexpired website preferences.
+     */
+    @action
+    private applyWebsites(websites: WebsitesMap) {
+        this.websites = websites;
+        this.currentTime = Date.now();
+        if (this.editingWebsite !== null && !Object.hasOwn(websites, this.editingWebsite)) {
+            this.resetEditor();
+        }
+    }
+
+    /**
+     * Watches storage and advances the local display clock without polling storage.
+     *
+     * @returns Cleanup for the listener and interval when options closes.
+     */
+    watchWebsites() {
+        let disposed = false;
+        /**
+         * Reloads the current list and reports errors while the page remains mounted.
+         */
+        const reload = () => {
+            this.loadWebsites().catch((error: unknown) => {
+                if (!disposed) {
+                    this.reportError(error);
+                }
+            });
+        };
+        /**
+         * Refreshes website changes immediately or after a pending local mutation.
+         *
+         * @param changes - Changed browser storage keys.
+         */
+        const onChanged = action((changes: Record<string, unknown>) => {
+            if (Websites.isWebsiteChange(changes)) {
+                if (this.isPending) {
+                    this.refreshAfterOperation = true;
+                } else {
+                    reload();
+                }
             }
         });
+        Websites.onChanged.addListener(onChanged);
+        const timer = setInterval(action(() => {
+            this.currentTime = Date.now();
+            const edited = this.editingWebsite === null ? undefined : this.websites[this.editingWebsite];
+            if (edited?.blockedUntil !== undefined && edited.blockedUntil <= this.currentTime && !this.isPending) {
+                this.resetEditor();
+            }
+        }), 1000);
+        reload();
+        return () => {
+            disposed = true;
+            this.loadRequest += 1;
+            clearInterval(timer);
+            Websites.onChanged.removeListener(onChanged);
+        };
+    }
+
+    /**
+     * Selects the duration for the next website without changing existing deadlines.
+     *
+     * @param value - Preset minutes, custom, or indefinitely.
+     */
+    @action
+    setDuration(value: string) {
+        if (!this.isPending) {
+            this.duration = value;
+        }
+    }
+
+    /**
+     * Updates the custom minute draft.
+     *
+     * @param value - User-entered number of minutes.
+     */
+    @action
+    setCustomMinutes(value: string) {
+        if (!this.isPending) {
+            this.customMinutes = value;
+        }
     }
 
     /**
@@ -91,8 +199,11 @@ export class SettingsStore {
     @action
     async addNewWebsite() {
         await this.runOperation(async () => {
-            await Websites.addWebsite(this.newWebsite);
-            await this.loadWebsites();
+            const minutes = this.duration === BLOCK_DURATION.INDEFINITELY
+                ? undefined : Number(this.duration === BLOCK_DURATION.CUSTOM ? this.customMinutes : this.duration);
+            const websites = await Websites.addWebsite(this.newWebsite, minutes);
+            this.loadRequest += 1;
+            this.applyWebsites(websites);
             runInAction(() => {
                 this.newWebsite = '';
                 this.error = '';
@@ -109,8 +220,9 @@ export class SettingsStore {
     @action
     async deleteWebsite(hostname: string) {
         await this.runOperation(async () => {
-            await Websites.deleteWebsite(hostname);
-            await this.loadWebsites();
+            const websites = await Websites.deleteWebsite(hostname);
+            this.loadRequest += 1;
+            this.applyWebsites(websites);
             runInAction(() => {
                 this.error = '';
             });
@@ -127,8 +239,9 @@ export class SettingsStore {
     @action
     async setWebsiteEnabled(hostname: string, enabled: boolean) {
         await this.runOperation(async () => {
-            await Websites.setWebsiteEnabled(hostname, enabled);
-            await this.loadWebsites();
+            const websites = await Websites.setWebsiteEnabled(hostname, enabled);
+            this.loadRequest += 1;
+            this.applyWebsites(websites);
             runInAction(() => {
                 this.error = '';
             });
@@ -188,7 +301,8 @@ export class SettingsStore {
         await this.runOperation(async () => {
             const websites = await Websites.updateWebsite(hostname, this.editedWebsite);
             runInAction(() => {
-                this.websites = websites;
+                this.loadRequest += 1;
+                this.applyWebsites(websites);
                 this.resetEditor();
             });
         }, (message) => {
@@ -210,14 +324,15 @@ export class SettingsStore {
             this.error = message;
         },
     ) {
-        if (this.isPending) {
+        if (this.isPending || this.isLoading) {
             return;
         }
+        this.loadRequest += 1;
         this.isPending = true;
         try {
             await operation();
         } catch (ex) {
-            if (!(ex instanceof WebsiteError)) {
+            if (!(ex instanceof WebsiteError) && !(ex instanceof BlockDurationError)) {
                 // Preserve unexpected storage failures for local troubleshooting.
                 // eslint-disable-next-line no-console
                 console.error('Failed to save websites', ex);
@@ -229,6 +344,10 @@ export class SettingsStore {
             runInAction(() => {
                 this.isPending = false;
             });
+            if (this.refreshAfterOperation) {
+                this.refreshAfterOperation = false;
+                await this.loadWebsites().catch((error) => this.reportError(error));
+            }
         }
     }
 
@@ -249,6 +368,7 @@ export class SettingsStore {
      */
     @computed
     get websitesList(): Website[] {
-        return Object.values(this.websites);
+        return Object.values(this.websites)
+            .filter((website) => website.blockedUntil === undefined || website.blockedUntil > this.currentTime);
     }
 }

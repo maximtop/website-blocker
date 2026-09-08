@@ -112,7 +112,7 @@ describe('localized validation and storage errors', () => {
         selectCatalog(arabic);
         await Websites.addWebsite('https://www.example.com/path');
         expect(mocks.set).toHaveBeenCalledWith({
-            websites: { 'example.com': { hostname: 'example.com', enabled: true } },
+            'website:example.com': { hostname: 'example.com', enabled: true, position: expect.any(Number) },
         });
     });
 

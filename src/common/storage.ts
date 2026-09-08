@@ -28,5 +28,34 @@ export class Storage {
         return Storage.storage.set({ [key]: value });
     }
 
+    /**
+     * Reads all settings for the legacy and per-host website merge.
+     *
+     * @returns Stored keys and their values.
+     */
+    public static async getAll(): Promise<Record<string, unknown>> {
+        return Storage.storage.get(null);
+    }
+
+    /**
+     * Saves related keys together, such as a renamed website and its old-host tombstone.
+     *
+     * @param values - Keys to change without replacing unrelated settings.
+     * @returns Resolves when the browser accepts the write.
+     */
+    public static async setMany(values: Record<string, unknown>): Promise<void> {
+        await Storage.storage.set(values);
+    }
+
+    /**
+     * Removes a setting by key.
+     *
+     * @param key - Name of the setting to remove.
+     * @returns Resolves after removal.
+     */
+    public static async remove(key: string): Promise<void> {
+        await Storage.storage.remove(key);
+    }
+
     public static onChanged = Storage.storage.onChanged;
 }
