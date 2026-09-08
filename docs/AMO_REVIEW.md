@@ -1,95 +1,150 @@
-# Firefox Add-ons reviewer notes
+# Firefox reviewer instructions
 
-Website Blocker lets users maintain a list of distracting website domains.
-When a top-level page navigation matches an enabled entry, the extension
-redirects the tab to its bundled blocked page. Users can add and remove
-domains through the popup and options page, edit domains in the options
-page, and switch blocking off for an individual domain without deleting it.
-Editing a domain preserves its blocking switch state.
+Website Blocker: MT blocks the hostnames the user adds in its options page,
+opened through the toolbar popup. Users can add, edit, remove and enable or
+disable individual entries. Blocking can last indefinitely, for 15, 30 or 60
+minutes, or for a custom positive whole number of minutes. No account,
+payment, or external service is required.
 
-No extension account, payment, advertising, analytics, telemetry, remote code
-or developer-operated service is used. Navigation URLs are evaluated in the
-background and are not recorded as browsing history or sent to the developer.
-The user-configured blocklist is stored with `browser.storage.sync`; Firefox
-may synchronize it through the user's Mozilla account when browser sync is
-enabled. It is therefore not guaranteed to remain on one device. The
-developer does not receive that synchronized data. No reviewer credentials
-are required.
+## Reproduce the package
 
-## Reproduce this release
-
-The attached source ZIP is the committed repository state from the same
-GitHub Release as the Firefox ZIP. It includes all sources, build settings,
-the dependency lockfile and the pnpm build-script allowlist. Use Ubuntu 24.04
-or macOS with Node.js 24.x and pnpm 11.18.0:
+Use the source ZIP from the same GitHub Release as the Firefox ZIP. It includes
+all sources, build settings, the dependency lockfile and the pnpm build-script
+allowlist. Extract it into an empty directory and run the following commands
+from its root on Ubuntu 24.04 or macOS:
 
 ```sh
+node --version
 npm install --global pnpm@11.18.0
 pnpm install --frozen-lockfile
 pnpm release firefox
 ```
 
-Compare the extracted contents of `dist/release/firefox.zip` with the
-submitted package; ZIP timestamps may differ. Webpack bundles TypeScript
-using SWC. Production output is not minified, and no Git checkout or store
-credentials are needed to build. General commands are in
+Use Node.js 24.x (the project requires `>=24 <25`). The pnpm version is pinned
+in `package.json`; dependencies are locked in `pnpm-lock.yaml`. Dependencies
+come from the npm registry. No credentials or environment-specific files are
+needed, and the extracted source builds without a Git checkout.
+`pnpm release firefox` sets `BUILD_ENV=release` and builds the Firefox target.
+The output is `dist/release/firefox/` and `dist/release/firefox.zip`.
+Compare the extracted file contents; ZIP timestamps may differ. `pnpm release`
+without a browser builds Chrome, Edge and Firefox. General commands are in
 [DEVELOPMENT.md](../DEVELOPMENT.md).
 
-## Automated validation notes
+The build uses TypeScript, React, SWC, and webpack. Dependencies are bundled;
+no remote scripts or executable code are loaded. Release JavaScript is not
+minified, but it is generated, so the original source is attached.
 
-`web-ext` 10.6.0 reports no errors for this build. Its code warnings refer to
-bundled React DOM's HTML helper, Webpack's legacy global-object fallback and
-MobX's development breakpoint helper. The application uses JSX text for
-user-entered domains and errors and has no `dangerouslySetInnerHTML`, `eval`
-or `Function` calls. Supported Firefox versions use Webpack's `globalThis`
-branch, and MobX's development-only callers are absent from production.
+The source includes all 40 locale catalogs in `src/_locales/`; the Firefox
+package includes all 40. English is the default, and Arabic, Persian and Hebrew
+use right-to-left layouts. The popup, blocked page and existing website controls
+follow the browser's language. The newer duration controls, duration errors and
+loading message currently remain in English. The complete locale list and
+package checks are documented in [README.md](../README.md#translations).
 
-The validator also warns that Firefox 128 predates the built-in data consent
-manifest key (desktop 140 / Android 142). The manifest declares no developer
-data collection; browser-managed blocklist synchronization is described above.
+## Test the behavior
 
-## Permissions and test steps
+The button names below use the English interface; localized labels have the
+same behavior. These are reviewer test instructions, not a record of a completed
+manual Firefox test.
 
-`storage` persists the user-configured blocklist through the browser storage
-API. `webNavigation` observes completed navigation commits so the background
-can evaluate the destination domain. The existing `tabs` permission is
-retained across browser variants; matching tabs are redirected with
-`tabs.update`. No content scripts or host permissions are requested.
-
-1. Load the extension in Firefox Desktop 128 or later and open its options
-   page. Add `example.com` to the blocklist.
-2. Navigate a top-level tab to `https://example.com`. The bundled blocked
-   page should replace the destination.
-3. Navigate to another domain. It should remain available.
-4. Turn off the switch for `example.com` and open it again. It should load
-   while its entry stays in the list. Turn it back on and reload: blocking
-   should resume.
-5. In the options page, click **Edit** for `example.com`. The current domain
-   should be selected in the input. Change it to `example.org` and click
-   **Save**. The list should show the new domain; `example.com` should now
-   load and `example.org` should be blocked. Reopen the options page to
-   confirm the edit persisted. Edit `example.org` again and press Enter
-   without changing it; the form should close.
-6. Edit the entry again and change the draft. Click **Cancel** and confirm
-   the original domain remains. Repeat with Escape while focus is on the
-   input, **Save**, and **Cancel**; each should discard the draft.
-7. Add `example.com` as a second entry. Edit `example.org` and try to save an
-   empty value, `not a domain`, and then `example.com`. Each should show an
-   inline error, retain the draft for correction, and leave the saved list
-   unchanged. Cancel the edit.
-8. Turn off blocking for `example.org`, edit it to `example.net`, and save.
-   The renamed entry should remain switched off, and `example.net` should
-   load. Reload the options page and confirm the saved domain and disabled
-   switch state remain. Turn it on and confirm `example.net` is blocked.
-9. Remove `example.com` from the list and open it again. It should load.
-10. Add it again and restart Firefox. The configured list and each switch
-    should persist.
-11. If testing private windows, first allow the extension in private windows
+1. Install the Firefox package in Firefox 140 or newer on desktop.
+2. Open the toolbar popup, click **Open settings**, leave **Block for** set to
+   **Indefinitely**, and add `example.com` to the block list.
+3. Open `https://example.com/` in a new tab. It should redirect to the packaged
+   page saying "Oops! This website is blocked".
+4. Open an unrelated website. It should remain accessible. Subframe navigation
+   should not redirect its containing tab.
+5. Switch `example.com` off and reload the site. It should load normally while
+   its entry remains saved. Switch it back on and reload to confirm blocking.
+6. Click **Edit** for `example.com`. Its address should be selected. Change it
+   to `example.org` and click **Save**. The old site should load and the new one
+   should be blocked. Reopen settings to confirm the edit persisted. Editing
+   without changing the address and pressing Enter should close the form.
+7. Edit the entry and change the draft, then click **Cancel**. The saved address
+   must remain unchanged. Repeat with Escape while focus is on the input,
+   **Save**, and **Cancel**. Each should discard the draft.
+8. Add `example.com` as a second entry. Try editing `example.org` to an empty
+   value, `not a domain`, and `example.com`. Each should show an inline error
+   and preserve the saved entries. Cancel the edit. Switch `example.org` off,
+   rename it to `example.net`, and confirm its switch remains off after reopening
+   settings. Switch it on and confirm `example.net` is blocked.
+9. Delete these test entries. Add `example.com` with **Custom duration** set
+   to **1** minute. Confirm the displayed deadline and blocking before it.
+   After the deadline, the entry should disappear from the visible list and
+   a new navigation or reload of `example.com` should load normally.
+10. Repeat with a two-minute entry. Switch it off and back on, then rename it.
+    Its original deadline must remain unchanged. A disabled timed entry should
+    still expire at that deadline. The duration selector affects newly added
+    sites; it does not change an existing entry's deadline.
+11. Select **Custom duration** and try zero, a negative value and a fractional
+    minute. The form must reject them without adding an entry. Check that the
+    15-, 30- and 60-minute presets show the corresponding deadlines.
+12. With a persistent/signed installation, add an indefinite entry and a timed
+    entry, note their switches and deadline, then restart Firefox. The entries
+    and switches should persist; the timed entry keeps its original deadline
+    and is absent if it expired while Firefox was closed. A temporary
+    `about:debugging` installation is removed when Firefox closes and cannot
+    test this step.
+13. Remove an indefinite entry and confirm the site loads again.
+14. Check the popup, options page and blocked page in a non-English browser
+    language, including a right-to-left language. Translated controls should
+    use the selected catalog without raw message keys. Duration controls,
+    duration errors and the loading message are currently English.
+15. If testing private windows, first allow the extension in private windows
     through Firefox's add-on settings. Without that permission it does not
     operate in private windows.
 
-The blocker reacts to navigation commits. Adding an already-open site's
-domain does not redirect that tab until it navigates or reloads.
+Adding an already-open site's hostname does not redirect that tab until it
+navigates or reloads. Expiration stops future redirects; it does not automatically
+restore a tab already showing the blocked page. Deadlines use the browser's
+wall clock, continue while the browser is closed and are not paused by turning
+a site's blocking switch off. Renaming preserves the deadline, switch and list
+position. Expired entries are excluded from the visible list; expiration does
+not immediately erase their underlying sync-storage records.
 
-Source: https://github.com/maximtop/website-blocker (MIT).
-Support: me@maximtop.dev
+Blocking uses hostname matching with an optional `www.` prefix removed. Other
+subdomains require their own entries. Navigation is redirected after it commits;
+this is a focus tool, not a network firewall or parental-control security boundary.
+
+## Permissions and data handling
+
+- `webNavigation`: observe top-level HTTP/HTTPS navigation and compare its
+  hostname with the block list inside the browser.
+- Tab updates redirect a blocked tab to the packaged `blocked.html` page.
+  `tabs.update` does not require the `tabs` permission; sensitive tab fields
+  are not read and that permission is not requested. No content scripts or
+  host permissions are requested.
+- `storage`: save hostnames, enabled/disabled settings, optional expiration
+  timestamps and list-order metadata in `browser.storage.sync`. Firefox may
+  synchronize these settings between the user's browsers when Firefox Sync is
+  enabled. The developer does not receive the block list or its preferences.
+- `blocked.html` is web-accessible so a blocked navigation can display it.
+
+There is no analytics, advertising, telemetry, browsing-history log, external
+API call, or developer-operated backend. The Firefox manifest declares
+`data_collection_permissions.required: ["none"]`. Browser-managed Sync is
+disclosed here and in the listing; no browsing history is sent by the extension.
+
+Gecko ID: `website-blocker@maximtop.dev`. Firefox uses an event-page background
+script; Chrome and Edge use service workers. All three use `frameId === 0`
+for top-level navigation, with Chromium's prerender exclusion retained.
+
+License: MIT. Source: https://github.com/maximtop/website-blocker
+Support: https://github.com/maximtop/website-blocker/issues or me@maximtop.dev
+
+## Automated validator warnings
+
+The stock React DOM 18.3.1 renderer contains `innerHTML` assignments. The
+application code does not use `innerHTML`, `dangerouslySetInnerHTML`, `eval`
+or `Function`; user-entered hostnames and errors are rendered as React text.
+The renderer is unmodified npm code.
+
+The generated options bundle also includes webpack's global-object detection
+fallback using `Function` (the earlier `globalThis` branch is taken in supported
+Firefox) and MobX 6.13.7's debugger trace helper. The production bundle has no
+callers of that helper and the extension does not use MobX tracing. No CSP
+exception for dynamic evaluation is added.
+
+AMO also warns that the data consent declaration needs Firefox for Android 142,
+while the desktop minimum is 140. This submission selects desktop Firefox only;
+Firefox for Android is not selected.

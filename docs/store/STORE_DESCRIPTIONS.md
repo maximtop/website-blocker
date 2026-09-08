@@ -18,7 +18,7 @@ Website Blocker: MT helps you stay focused by blocking distracting websites.
 
 To get started, open the extension, choose Open settings, and add a website to block.
 
-The extension uses browser navigation and tab permissions to redirect blocked websites,
+The extension uses browser navigation permission to monitor navigation and redirect blocked websites,
 and storage permission to save your list. It contains no analytics or advertising.
 
 Source code and support: https://github.com/maximtop/website-blocker
@@ -36,7 +36,7 @@ Source code and support: https://github.com/maximtop/website-blocker
 
 للبدء، افتح الإضافة، واختر «فتح الإعدادات»، ثم أضف موقعًا لحجبه.
 
-تستخدم الإضافة أذونات التنقل وعلامات التبويب في المتصفح لإعادة توجيه المواقع المحجوبة، وإذن التخزين لحفظ قائمتك. ولا تتضمن أي أدوات تحليل أو إعلانات.
+تستخدم الإضافة إذن التنقل في المتصفح لرصد التنقل وإعادة توجيه المواقع المحجوبة، وإذن التخزين لحفظ قائمتك. ولا تتضمن أي أدوات تحليل أو إعلانات.
 
 الشفرة المصدرية والدعم: https://github.com/maximtop/website-blocker
 
@@ -53,7 +53,7 @@ Source code and support: https://github.com/maximtop/website-blocker
 
 За да започнете, отворете разширението, изберете „Отворете настройките“ и добавете сайт за блокиране.
 
-Разширението използва разрешенията за навигация и раздели на браузъра, за да пренасочва блокираните сайтове, и разрешението за съхранение, за да запазва списъка ви. То не съдържа инструменти за анализ или реклами.
+Разширението използва разрешението за навигация в браузъра, за да следи навигацията и да пренасочва блокираните сайтове, и разрешението за съхранение, за да запазва списъка ви. То не съдържа инструменти за анализ или реклами.
 
 Изходен код и поддръжка: https://github.com/maximtop/website-blocker
 
@@ -70,7 +70,7 @@ Source code and support: https://github.com/maximtop/website-blocker
 
 শুরু করতে এক্সটেনশনটি খুলুন, “সেটিংস খুলুন” বেছে নিন এবং ব্লক করার জন্য একটি ওয়েবসাইট যোগ করুন।
 
-ব্লক করা ওয়েবসাইট থেকে অন্য পৃষ্ঠায় পাঠাতে এক্সটেনশনটি ব্রাউজারের নেভিগেশন ও ট্যাবের অনুমতি ব্যবহার করে এবং আপনার তালিকা সংরক্ষণ করতে স্টোরেজের অনুমতি ব্যবহার করে। এতে কোনো অ্যানালিটিক্স বা বিজ্ঞাপন নেই।
+ব্রাউজারের নেভিগেশন পর্যবেক্ষণ করতে ও ব্লক করা ওয়েবসাইট থেকে অন্য পৃষ্ঠায় পাঠাতে এক্সটেনশনটি নেভিগেশনের অনুমতি ব্যবহার করে এবং আপনার তালিকা সংরক্ষণ করতে স্টোরেজের অনুমতি ব্যবহার করে। এতে কোনো অ্যানালিটিক্স বা বিজ্ঞাপন নেই।
 
 সোর্স কোড ও সহায়তা: https://github.com/maximtop/website-blocker
 
@@ -87,7 +87,7 @@ Bloquejador de llocs web: MT t'ajuda a mantenir la concentració bloquejant els 
 
 Per començar, obre l'extensió, tria «Obre la configuració» i afegeix un lloc web per bloquejar-lo.
 
-L'extensió utilitza els permisos de navegació i de pestanyes del navegador per redirigir els llocs web bloquejats, i el permís d'emmagatzematge per desar la llista. No conté eines d'analítica ni publicitat.
+L'extensió utilitza el permís de navegació del navegador per observar la navegació i redirigir els llocs web bloquejats, i el permís d'emmagatzematge per desar la llista. No conté eines d'analítica ni publicitat.
 
 Codi font i assistència: https://github.com/maximtop/website-blocker
 
@@ -104,7 +104,7 @@ Blokování webů: MT vám pomáhá soustředit se díky blokování rušivých 
 
 Začněte otevřením rozšíření, zvolte „Otevřít nastavení“ a přidejte web, který chcete blokovat.
 
-Rozšíření používá oprávnění k navigaci a kartám prohlížeče pro přesměrování blokovaných webů a oprávnění k úložišti pro uložení seznamu. Neobsahuje analytické nástroje ani reklamy.
+Rozšíření používá oprávnění k navigaci prohlížeče pro sledování navigace a přesměrování blokovaných webů a oprávnění k úložišti pro uložení seznamu. Neobsahuje analytické nástroje ani reklamy.
 
 Zdrojový kód a podpora: https://github.com/maximtop/website-blocker
 
@@ -121,7 +121,7 @@ Hjemmesideblokering: MT hjælper dig med at holde fokus ved at blokere distraher
 
 Kom i gang ved at åbne udvidelsen, vælge »Åbn indstillinger« og tilføje en hjemmeside, du vil blokere.
 
-Udvidelsen bruger browserens tilladelser til navigation og faner til at omdirigere blokerede hjemmesider samt lagertilladelsen til at gemme din liste. Den indeholder hverken analyseværktøjer eller reklamer.
+Udvidelsen bruger browserens navigationstilladelse til at registrere navigation og omdirigere blokerede hjemmesider samt lagertilladelsen til at gemme din liste. Den indeholder hverken analyseværktøjer eller reklamer.
 
 Kildekode og support: https://github.com/maximtop/website-blocker
 
@@ -138,7 +138,7 @@ Website-Blocker: MT hilft Ihnen, konzentriert zu bleiben, indem ablenkende Websi
 
 Öffnen Sie zum Einstieg die Erweiterung, wählen Sie „Einstellungen öffnen“ und fügen Sie eine Website hinzu, die Sie blockieren möchten.
 
-Die Erweiterung verwendet die Browserberechtigungen für Navigation und Tabs, um blockierte Websites umzuleiten, sowie die Speicherberechtigung, um Ihre Liste zu speichern. Sie enthält weder Analysewerkzeuge noch Werbung.
+Die Erweiterung verwendet die Browserberechtigung für Navigation, um Navigationsvorgänge zu erkennen und blockierte Websites umzuleiten, sowie die Speicherberechtigung, um Ihre Liste zu speichern. Sie enthält weder Analysewerkzeuge noch Werbung.
 
 Quellcode und Support: https://github.com/maximtop/website-blocker
 
@@ -155,7 +155,7 @@ Quellcode und Support: https://github.com/maximtop/website-blocker
 
 Για να ξεκινήσετε, ανοίξτε την επέκταση, επιλέξτε «Άνοιγμα ρυθμίσεων» και προσθέστε έναν ιστότοπο για αποκλεισμό.
 
-Η επέκταση χρησιμοποιεί τα δικαιώματα πλοήγησης και καρτελών του προγράμματος περιήγησης για την ανακατεύθυνση των αποκλεισμένων ιστοτόπων και το δικαίωμα αποθήκευσης για την αποθήκευση της λίστας σας. Δεν περιέχει εργαλεία ανάλυσης ή διαφημίσεις.
+Η επέκταση χρησιμοποιεί το δικαίωμα πλοήγησης του προγράμματος περιήγησης για την παρακολούθηση της πλοήγησης και την ανακατεύθυνση των αποκλεισμένων ιστοτόπων και το δικαίωμα αποθήκευσης για την αποθήκευση της λίστας σας. Δεν περιέχει εργαλεία ανάλυσης ή διαφημίσεις.
 
 Πηγαίος κώδικας και υποστήριξη: https://github.com/maximtop/website-blocker
 
@@ -172,7 +172,7 @@ Bloqueador de sitios web: MT te ayuda a mantener la concentración bloqueando lo
 
 Para empezar, abre la extensión, selecciona «Abrir configuración» y añade un sitio web para bloquearlo.
 
-La extensión utiliza los permisos de navegación y de pestañas del navegador para redirigir los sitios web bloqueados, y el permiso de almacenamiento para guardar tu lista. No contiene herramientas de análisis ni publicidad.
+La extensión utiliza el permiso de navegación del navegador para detectar la navegación y redirigir los sitios web bloqueados, y el permiso de almacenamiento para guardar tu lista. No contiene herramientas de análisis ni publicidad.
 
 Código fuente y asistencia: https://github.com/maximtop/website-blocker
 
@@ -189,7 +189,7 @@ Bloqueador de sitios web: MT te ayuda a mantener la concentración bloqueando lo
 
 Para comenzar, abre la extensión, selecciona «Abrir configuración» y agrega un sitio web para bloquearlo.
 
-La extensión utiliza los permisos de navegación y de pestañas del navegador para redirigir los sitios web bloqueados, y el permiso de almacenamiento para guardar tu lista. No contiene herramientas de análisis ni publicidad.
+La extensión utiliza el permiso de navegación del navegador para detectar la navegación y redirigir los sitios web bloqueados, y el permiso de almacenamiento para guardar tu lista. No contiene herramientas de análisis ni publicidad.
 
 Código fuente y soporte: https://github.com/maximtop/website-blocker
 
@@ -206,7 +206,7 @@ Código fuente y soporte: https://github.com/maximtop/website-blocker
 
 برای شروع، افزونه را باز کنید، «باز کردن تنظیمات» را انتخاب کنید و وب‌سایتی را برای مسدود کردن اضافه کنید.
 
-این افزونه از مجوزهای پیمایش و زبانه‌های مرورگر برای تغییر مسیر وب‌سایت‌های مسدودشده و از مجوز ذخیره‌سازی برای ذخیرهٔ فهرست شما استفاده می‌کند. هیچ ابزار تحلیل یا تبلیغاتی در آن وجود ندارد.
+این افزونه از مجوز پیمایش مرورگر برای نظارت بر پیمایش و تغییر مسیر وب‌سایت‌های مسدودشده و از مجوز ذخیره‌سازی برای ذخیرهٔ فهرست شما استفاده می‌کند. هیچ ابزار تحلیل یا تبلیغاتی در آن وجود ندارد.
 
 کد منبع و پشتیبانی: https://github.com/maximtop/website-blocker
 
@@ -223,7 +223,7 @@ Sivustojen esto: MT auttaa sinua keskittymään estämällä häiritsevät sivus
 
 Aloita avaamalla laajennus, valitsemalla ”Avaa asetukset” ja lisäämällä estettävä sivusto.
 
-Laajennus käyttää selaimen navigointi- ja välilehtioikeuksia estettyjen sivustojen uudelleenohjaamiseen sekä tallennusoikeutta listasi tallentamiseen. Se ei sisällä analytiikkaa eikä mainoksia.
+Laajennus käyttää selaimen navigointioikeutta navigoinnin havaitsemiseen ja estettyjen sivustojen uudelleenohjaamiseen sekä tallennusoikeutta listasi tallentamiseen. Se ei sisällä analytiikkaa eikä mainoksia.
 
 Lähdekoodi ja tuki: https://github.com/maximtop/website-blocker
 
@@ -240,7 +240,7 @@ Tinutulungan ka ng Pangharang ng Website: MT na manatiling nakatuon sa gawain sa
 
 Para magsimula, buksan ang extension, piliin ang “Buksan ang mga setting”, at magdagdag ng website na haharangin.
 
-Ginagamit ng extension ang mga pahintulot sa navigation at mga tab ng browser para i-redirect ang mga naka-block na website, at ang pahintulot sa storage para i-save ang listahan mo. Wala itong analytics o mga patalastas.
+Ginagamit ng extension ang pahintulot sa navigation ng browser para subaybayan ang navigation at i-redirect ang mga naka-block na website, at ang pahintulot sa storage para i-save ang listahan mo. Wala itong analytics o mga patalastas.
 
 Source code at suporta: https://github.com/maximtop/website-blocker
 
@@ -257,7 +257,7 @@ Bloqueur de sites : MT vous aide à rester concentré en bloquant les sites qui 
 
 Pour commencer, ouvrez l’extension, choisissez Ouvrir les paramètres et ajoutez un site à bloquer.
 
-L’extension utilise les autorisations de navigation et d’accès aux onglets du navigateur pour rediriger les sites bloqués, ainsi que l’autorisation de stockage pour enregistrer votre liste. Elle ne contient ni outils d’analyse ni publicité.
+L’extension utilise l’autorisation de navigation du navigateur pour détecter les navigations et rediriger les sites bloqués, ainsi que l’autorisation de stockage pour enregistrer votre liste. Elle ne contient ni outils d’analyse ni publicité.
 
 Code source et assistance : https://github.com/maximtop/website-blocker
 
@@ -274,7 +274,7 @@ Code source et assistance : https://github.com/maximtop/website-blocker
 
 כדי להתחיל, פתחו את התוסף, בחרו בפתיחת הגדרות והוסיפו אתר לחסימה.
 
-התוסף משתמש בהרשאות ניווט בדפדפן וכרטיסיות כדי להפנות אתרים חסומים, ובהרשאת אחסון כדי לשמור את הרשימה שלכם. הוא אינו כולל כלי ניתוח נתוני שימוש או פרסום.
+התוסף משתמש בהרשאת ניווט בדפדפן כדי לזהות ניווט ולהפנות אתרים חסומים, ובהרשאת אחסון כדי לשמור את הרשימה שלכם. הוא אינו כולל כלי ניתוח נתוני שימוש או פרסום.
 
 קוד מקור ותמיכה: https://github.com/maximtop/website-blocker
 
@@ -291,7 +291,7 @@ Code source et assistance : https://github.com/maximtop/website-blocker
 
 शुरू करने के लिए, एक्सटेंशन खोलें, सेटिंग खोलें चुनें और ब्लॉक करने के लिए कोई वेबसाइट जोड़ें।
 
-ब्लॉक की गई वेबसाइटों को रीडायरेक्ट करने के लिए यह एक्सटेंशन ब्राउज़र नेविगेशन और टैब की अनुमतियों का इस्तेमाल करता है। आपकी सूची सहेजने के लिए स्टोरेज की अनुमति का इस्तेमाल किया जाता है। इसमें कोई एनालिटिक्स या विज्ञापन नहीं हैं।
+ब्राउज़र नेविगेशन पर नज़र रखने और ब्लॉक की गई वेबसाइटों को रीडायरेक्ट करने के लिए यह एक्सटेंशन नेविगेशन की अनुमति का इस्तेमाल करता है। आपकी सूची सहेजने के लिए स्टोरेज की अनुमति का इस्तेमाल किया जाता है। इसमें कोई एनालिटिक्स या विज्ञापन नहीं हैं।
 
 सोर्स कोड और सहायता: https://github.com/maximtop/website-blocker
 
@@ -308,7 +308,7 @@ Blokator web-stranica: MT pomaže vam da ostanete usredotočeni blokiranjem web-
 
 Za početak otvorite proširenje, odaberite Otvori postavke i dodajte web-stranicu koju želite blokirati.
 
-Proširenje upotrebljava dozvole za navigaciju preglednika i kartice za preusmjeravanje blokiranih web-stranica te dozvolu za pohranu za spremanje vašeg popisa. Ne sadrži analitiku ni oglase.
+Proširenje upotrebljava dozvolu za navigaciju preglednika za praćenje navigacije i preusmjeravanje blokiranih web-stranica te dozvolu za pohranu za spremanje vašeg popisa. Ne sadrži analitiku ni oglase.
 
 Izvorni kod i podrška: https://github.com/maximtop/website-blocker
 
@@ -325,7 +325,7 @@ A Webhelyblokkoló: MT a figyelmét elterelő webhelyek blokkolásával segít a
 
 A kezdéshez nyissa meg a bővítményt, válassza a Beállítások megnyitása lehetőséget, és adjon hozzá egy blokkolni kívánt webhelyet.
 
-A bővítmény a böngésző navigációjához és lapjaihoz kapcsolódó engedélyeket használja a blokkolt webhelyek átirányításához, a tárhelyengedélyt pedig a lista mentéséhez. Nem tartalmaz analitikai eszközöket vagy hirdetéseket.
+A bővítmény a böngésző navigációjához kapcsolódó engedélyt használja a navigáció figyeléséhez és a blokkolt webhelyek átirányításához, a tárhelyengedélyt pedig a lista mentéséhez. Nem tartalmaz analitikai eszközöket vagy hirdetéseket.
 
 Forráskód és támogatás: https://github.com/maximtop/website-blocker
 
@@ -342,7 +342,7 @@ Pemblokir Situs Web: MT membantu Anda tetap fokus dengan memblokir situs web yan
 
 Untuk memulai, buka ekstensi, pilih Buka pengaturan, lalu tambahkan situs web yang ingin diblokir.
 
-Ekstensi ini menggunakan izin navigasi browser dan tab untuk mengalihkan situs web yang diblokir, serta izin penyimpanan untuk menyimpan daftar Anda. Ekstensi ini tidak menyertakan analitik atau iklan.
+Ekstensi ini menggunakan izin navigasi browser untuk memantau navigasi dan mengalihkan situs web yang diblokir, serta izin penyimpanan untuk menyimpan daftar Anda. Ekstensi ini tidak menyertakan analitik atau iklan.
 
 Kode sumber dan dukungan: https://github.com/maximtop/website-blocker
 
@@ -359,7 +359,7 @@ Blocco siti web: MT ti aiuta a mantenere la concentrazione bloccando i siti web 
 
 Per iniziare, apri l’estensione, scegli Apri impostazioni e aggiungi un sito web da bloccare.
 
-L’estensione usa le autorizzazioni per la navigazione e le schede del browser per reindirizzare i siti bloccati e l’autorizzazione di archiviazione per salvare il tuo elenco. Non contiene strumenti di analisi né pubblicità.
+L’estensione usa l’autorizzazione per la navigazione del browser per rilevare la navigazione e reindirizzare i siti bloccati e l’autorizzazione di archiviazione per salvare il tuo elenco. Non contiene strumenti di analisi né pubblicità.
 
 Codice sorgente e assistenza: https://github.com/maximtop/website-blocker
 
@@ -376,7 +376,7 @@ Codice sorgente e assistenza: https://github.com/maximtop/website-blocker
 
 使い始めるには、拡張機能を開いて「設定を開く」を選択し、ブロックするウェブサイトを追加してください。
 
-この拡張機能は、ブロックされたウェブサイトをリダイレクトするためにブラウザーのナビゲーションとタブの権限を、リストを保存するためにストレージの権限を使用します。アクセス解析や広告は含まれていません。
+この拡張機能は、ブラウザーのナビゲーションを検知し、ブロックされたウェブサイトをリダイレクトするためにナビゲーションの権限を、リストを保存するためにストレージの権限を使用します。アクセス解析や広告は含まれていません。
 
 ソースコードとサポート: https://github.com/maximtop/website-blocker
 
@@ -393,7 +393,7 @@ Codice sorgente e assistenza: https://github.com/maximtop/website-blocker
 
 시작하려면 확장 프로그램을 열고 설정 열기를 선택한 다음 차단할 웹사이트를 추가하세요.
 
-이 확장 프로그램은 차단된 웹사이트를 리디렉션하기 위해 브라우저 탐색 및 탭 권한을 사용하고, 목록을 저장하기 위해 저장소 권한을 사용합니다. 분석 도구나 광고는 포함되어 있지 않습니다.
+이 확장 프로그램은 브라우저 탐색을 감지하고 차단된 웹사이트를 리디렉션하기 위해 탐색 권한을 사용하고, 목록을 저장하기 위해 저장소 권한을 사용합니다. 분석 도구나 광고는 포함되어 있지 않습니다.
 
 소스 코드 및 지원: https://github.com/maximtop/website-blocker
 
@@ -410,7 +410,7 @@ Penyekat Laman Web: MT membantu anda kekal fokus dengan menyekat laman web yang 
 
 Untuk bermula, buka sambungan, pilih Buka tetapan dan tambahkan laman web untuk disekat.
 
-Sambungan ini menggunakan kebenaran navigasi pelayar dan tab untuk mengubah hala laman web yang disekat, serta kebenaran storan untuk menyimpan senarai anda. Sambungan ini tidak mengandungi analitik atau iklan.
+Sambungan ini menggunakan kebenaran navigasi pelayar untuk memantau navigasi dan mengubah hala laman web yang disekat, serta kebenaran storan untuk menyimpan senarai anda. Sambungan ini tidak mengandungi analitik atau iklan.
 
 Kod sumber dan sokongan: https://github.com/maximtop/website-blocker
 
@@ -427,7 +427,7 @@ Nettstedsblokkering: MT hjelper deg med å holde fokus ved å blokkere distraher
 
 For å komme i gang åpner du utvidelsen, velger Åpne innstillinger og legger til et nettsted du vil blokkere.
 
-Utvidelsen bruker tillatelser for nettlesernavigasjon og faner til å omdirigere blokkerte nettsteder, og lagringstillatelse til å lagre listen din. Den inneholder ingen analyseverktøy eller reklame.
+Utvidelsen bruker tillatelse for nettlesernavigasjon til å registrere navigasjon og omdirigere blokkerte nettsteder, og lagringstillatelse til å lagre listen din. Den inneholder ingen analyseverktøy eller reklame.
 
 Kildekode og brukerstøtte: https://github.com/maximtop/website-blocker
 
@@ -444,7 +444,7 @@ Websiteblokkeerder: MT helpt je gefocust te blijven door afleidende websites te 
 
 Om aan de slag te gaan, open je de extensie, kies je Instellingen openen en voeg je een website toe om te blokkeren.
 
-De extensie gebruikt machtigingen voor browsernavigatie en tabbladen om geblokkeerde websites om te leiden, en de opslagmachtiging om je lijst op te slaan. De extensie bevat geen analysetools of advertenties.
+De extensie gebruikt de machtiging voor browsernavigatie om navigatie te detecteren en geblokkeerde websites om te leiden, en de opslagmachtiging om je lijst op te slaan. De extensie bevat geen analysetools of advertenties.
 
 Broncode en ondersteuning: https://github.com/maximtop/website-blocker
 
@@ -461,7 +461,7 @@ Blokowanie stron: MT pomaga zachować koncentrację, blokując rozpraszające st
 
 Aby rozpocząć, otwórz rozszerzenie, wybierz Otwórz ustawienia i dodaj stronę, którą chcesz zablokować.
 
-Rozszerzenie korzysta z uprawnień do nawigacji przeglądarki i kart, aby przekierowywać zablokowane strony, oraz z uprawnienia do przechowywania danych, aby zapisywać listę. Nie zawiera narzędzi analitycznych ani reklam.
+Rozszerzenie korzysta z uprawnienia do nawigacji przeglądarki, aby wykrywać nawigację i przekierowywać zablokowane strony, oraz z uprawnienia do przechowywania danych, aby zapisywać listę. Nie zawiera narzędzi analitycznych ani reklam.
 
 Kod źródłowy i pomoc: https://github.com/maximtop/website-blocker
 
@@ -478,7 +478,7 @@ Bloqueador de sites: MT ajuda você a manter o foco bloqueando sites que causam 
 
 Para começar, abra a extensão, selecione Abrir configurações e adicione um site para bloquear.
 
-A extensão usa as permissões de navegação e de guias do navegador para redirecionar sites bloqueados, e a permissão de armazenamento para salvar sua lista. Não contém ferramentas de análise nem publicidade.
+A extensão usa a permissão de navegação do navegador para detectar a navegação e redirecionar sites bloqueados, e a permissão de armazenamento para salvar sua lista. Não contém ferramentas de análise nem publicidade.
 
 Código-fonte e suporte: https://github.com/maximtop/website-blocker
 
@@ -495,7 +495,7 @@ Bloqueador de sites: MT ajuda a manter a concentração ao bloquear sites que ca
 
 Para começar, abra a extensão, selecione Abrir definições e adicione um site para bloquear.
 
-A extensão utiliza as permissões de navegação e de separadores do navegador para redirecionar sites bloqueados, e a permissão de armazenamento para guardar a lista. Não contém ferramentas de análise nem publicidade.
+A extensão utiliza a permissão de navegação do navegador para detetar a navegação e redirecionar sites bloqueados, e a permissão de armazenamento para guardar a lista. Não contém ferramentas de análise nem publicidade.
 
 Código-fonte e apoio: https://github.com/maximtop/website-blocker
 
@@ -512,7 +512,7 @@ Blocare site-uri: MT te ajută să rămâi concentrat blocând site-urile care �
 
 Pentru a începe, deschide extensia, alege Deschide setările și adaugă un site de blocat.
 
-Extensia folosește permisiunile pentru navigare și file ale browserului pentru a redirecționa site-urile blocate, iar permisiunea de stocare pentru a salva lista. Nu conține instrumente de analiză sau reclame.
+Extensia folosește permisiunea pentru navigare a browserului pentru a detecta navigarea și a redirecționa site-urile blocate, iar permisiunea de stocare pentru a salva lista. Nu conține instrumente de analiză sau reclame.
 
 Cod sursă și asistență: https://github.com/maximtop/website-blocker
 
@@ -529,7 +529,7 @@ Cod sursă și asistență: https://github.com/maximtop/website-blocker
 
 Чтобы начать, откройте расширение, выберите «Открыть настройки» и добавьте сайт для блокировки.
 
-Расширение использует разрешения на навигацию и работу с вкладками браузера для перенаправления заблокированных сайтов, а разрешение на хранение данных — для сохранения списка. В расширении нет аналитики и рекламы.
+Расширение использует разрешение на навигацию браузера для отслеживания переходов и перенаправления заблокированных сайтов, а разрешение на хранение данных — для сохранения списка. В расширении нет аналитики и рекламы.
 
 Исходный код и поддержка: https://github.com/maximtop/website-blocker
 
@@ -546,7 +546,7 @@ Blokovanie webových stránok: MT vám pomáha sústrediť sa blokovaním rušiv
 
 Ak chcete začať, otvorte rozšírenie, vyberte Otvoriť nastavenia a pridajte webovú stránku, ktorú chcete blokovať.
 
-Rozšírenie používa oprávnenia na navigáciu a prácu s kartami prehliadača na presmerovanie blokovaných webových stránok a oprávnenie na ukladanie údajov na uloženie zoznamu. Neobsahuje analytické nástroje ani reklamy.
+Rozšírenie používa oprávnenie na navigáciu prehliadača na sledovanie navigácie a presmerovanie blokovaných webových stránok a oprávnenie na ukladanie údajov na uloženie zoznamu. Neobsahuje analytické nástroje ani reklamy.
 
 Zdrojový kód a podpora: https://github.com/maximtop/website-blocker
 
@@ -563,7 +563,7 @@ Zdrojový kód a podpora: https://github.com/maximtop/website-blocker
 
 За почетак отворите проширење, изаберите Отвори подешавања и додајте сајт који желите да блокирате.
 
-Проширење користи дозволе за навигацију и картице прегледача да преусмерава блокиране сајтове, а дозволу за складиштење да сачува вашу листу. Не садржи алате за аналитику нити огласе.
+Проширење користи дозволу за навигацију прегледача да прати навигацију и преусмерава блокиране сајтове, а дозволу за складиштење да сачува вашу листу. Не садржи алате за аналитику нити огласе.
 
 Изворни код и подршка: https://github.com/maximtop/website-blocker
 
@@ -580,7 +580,7 @@ Webbplatsblockerare: MT hjälper dig att behålla fokus genom att blockera distr
 
 Kom igång genom att öppna tillägget, välja Öppna inställningar och lägga till en webbplats att blockera.
 
-Tillägget använder webbläsarens behörigheter för navigering och flikar för att omdirigera blockerade webbplatser, och lagringsbehörigheten för att spara din lista. Det innehåller varken analysverktyg eller reklam.
+Tillägget använder webbläsarens behörighet för navigering för att upptäcka navigering och omdirigera blockerade webbplatser, och lagringsbehörigheten för att spara din lista. Det innehåller varken analysverktyg eller reklam.
 
 Källkod och support: https://github.com/maximtop/website-blocker
 
@@ -597,7 +597,7 @@ Källkod och support: https://github.com/maximtop/website-blocker
 
 เริ่มต้นใช้งานโดยเปิดส่วนขยาย เลือก เปิดการตั้งค่า แล้วเพิ่มเว็บไซต์ที่ต้องการบล็อก
 
-ส่วนขยายใช้สิทธิ์การนำทางและสิทธิ์แท็บของเบราว์เซอร์เพื่อเปลี่ยนเส้นทางเว็บไซต์ที่ถูกบล็อก และใช้สิทธิ์การจัดเก็บข้อมูลเพื่อบันทึกรายการของคุณ ไม่มีเครื่องมือวิเคราะห์หรือโฆษณา
+ส่วนขยายใช้สิทธิ์การนำทางของเบราว์เซอร์เพื่อตรวจจับการนำทางและเปลี่ยนเส้นทางเว็บไซต์ที่ถูกบล็อก และใช้สิทธิ์การจัดเก็บข้อมูลเพื่อบันทึกรายการของคุณ ไม่มีเครื่องมือวิเคราะห์หรือโฆษณา
 
 ซอร์สโค้ดและการสนับสนุน: https://github.com/maximtop/website-blocker
 
@@ -614,7 +614,7 @@ Web Sitesi Engelleyici: MT, dikkatinizi dağıtan web sitelerini engelleyerek od
 
 Başlamak için uzantıyı açın, Ayarları aç seçeneğini seçin ve engellenecek bir web sitesi ekleyin.
 
-Uzantı, engellenen web sitelerini yönlendirmek için tarayıcının gezinme ve sekme izinlerini, listenizi kaydetmek için ise depolama iznini kullanır. Analiz araçları veya reklam içermez.
+Uzantı, tarayıcıdaki gezinmeyi izlemek ve engellenen web sitelerini yönlendirmek için gezinme iznini, listenizi kaydetmek için ise depolama iznini kullanır. Analiz araçları veya reklam içermez.
 
 Kaynak kodu ve destek: https://github.com/maximtop/website-blocker
 
@@ -631,7 +631,7 @@ Kaynak kodu ve destek: https://github.com/maximtop/website-blocker
 
 Щоб почати, відкрийте розширення, виберіть «Відкрити налаштування» та додайте сайт для блокування.
 
-Розширення використовує дозволи на навігацію та роботу з вкладками браузера для переспрямування заблокованих сайтів, а дозвіл на зберігання даних — для збереження списку. Розширення не містить аналітики та реклами.
+Розширення використовує дозвіл на навігацію браузера для відстеження переходів і переспрямування заблокованих сайтів, а дозвіл на зберігання даних — для збереження списку. Розширення не містить аналітики та реклами.
 
 Вихідний код і підтримка: https://github.com/maximtop/website-blocker
 
@@ -648,7 +648,7 @@ Trình chặn trang web: MT giúp bạn giữ tập trung bằng cách chặn c�
 
 Để bắt đầu, hãy mở tiện ích, chọn Mở cài đặt và thêm trang web cần chặn.
 
-Tiện ích sử dụng quyền điều hướng và quyền truy cập thẻ của trình duyệt để chuyển hướng các trang web bị chặn, cùng quyền lưu trữ để lưu danh sách của bạn. Tiện ích không chứa công cụ phân tích hay quảng cáo.
+Tiện ích sử dụng quyền điều hướng của trình duyệt để theo dõi điều hướng và chuyển hướng các trang web bị chặn, cùng quyền lưu trữ để lưu danh sách của bạn. Tiện ích không chứa công cụ phân tích hay quảng cáo.
 
 Mã nguồn và hỗ trợ: https://github.com/maximtop/website-blocker
 
@@ -665,7 +665,7 @@ Mã nguồn và hỗ trợ: https://github.com/maximtop/website-blocker
 
 开始使用时，打开扩展程序，选择“打开设置”，然后添加要屏蔽的网站。
 
-此扩展程序使用浏览器导航和标签页权限来重定向被屏蔽的网站，并使用存储权限保存列表。不含分析工具或广告。
+此扩展程序使用浏览器导航权限来检测导航并重定向被屏蔽的网站，并使用存储权限保存列表。不含分析工具或广告。
 
 源代码与支持：https://github.com/maximtop/website-blocker
 
@@ -682,6 +682,6 @@ Mã nguồn và hỗ trợ: https://github.com/maximtop/website-blocker
 
 開始使用時，開啟擴充功能，選擇「開啟設定」，然後新增要封鎖的網站。
 
-此擴充功能使用瀏覽器導覽和分頁權限來重新導向遭封鎖的網站，並使用儲存權限來儲存清單。不含分析工具或廣告。
+此擴充功能使用瀏覽器導覽權限來偵測導覽並重新導向遭封鎖的網站，並使用儲存權限來儲存清單。不含分析工具或廣告。
 
 原始碼與支援：https://github.com/maximtop/website-blocker

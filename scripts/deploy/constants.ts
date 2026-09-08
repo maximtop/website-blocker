@@ -1,5 +1,5 @@
 /**
- * @file Repository-specific values for the shared extension deployment contract.
+ * @file Configuration for this repository's shared extension deployment flow.
  */
 
 /**
@@ -33,8 +33,17 @@ export const SOURCE_REQUIRED_FILES = [
     'tsconfig.json',
     '.swcrc',
     'src/manifest.json',
+    'src/_locales/en/messages.json',
+    'src/entrypoints/background/index.ts',
     'scripts/build/index.ts',
+    'scripts/build/constants.ts',
+    'scripts/build/helpers.ts',
+    'scripts/build/bundle-runner.ts',
+    'scripts/build/webpack-config.ts',
     'scripts/build/webpack.common.ts',
+    'scripts/build/manifest.ts',
+    'scripts/i18n/catalogs.ts',
+    'scripts/deploy/constants.ts',
     'DEVELOPMENT.md',
 ];
 
@@ -42,6 +51,9 @@ export const SOURCE_REQUIRED_FILES = [
  * Reviewer notes inside the source archive, submitted to AMO with every new Firefox version.
  */
 export const AMO_REVIEW_NOTES_PATH = 'docs/AMO_REVIEW.md';
+
+/** Filename of the extracted reviewer notes consumed by preflight and the upload workflow. */
+export const AMO_APPROVAL_NOTES_FILENAME = 'approval-notes.txt';
 
 /**
  * Shape of a release tag; the version is the tag without the `v` prefix.

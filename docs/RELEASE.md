@@ -1,7 +1,8 @@
 # Releasing
 
-This document has the same structure in every extension repository; only the
-store list, the identifiers, and the repository-specific notes differ.
+This repository follows the manual release and store deployment pattern used
+by the other extension repositories, with its own store configuration and
+reviewer instructions.
 
 - [Cut a release](#cut-a-release)
 - [Store deployment](#store-deployment)
@@ -47,9 +48,9 @@ failed upload deletes the draft again, so a failed run normally leaves no
 release behind and can simply be re-run. If a draft survives a cancelled run,
 delete it with `gh release delete vX.Y.Z --yes` before re-running.
 
-The published `v1.2.7` release contains only a Chrome archive. Cut a new
-version after merging the Edge/Firefox build support; do not replace assets
-of an existing release.
+Releases through `v1.2.7` contain only a Chrome archive. Version `1.2.8` is
+the first release with Edge and Firefox support. Publish it after merging the
+browser build support; do not replace assets of an existing release.
 
 ## Store deployment
 
@@ -78,10 +79,11 @@ version 3, the release version, and the background format of the target
 browser (Firefox additionally the Gecko ID and the source archive metadata).
 What users can verify is exactly what the store receives. Only then does the
 store-specific part start. The validation code and its tests (`tests/deploy`)
-follow the shared deployment contract used by the other extension repositories;
-the repository specifics live in `scripts/deploy/constants.ts`. Until shared
-actions are extracted, port changes to shared helpers and their tests to the
-other repositories together.
+follow the shared deployment pattern used by the other extension repositories;
+repository configuration and shared file contracts live in
+`scripts/deploy/constants.ts`. Coordinate applicable helper and test changes
+with the other repositories while preserving each repository's build and
+module-system requirements.
 
 ### Chrome Web Store
 
@@ -146,8 +148,12 @@ GUID; do not reuse another extension's ID. Later updates use the workflow.
 
 ### Firefox Add-ons
 
-`deploy-firefox-amo.yml` has two store modes:
+`deploy-firefox-amo.yml` follows the manual deployment flow used by
+`hide-gmail-upgrade-button`. Modes:
 
+- `validate`: resolve a stable GitHub Release, download its Firefox and source
+  ZIPs, and verify their checksums, version, Gecko ID and source completeness.
+  Nothing is uploaded. The required configuration values must still be present.
 - `submit` (default): validate the Firefox archive and the matching source
   archive, check the authenticated AMO API for that exact version, then
   submit only if absent. Existing versions are never uploaded again. If an
@@ -175,19 +181,29 @@ A new submission requires `docs/AMO_REVIEW.md` inside that same release's
 source archive. Update these [reviewer instructions](AMO_REVIEW.md) whenever
 build requirements change.
 
-For a new Website Blocker listing, upload the Firefox archive and matching
-source archive through the Developer Hub. Its manifest uses Gecko ID
-`website-blocker@maximtop.dev`; set `FIREFOX_AMO_ID` to the resulting listing
-slug or numeric ID. The preflight checks that the listing has this Gecko ID.
-For an existing listing, preserve its original Gecko ID before building.
+The saved Website Blocker listing slug is `website-blocker-mt`. Complete that
+first listing in Developer Hub with the Firefox archive and matching source
+archive; the saved draft has not yet been submitted and contains an older
+English-only build. Before submitting it, refresh its package, matching source,
+reviewer notes and listing metadata from the current release.
+[FIREFOX_LISTING.md](FIREFOX_LISTING.md) contains the Firefox-specific copy,
+privacy details and a link to the complete 40-locale pack in
+[STORE_DESCRIPTIONS.md](store/STORE_DESCRIPTIONS.md). Preserve all locales and
+review the newer timed-blocking behavior and its current English-only controls.
+Use release `1.2.8` or later; do not upload a Chrome archive to AMO.
+
+Set `FIREFOX_AMO_ID` to the saved listing slug or numeric ID, not the manifest's
+Gecko ID (`website-blocker@maximtop.dev`). The preflight checks that the listing
+has this Gecko ID; preserve it on later updates.
 
 ## Store configuration
 
 These workflows update existing store items; they do not provision listings.
 One-time setup per store:
 
-1. Create the item in the store console by uploading any release archive by
-   hand and complete the listing, privacy, and distribution pages there
+1. Create the item in the store console (or continue its saved draft) by
+   uploading that browser's release archive by hand, then complete the listing,
+   privacy, and distribution pages there
    (Chrome: leave the item as an unsubmitted draft; Edge: complete the first
    submission in Partner Center; Firefox: submit the first version in the
    Developer Hub with the matching source archive).
@@ -198,8 +214,8 @@ One-time setup per store:
    release through the workflow; do not upload the initial Edge version again.
 
 Configure these in the GitHub repository under **Settings → Secrets and
-variables → Actions**. Workflows reference them by name only; no value is ever
-committed.
+variables → Actions**. Workflows reference them by name; credential values
+are never committed.
 
 | Kind | Name | Description |
 | --- | --- | --- |
@@ -211,7 +227,7 @@ committed.
 | Variable | `EDGE_PRODUCT_ID` | Product ID (GUID) from the extension overview page in Partner Center; not the public store ID. Specific to this extension. |
 | Secret | `EDGE_CLIENT_ID` | Partner Center → Microsoft Edge → **Publish API** → Client ID (API-key experience). |
 | Secret | `EDGE_API_KEY` | An active API key from the same page; Partner Center shows its expiry date. |
-| Variable | `FIREFOX_AMO_ID` | AMO listing slug or numeric identifier. Specific to this extension. |
+| Variable | `FIREFOX_AMO_ID` | Saved AMO listing slug `website-blocker-mt` or its numeric identifier. Specific to this extension. |
 | Secret | `FIREFOX_CLIENT_ID` | JWT issuer from the [AMO API credentials](https://addons.mozilla.org/en-US/developers/addon/api/key/) page. |
 | Secret | `FIREFOX_CLIENT_SECRET` | JWT secret from the same page; use the full original secret, AMO later shows only a masked value that cannot authenticate. |
 
@@ -232,6 +248,10 @@ unset store_value
 
 Always capture a value before piping it into `gh secret set`: a failed `op`
 command otherwise stores an empty secret without any error.
+
+Firefox credentials already live in the shared `firefox-amo-api` item. Copy
+those existing values into this repository's Firefox secrets; do not regenerate
+the AMO key during setup. `1password.env.example` contains the references.
 
 ## Local store commands
 
@@ -315,10 +335,15 @@ Edge Add-ons:
 
 Firefox Add-ons:
 
+- **Missing Firefox asset:** releases through 1.2.7 are Chrome-only. Select a
+  release with both Firefox and matching source ZIPs; never rebuild during deploy.
 - **`HTTP 401 (signature)`:** `FIREFOX_CLIENT_SECRET` is not the full JWT
   secret (AMO shows existing secrets masked). Push the value from
   `firefox-amo-api` and re-run.
 - **Version already exists on AMO:** nothing is uploaded; use `status` mode
   to follow the review, or ship a new version.
+- **Existing version has no source attached:** attach the matching release's
+  source ZIP in Developer Hub before continuing.
 - **Status endpoint unavailable after a successful upload:** the submission
-  stands; re-run in `status` mode later.
+  stands; re-run in `status` mode later. Status-only mode fails when the API
+  cannot be read.

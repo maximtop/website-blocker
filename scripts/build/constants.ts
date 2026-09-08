@@ -39,7 +39,7 @@ export const enum Browser {
 
 export const BROWSERS = [Browser.Chrome, Browser.Edge, Browser.Firefox] as const;
 
-export const FIREFOX_STRICT_MIN_VERSION = '128.0';
+export const FIREFOX_STRICT_MIN_VERSION = '140.0';
 
 export const BUILD_PATH = path.resolve(__dirname, '../../dist');
 

@@ -1,3 +1,5 @@
+// @vitest-environment node
+
 import { describe, expect, it } from 'vitest';
 import sourceManifest from '../../src/manifest.json';
 import { Browser, BROWSERS } from '../../scripts/build/constants';
@@ -26,14 +28,24 @@ describe('browser manifests', () => {
         const manifest = manifestFor(Browser.Firefox);
         expect(manifest.background).toEqual({ scripts: ['background.js'] });
         expect(manifest.background).not.toHaveProperty('service_worker');
-        expect(GECKO_ID).not.toBe('');
+        expect(GECKO_ID).toBe('website-blocker@maximtop.dev');
         expect(manifest.browser_specific_settings.gecko).toEqual({
             id: GECKO_ID,
-            strict_min_version: '128.0',
+            strict_min_version: '140.0',
             data_collection_permissions: { required: ['none'] },
         });
         expect(manifest).not.toHaveProperty('minimum_chrome_version');
         expect(manifest).not.toHaveProperty('incognito');
+    });
+
+    it('preserves the source manifest across consecutive browser builds', () => {
+        const source = Buffer.from(JSON.stringify(sourceManifest));
+        updateManifest(source, Browser.Firefox, version);
+        expect(JSON.parse(updateManifest(source, Browser.Chrome, version)))
+            .toEqual({ ...sourceManifest, version });
+        expect(JSON.parse(updateManifest(source, Browser.Edge, version)))
+            .toEqual({ ...sourceManifest, version });
+        expect(JSON.parse(source.toString())).toEqual(sourceManifest);
     });
 
     it.each(BROWSERS)('retains the blocking UI and permissions for %s', (browser) => {

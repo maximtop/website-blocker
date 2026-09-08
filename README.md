@@ -10,7 +10,7 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 - **Per-site Control:** Turn blocking off or on for individual websites without removing them from the list.
 - **Persistent Storage:** Blocked websites are saved and loaded from browser storage.
 - **Real-time Updates:** Automatically updates the list of blocked websites when changes are made.
-- **40 languages:** The interface follows the browser's selected language, with English fallback and RTL support.
+- **40 languages:** Existing website controls follow the browser's selected language, with English fallback and RTL support. New duration controls currently remain in English.
 
 ## Installation
 
@@ -31,12 +31,13 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
     pnpm build
     ```
 5. Load the extension in your browser:
-    - Open your browser's extensions page.
-    - Enable "Developer mode".
-    - Chrome: click "Load unpacked" and select `dist/dev/chrome`.
-    - Edge: click "Load unpacked" and select `dist/dev/edge`.
-    - Firefox: open `about:debugging#/runtime/this-firefox`, click "Load Temporary Add-on",
-      and select `dist/dev/firefox/manifest.json`.
+    - Chrome: open the extensions page, enable "Developer mode", click
+      "Load unpacked", and select `dist/dev/chrome`.
+    - Edge: open the extensions page, enable "Developer mode", click
+      "Load unpacked", and select `dist/dev/edge`.
+    - Firefox 140+: open `about:debugging#/runtime/this-firefox`, click
+      "Load Temporary Add-on", and select `dist/dev/firefox/manifest.json`.
+      Temporary add-ons are removed when Firefox closes.
 
 ## Usage
 
@@ -46,8 +47,8 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 - Open the extension's options page to add, edit, or remove websites from the blocked list.
 - Click **Edit** next to a website to change its address, then **Save** (or press Enter). Click **Cancel** (or press Escape) to discard the change. Invalid addresses and duplicates leave the original entry unchanged.
 - Editing an address preserves its blocking switch setting.
-- Use the switch next to a website to turn blocking off or on. Disabled websites stay in the list for later.
-- The extension will automatically block access to websites whose switches are on. Your choices are saved across restarts.
+- Use the switch next to a website to turn blocking off or on. Disabled entries remain visible until removed or until their deadline expires.
+- The extension blocks matching navigations while an entry is enabled and unexpired. Saved choices and deadlines survive restarts; expiry does not reopen tabs already showing the blocked page.
 
 ## Download
 
@@ -88,8 +89,11 @@ setup, deployment modes and the failure playbook.
 ## Translations
 
 The 40 language catalogs use the same locale set as HN Split and No More Ago.
-All UI text, validation errors, page titles, accessible labels, and manifest metadata
-live in `src/_locales/<locale>/messages.json`. English is the default catalog.
+Localized website controls, website-validation errors, page titles, accessible
+labels and manifest metadata live in `src/_locales/<locale>/messages.json`.
+English is the default catalog. The newly added duration controls, duration
+validation errors and loading message currently remain in English in the source;
+their localization is not yet part of the 40-catalog pack.
 
 Supported locales: `ar bg bn ca cs da de el en es es_419 fa fi fil fr he hi hr hu id
 it ja ko ms nb nl pl pt_BR pt_PT ro ru sk sr sv th tr uk vi zh_CN zh_TW`.

@@ -36,7 +36,7 @@ Deployment helpers execute with `tsx`, matching the other extensions.
 ## Browser behavior
 
 - Chrome and Edge use `background.service_worker`.
-- Firefox Desktop 128 or later uses `background.scripts` and Gecko ID
+- Firefox Desktop 140 or later uses `background.scripts` and Gecko ID
   `website-blocker@maximtop.dev`. Firefox uses its default spanning private
   window mode; users must allow private-window access separately.
 - The navigation handler uses `frameId === 0` to identify top-level pages

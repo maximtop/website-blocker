@@ -49,13 +49,16 @@ jobs:
             fi
             test -f "dist/release/$BROWSER.zip"
           done
-          node -e "
-            const chrome = require('./dist/release/chrome/manifest.json');
-            const firefox = require('./dist/release/firefox/manifest.json');
-            if (!chrome.background.service_worker) throw new Error('chrome: no service worker');
-            if (!Array.isArray(firefox.background.scripts)) throw new Error('firefox: no background scripts');
-            if (!firefox.browser_specific_settings?.gecko?.id) throw new Error('firefox: no gecko id');
-          "
+          for BROWSER in chrome edge; do
+            jq -e '.background.service_worker == "background.js" and (.background | has("scripts") | not)' \
+              "dist/release/$BROWSER/manifest.json"
+          done
+          jq -e '.background.scripts == ["background.js"] and (.background | has("service_worker") | not)
+            and .browser_specific_settings.gecko.id == "website-blocker@maximtop.dev"
+            and .browser_specific_settings.gecko.strict_min_version == "140.0"
+            and .browser_specific_settings.gecko.data_collection_permissions.required == ["none"]
+            and (has("incognito") | not)
+            and (has("minimum_chrome_version") | not)' dist/release/firefox/manifest.json
       - name: Retain extension archives
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

@@ -10,6 +10,16 @@ let loadRequest = 0;
 let needsRefresh = true;
 
 /**
+ * Cross-browser navigation details with optional Chromium lifecycle metadata.
+ */
+type NavigationDetails = browser.WebNavigation.OnCommittedDetailsType & {
+    /**
+     * Chromium document lifecycle state, absent in Firefox.
+     */
+    documentLifecycle?: string;
+};
+
+/**
  * Checks if a given URL matches any of the blocked websites.
  * @param url - The URL of the website to check.
  * @returns Returns true if the URL matches a blocked website, otherwise false.
@@ -24,7 +34,7 @@ function isBlocked(url: string): boolean {
  *
  * @returns Resolves after handling either the storage response or its error.
  */
-function updateBlockedWebsites() {
+function updateBlockedWebsites(): Promise<void> {
     loadRequest += 1;
     const request = loadRequest;
     needsRefresh = true;
@@ -72,8 +82,14 @@ async function waitForUpdates() {
  * @returns Resolves after any required refresh and redirect.
  */
 const handleOnCommitted = async (
-    details: browser.WebNavigation.OnCommittedDetailsType,
+    details: NavigationDetails,
 ) => {
+    // frameId is shared by Firefox and Chromium. Never redirect an iframe's tab
+    // or a Chromium document that has not yet left prerendering.
+    if (details.frameId !== 0 || details.documentLifecycle === 'prerender') {
+        return;
+    }
+
     const joinedRecovery = navigationRefresh !== null;
     await waitForUpdates();
     if (needsRefresh && !blockedWebsitesPromise && !joinedRecovery) {
@@ -86,13 +102,7 @@ const handleOnCommitted = async (
     }
     await waitForUpdates();
 
-    // Check if the navigation is not in prerender state
-    if (
-        details.frameId === 0
-        // @ts-ignore
-        && details.documentLifecycle !== 'prerender'
-        && isBlocked(details.url)
-    ) {
+    if (isBlocked(details.url)) {
         await browser.tabs.update(details.tabId, {
             url: browser.runtime.getURL('blocked.html'),
         });
@@ -112,10 +122,13 @@ const syncInit = () => {
 
 /**
  * Starts listeners and the first handled storage refresh.
+ *
+ * @returns Resolves once the initial storage refresh has settled.
  */
 const init = () => {
+    // Event pages must register listeners before asynchronous storage reads.
     syncInit();
-    updateBlockedWebsites();
+    return updateBlockedWebsites();
 };
 
 export { init };

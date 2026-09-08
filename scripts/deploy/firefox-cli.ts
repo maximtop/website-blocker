@@ -12,7 +12,12 @@ import {
 } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { GECKO_ID, RELEASE_TAG_PATTERN, STORE_UPLOAD_DIRECTORY } from './constants';
+import {
+    AMO_APPROVAL_NOTES_FILENAME,
+    GECKO_ID,
+    RELEASE_TAG_PATTERN,
+    STORE_UPLOAD_DIRECTORY,
+} from './constants';
 import {
     AMO_REQUEST_TIMEOUT_MS,
     AMO_STATUS,
@@ -67,7 +72,7 @@ export const run = async (env: NodeJS.ProcessEnv = process.env): Promise<void> =
     }
     if (operation === AMO_OPERATION.Preflight) {
         const submit = shouldSubmit(result);
-        const notesPath = path.join(STORE_UPLOAD_DIRECTORY, 'approval-notes.txt');
+        const notesPath = path.join(STORE_UPLOAD_DIRECTORY, AMO_APPROVAL_NOTES_FILENAME);
         if (submit && !readFileSync(notesPath, 'utf8').trim()) {
             throw new Error('New submissions require docs/AMO_REVIEW.md in the release source ZIP');
         }
