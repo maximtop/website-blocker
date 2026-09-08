@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { RootStoreContext } from '../../stores/root-store';
+import { BLOCK_DURATION } from '../../block-duration';
 
 /**
  * Renders the observable blocked website list with add and edit forms.
@@ -86,15 +87,15 @@ export const WebsiteList = observer(() => {
                             onChange={(event) => settingsStore.setDuration(event.target.value)}
                             disabled={isPending}
                         >
-                            <option value="indefinitely">Indefinitely</option>
-                            <option value="15">15 minutes</option>
-                            <option value="30">30 minutes</option>
-                            <option value="60">60 minutes</option>
-                            <option value="custom">Custom duration</option>
+                            <option value={BLOCK_DURATION.INDEFINITELY}>Indefinitely</option>
+                            <option value={BLOCK_DURATION.FIFTEEN_MINUTES}>15 minutes</option>
+                            <option value={BLOCK_DURATION.THIRTY_MINUTES}>30 minutes</option>
+                            <option value={BLOCK_DURATION.SIXTY_MINUTES}>60 minutes</option>
+                            <option value={BLOCK_DURATION.CUSTOM}>Custom duration</option>
                         </select>
                     </label>
                 </div>
-                {duration === 'custom' && (
+                {duration === BLOCK_DURATION.CUSTOM && (
                     <div className="col-12 col-sm">
                         <label htmlFor="custom-minutes" className="form-label d-block mb-0">
                             Minutes

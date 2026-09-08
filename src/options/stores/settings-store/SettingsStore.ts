@@ -9,6 +9,7 @@ import {
 import { type RootStore } from '../root-store';
 import { Websites, WebsitesMap, Website } from '../../../common/websites';
 import { getErrorMessage } from '../../../common/utils/error';
+import { BLOCK_DURATION } from '../../block-duration';
 
 /**
  * Owns the blocked website list, form drafts, validation errors and pending changes.
@@ -32,9 +33,9 @@ export class SettingsStore {
 
     @observable isLoading = true;
 
-    @observable duration = 'indefinitely';
+    @observable duration: string = BLOCK_DURATION.INDEFINITELY;
 
-    @observable customMinutes = '30';
+    @observable customMinutes: string = BLOCK_DURATION.THIRTY_MINUTES;
 
     @observable private currentTime = Date.now();
 
@@ -193,8 +194,8 @@ export class SettingsStore {
     @action
     async addNewWebsite() {
         await this.runOperation(async () => {
-            const minutes = this.duration === 'indefinitely'
-                ? undefined : Number(this.duration === 'custom' ? this.customMinutes : this.duration);
+            const minutes = this.duration === BLOCK_DURATION.INDEFINITELY
+                ? undefined : Number(this.duration === BLOCK_DURATION.CUSTOM ? this.customMinutes : this.duration);
             const websites = await Websites.addWebsite(this.newWebsite, minutes);
             this.loadRequest += 1;
             this.applyWebsites(websites);
