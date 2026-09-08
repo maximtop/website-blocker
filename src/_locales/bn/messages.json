@@ -109,5 +109,24 @@
                 "example": "example.com"
             }
         }
+    },
+    "editWebsite": {
+        "message": "সম্পাদনা"
+    },
+    "saveWebsite": {
+        "message": "সংরক্ষণ"
+    },
+    "cancelEdit": {
+        "message": "বাতিল"
+    },
+    "editWebsiteLabel": {
+        "message": "$WEBSITE$ সম্পাদনা করুন",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
     }
 }

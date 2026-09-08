@@ -102,7 +102,26 @@
     },
     "missingWebsite": {
         "message": "Website is not in the list: $WEBSITE$",
-        "description": "The website was removed before its blocking switch could be changed. Keep the placeholder intact.",
+        "description": "The website was removed before it could be edited or toggled. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
+    },
+    "editWebsite": {
+        "message": "Edit"
+    },
+    "saveWebsite": {
+        "message": "Save"
+    },
+    "cancelEdit": {
+        "message": "Cancel"
+    },
+    "editWebsiteLabel": {
+        "message": "Edit $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
         "placeholders": {
             "website": {
                 "content": "$1",

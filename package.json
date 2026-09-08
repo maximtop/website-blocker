@@ -66,6 +66,7 @@
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-plugin-import": "^2.30.0",
     "eslint-plugin-import-newlines": "^1.4.0",
+    "eslint-plugin-jsdoc": "63.3.3",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.37.2",

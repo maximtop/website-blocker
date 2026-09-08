@@ -109,5 +109,24 @@
                 "example": "example.com"
             }
         }
+    },
+    "editWebsite": {
+        "message": "แก้ไข"
+    },
+    "saveWebsite": {
+        "message": "บันทึก"
+    },
+    "cancelEdit": {
+        "message": "ยกเลิก"
+    },
+    "editWebsiteLabel": {
+        "message": "แก้ไข $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
     }
 }

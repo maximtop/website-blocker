@@ -109,5 +109,24 @@
                 "example": "example.com"
             }
         }
+    },
+    "editWebsite": {
+        "message": "Επεξεργασία"
+    },
+    "saveWebsite": {
+        "message": "Αποθήκευση"
+    },
+    "cancelEdit": {
+        "message": "Ακύρωση"
+    },
+    "editWebsiteLabel": {
+        "message": "Επεξεργασία του $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
     }
 }

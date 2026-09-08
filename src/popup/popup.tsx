@@ -8,7 +8,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../common/styles.css';
 import './styles.css';
 
+/**
+ * Mounts the extension popup with its store context.
+ */
 export const popup = {
+    /**
+     * Renders the popup with a fresh store context.
+     */
     init: () => {
         applyDocumentLocale(PAGE_TITLE.Popup);
         const container = document.getElementById('root');

@@ -109,5 +109,24 @@
                 "example": "example.com"
             }
         }
+    },
+    "editWebsite": {
+        "message": "编辑"
+    },
+    "saveWebsite": {
+        "message": "保存"
+    },
+    "cancelEdit": {
+        "message": "取消"
+    },
+    "editWebsiteLabel": {
+        "message": "编辑 $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
     }
 }

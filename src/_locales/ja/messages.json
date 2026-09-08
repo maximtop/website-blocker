@@ -109,5 +109,24 @@
                 "example": "example.com"
             }
         }
+    },
+    "editWebsite": {
+        "message": "編集"
+    },
+    "saveWebsite": {
+        "message": "保存"
+    },
+    "cancelEdit": {
+        "message": "キャンセル"
+    },
+    "editWebsiteLabel": {
+        "message": "$WEBSITE$ を編集",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
     }
 }

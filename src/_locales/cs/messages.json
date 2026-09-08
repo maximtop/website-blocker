@@ -109,5 +109,24 @@
                 "example": "example.com"
             }
         }
+    },
+    "editWebsite": {
+        "message": "Upravit"
+    },
+    "saveWebsite": {
+        "message": "Uložit"
+    },
+    "cancelEdit": {
+        "message": "Zrušit"
+    },
+    "editWebsiteLabel": {
+        "message": "Upravit $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
     }
 }

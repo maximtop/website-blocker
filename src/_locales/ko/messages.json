@@ -109,5 +109,24 @@
                 "example": "example.com"
             }
         }
+    },
+    "editWebsite": {
+        "message": "편집"
+    },
+    "saveWebsite": {
+        "message": "저장"
+    },
+    "cancelEdit": {
+        "message": "취소"
+    },
+    "editWebsiteLabel": {
+        "message": "$WEBSITE$ 편집",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
     }
 }

@@ -109,5 +109,24 @@
                 "example": "example.com"
             }
         }
+    },
+    "editWebsite": {
+        "message": "Modifica"
+    },
+    "saveWebsite": {
+        "message": "Salva"
+    },
+    "cancelEdit": {
+        "message": "Annulla"
+    },
+    "editWebsiteLabel": {
+        "message": "Modifica $WEBSITE$",
+        "description": "Accessible label for the edit button and address input. Keep the placeholder intact.",
+        "placeholders": {
+            "website": {
+                "content": "$1",
+                "example": "example.com"
+            }
+        }
     }
 }
