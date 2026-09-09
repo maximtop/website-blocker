@@ -87,6 +87,69 @@ afterEach(() => {
 });
 
 describe('website mutations across independent contexts', () => {
+    it('queues deletion behind a pending toggle without resurrecting the same host', async () => {
+        persisted = { websites: { 'old.com': { hostname: 'old.com', enabled: true } } };
+        const [first, second] = await independentContexts();
+        const toggling = first.setWebsiteEnabled('old.com', false);
+        await vi.waitFor(() => expect(writes).toHaveLength(1));
+        const deleting = second.deleteWebsite('old.com');
+        await new Promise<void>((resolve) => { setImmediate(resolve); });
+        expect(browser.storage.sync.get).toHaveBeenCalledTimes(1);
+        writes[0].commit();
+        await vi.waitFor(() => expect(writes).toHaveLength(2));
+        writes[1].commit();
+        await Promise.all([toggling, deleting]);
+
+        expect(await first.getWebsites()).toEqual({});
+        expect(persisted['website:old.com']).toBeNull();
+    });
+
+    it('rejects a toggle queued after deletion of the same host', async () => {
+        persisted = { websites: { 'old.com': { hostname: 'old.com', enabled: true } } };
+        const [first, second] = await independentContexts();
+        const deleting = first.deleteWebsite('old.com');
+        await vi.waitFor(() => expect(writes).toHaveLength(1));
+        const toggling = second.setWebsiteEnabled('old.com', false);
+        const results = Promise.allSettled([deleting, toggling]);
+        writes[0].commit();
+
+        expect((await results).map(({ status }) => status)).toEqual(['fulfilled', 'rejected']);
+        expect(writes).toHaveLength(1);
+        expect(await first.getWebsites()).toEqual({});
+    });
+
+    it('locks both rename addresses so a stale toggle cannot recreate the old address', async () => {
+        persisted = { websites: { 'old.com': { hostname: 'old.com', enabled: true, blockedUntil: NOW + MINUTE } } };
+        const [first, second] = await independentContexts();
+        const renaming = first.updateWebsite('old.com', 'new.com');
+        await vi.waitFor(() => expect(writes).toHaveLength(1));
+        const toggling = second.setWebsiteEnabled('old.com', false);
+        const adding = second.addWebsite('new.com');
+        const results = Promise.allSettled([renaming, toggling, adding]);
+        writes[0].commit();
+
+        expect((await results).map(({ status }) => status)).toEqual(['fulfilled', 'rejected', 'rejected']);
+        expect(writes).toHaveLength(1);
+        expect(await first.getWebsites()).toEqual({
+            'new.com': { hostname: 'new.com', enabled: true, blockedUntil: NOW + MINUTE },
+        });
+    });
+
+    it('releases a host lock after a failed write so a queued mutation can finish', async () => {
+        persisted = { websites: { 'old.com': { hostname: 'old.com', enabled: true } } };
+        const [first, second] = await independentContexts();
+        vi.mocked(browser.storage.sync.set).mockRejectedValueOnce(new Error('Write failed'));
+        const results = Promise.allSettled([
+            first.deleteWebsite('old.com'),
+            second.setWebsiteEnabled('old.com', false),
+        ]);
+        await vi.waitFor(() => expect(writes).toHaveLength(1));
+        writes[0].commit();
+
+        expect((await results).map(({ status }) => status)).toEqual(['rejected', 'fulfilled']);
+        expect(await first.getWebsites()).toEqual({ 'old.com': { hostname: 'old.com', enabled: false } });
+    });
+
     it.each([false, true])('preserves simultaneous additions, reversed write order: %s', async (reverse) => {
         const [first, second] = await independentContexts();
         const addingFirst = first.addWebsite('a.example.com', 30);

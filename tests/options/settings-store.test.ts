@@ -350,6 +350,43 @@ describe('SettingsStore website forms', () => {
 });
 
 describe('timed settings lifecycle', () => {
+    it('ignores an obsolete load failure after a successful toggle', async () => {
+        let rejectOld!: (error: Error) => void;
+        vi.mocked(Storage.getAll).mockImplementationOnce(() => new Promise((_resolve, reject) => {
+            rejectOld = reject;
+        }));
+        const oldLoad = store.loadWebsites();
+        await store.setWebsiteEnabled('other.com', false);
+        rejectOld(new Error('Obsolete read failed'));
+
+        await expect(oldLoad).resolves.toBeUndefined();
+        expect(store.websites['other.com'].enabled).toBe(false);
+        expect(store.error).toBe('');
+        expect(diagnostics).not.toHaveBeenCalled();
+    });
+
+    it('keeps a saved toggle visible when an event-triggered refresh fails', async () => {
+        const stop = store.watchWebsites();
+        try {
+            await store.loadWebsites();
+            vi.mocked(Storage.set).mockImplementationOnce(async (key, value) => {
+                overrides[key] = structuredClone(value);
+                const listener = vi.mocked(Storage.onChanged.addListener).mock.calls[0][0];
+                listener({ [key]: { newValue: value } });
+                vi.mocked(Storage.getAll).mockRejectedValueOnce(new Error('Refresh failed'));
+            });
+
+            await store.setWebsiteEnabled('other.com', false);
+
+            expect(store.websites['other.com'].enabled).toBe(false);
+            expect(overrides['website:other.com']).toMatchObject({ enabled: false });
+            expect(store.error).toBe(english.loadError.message);
+            expect(store.isPending).toBe(false);
+        } finally {
+            stop();
+        }
+    });
+
     it.each(['15', '30', '60', 'custom'])('saves the %s duration from observable form state', async (duration) => {
         const now = Date.now();
         vi.spyOn(Date, 'now').mockReturnValue(now);

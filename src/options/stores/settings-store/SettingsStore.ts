@@ -72,6 +72,10 @@ export class SettingsStore {
                     this.applyWebsites(websites);
                 }
             });
+        } catch (error) {
+            if (request === this.loadRequest) {
+                throw error;
+            }
         } finally {
             runInAction(() => {
                 if (request === this.loadRequest) {

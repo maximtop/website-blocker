@@ -55,6 +55,31 @@ export class Websites {
     private static STORAGE_PREFIX = 'website:';
 
     /**
+     * Serializes changes to overlapping hostnames in this browsing session.
+     * Independent hosts remain concurrent; sorted locks also protect both sides of a rename.
+     *
+     * @param hostnames - Normalized hosts affected by the mutation.
+     * @param operation - Read and write to perform while all affected hosts are locked.
+     * @returns The confirmed website list returned by the mutation.
+     */
+    private static withWebsiteLocks(hostnames: string[], operation: () => Promise<WebsitesMap>): Promise<WebsitesMap> {
+        const hosts = Array.from(new Set(hostnames)).sort();
+        /**
+         * Acquires each host in stable order before starting the storage operation.
+         *
+         * @param index - Next host to lock.
+         * @returns The mutation result after releasing every acquired lock.
+         */
+        const acquire = (index: number): Promise<WebsitesMap> => {
+            if (index === hosts.length) {
+                return operation();
+            }
+            return navigator.locks.request(`website-blocker:website:${hosts[index]}`, () => acquire(index + 1));
+        };
+        return acquire(0);
+    }
+
+    /**
      * Reads and orders unexpired records, including disabled entries and internal positions.
      *
      * @returns The merged records, with per-host tombstones and deadlines overriding legacy values.
@@ -108,21 +133,26 @@ export class Websites {
         if (durationMinutes !== undefined && (!Number.isSafeInteger(durationMinutes) || durationMinutes <= 0)) {
             throw new BlockDurationError('Duration must be a positive whole number of minutes.');
         }
-        const websites = await Websites.readEntries();
-        if (websites[hostname]) {
-            throw new WebsiteError(WEBSITE_ERROR_CODE.Duplicate, hostname);
-        }
-        const position = Math.max(Date.now(), ...Object.values(websites).map((website) => (website.position ?? 0) + 1));
-        const website: StoredWebsite = { hostname, enabled: true, position };
-        if (durationMinutes !== undefined) {
-            const blockedUntil = Date.now() + durationMinutes * 60_000;
-            if (!Number.isSafeInteger(blockedUntil) || Number.isNaN(new Date(blockedUntil).getTime())) {
-                throw new BlockDurationError('Duration is too long.');
+        return Websites.withWebsiteLocks([hostname], async () => {
+            const websites = await Websites.readEntries();
+            if (websites[hostname]) {
+                throw new WebsiteError(WEBSITE_ERROR_CODE.Duplicate, hostname);
             }
-            website.blockedUntil = blockedUntil;
-        }
-        await Storage.set(`${Websites.STORAGE_PREFIX}${hostname}`, website);
-        return Websites.visibleEntries({ ...websites, [hostname]: website });
+            const position = Math.max(
+                Date.now(),
+                ...Object.values(websites).map((website) => (website.position ?? 0) + 1),
+            );
+            const website: StoredWebsite = { hostname, enabled: true, position };
+            if (durationMinutes !== undefined) {
+                const blockedUntil = Date.now() + durationMinutes * 60_000;
+                if (!Number.isSafeInteger(blockedUntil) || Number.isNaN(new Date(blockedUntil).getTime())) {
+                    throw new BlockDurationError('Duration is too long.');
+                }
+                website.blockedUntil = blockedUntil;
+            }
+            await Storage.set(`${Websites.STORAGE_PREFIX}${hostname}`, website);
+            return Websites.visibleEntries({ ...websites, [hostname]: website });
+        });
     }
 
     /**
@@ -138,25 +168,27 @@ export class Websites {
         if (!hostname) {
             throw new WebsiteError(WEBSITE_ERROR_CODE.Invalid, rawWebsite);
         }
-        const websites = await Websites.readEntries();
-        const original = websites[originalHostname];
-        if (!original) {
-            throw new WebsiteError(WEBSITE_ERROR_CODE.Missing, originalHostname);
-        }
-        if (hostname === originalHostname) {
-            return Websites.visibleEntries(websites);
-        }
-        if (websites[hostname]) {
-            throw new WebsiteError(WEBSITE_ERROR_CODE.Duplicate, hostname);
-        }
-        const renamed = { ...original, hostname };
-        await Storage.setMany({
-            [`${Websites.STORAGE_PREFIX}${originalHostname}`]: null,
-            [`${Websites.STORAGE_PREFIX}${hostname}`]: renamed,
+        return Websites.withWebsiteLocks([originalHostname, hostname], async () => {
+            const websites = await Websites.readEntries();
+            const original = websites[originalHostname];
+            if (!original) {
+                throw new WebsiteError(WEBSITE_ERROR_CODE.Missing, originalHostname);
+            }
+            if (hostname === originalHostname) {
+                return Websites.visibleEntries(websites);
+            }
+            if (websites[hostname]) {
+                throw new WebsiteError(WEBSITE_ERROR_CODE.Duplicate, hostname);
+            }
+            const renamed = { ...original, hostname };
+            await Storage.setMany({
+                [`${Websites.STORAGE_PREFIX}${originalHostname}`]: null,
+                [`${Websites.STORAGE_PREFIX}${hostname}`]: renamed,
+            });
+            return Websites.visibleEntries(Object.fromEntries(Object.entries(websites).map(([key, website]) => {
+                return key === originalHostname ? [hostname, renamed] : [key, website];
+            })));
         });
-        return Websites.visibleEntries(Object.fromEntries(Object.entries(websites).map(([key, website]) => {
-            return key === originalHostname ? [hostname, renamed] : [key, website];
-        })));
     }
 
     /**
@@ -166,11 +198,13 @@ export class Websites {
      * @returns The confirmed remaining list.
      */
     public static async deleteWebsite(hostname: string): Promise<WebsitesMap> {
-        const websites = await Websites.readEntries();
-        // A tombstone also prevents a legacy entry from reappearing and keeps ordering metadata stable.
-        await Storage.set(`${Websites.STORAGE_PREFIX}${hostname}`, null);
-        delete websites[hostname];
-        return Websites.visibleEntries(websites);
+        return Websites.withWebsiteLocks([hostname], async () => {
+            const websites = await Websites.readEntries();
+            // A tombstone also prevents a legacy entry from reappearing and keeps ordering metadata stable.
+            await Storage.set(`${Websites.STORAGE_PREFIX}${hostname}`, null);
+            delete websites[hostname];
+            return Websites.visibleEntries(websites);
+        });
     }
 
     /**
@@ -182,14 +216,16 @@ export class Websites {
      * @throws If the website no longer exists or storage fails.
      */
     public static async setWebsiteEnabled(hostname: string, enabled: boolean): Promise<WebsitesMap> {
-        const websites = await Websites.readEntries();
-        const website = websites[hostname];
-        if (!website) {
-            throw new WebsiteError(WEBSITE_ERROR_CODE.Missing, hostname);
-        }
-        const updated = { ...website, enabled };
-        await Storage.set(`${Websites.STORAGE_PREFIX}${hostname}`, updated);
-        return Websites.visibleEntries({ ...websites, [hostname]: updated });
+        return Websites.withWebsiteLocks([hostname], async () => {
+            const websites = await Websites.readEntries();
+            const website = websites[hostname];
+            if (!website) {
+                throw new WebsiteError(WEBSITE_ERROR_CODE.Missing, hostname);
+            }
+            const updated = { ...website, enabled };
+            await Storage.set(`${Websites.STORAGE_PREFIX}${hostname}`, updated);
+            return Websites.visibleEntries({ ...websites, [hostname]: updated });
+        });
     }
 
     /**

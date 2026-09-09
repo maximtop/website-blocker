@@ -44,6 +44,14 @@ Deployment helpers execute with `tsx`, matching the other extensions.
 - The blocklist uses `browser.storage.sync`. Browser account and sync
   settings determine whether it synchronizes between devices. The extension
   has no developer-operated backend, telemetry or remote code.
+- Website mutations write independent `website:<hostname>` records over the
+  legacy map, so edits to different sites cannot overwrite each other.
+  Changes to the same site share a Web Lock within a browsing session;
+  renames acquire both host locks in sorted order. Private sessions and
+  other synchronized devices have separate lock managers, so same-site
+  conflicts between them remain last-writer-wins.
+- Options pages apply confirmed writes immediately and observe storage
+  changes. Older load responses and failures cannot overwrite newer state.
 
 Load `dist/dev/chrome` or `dist/dev/edge` as an unpacked extension. In Firefox,
 use `about:debugging#/runtime/this-firefox` and load
