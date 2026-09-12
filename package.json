@@ -24,11 +24,12 @@
     "build": "ts-node ./scripts/build/index.ts",
     "release": "cross-env BUILD_ENV=release ts-node ./scripts/build/index.ts",
     "start": "ts-node ./scripts/build/index.ts --watch",
-    "lint": "eslint . --ext .ts,.tsx && tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest run",
-    "check": "pnpm lint && pnpm test",
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
     "locales:verify-package": "ts-node scripts/i18n/verify-package.ts",
-    "store:descriptions": "ts-node scripts/store/descriptions.ts"
+    "store:descriptions": "ts-node scripts/store/descriptions.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
