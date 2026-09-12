@@ -4,6 +4,8 @@ This repository follows the manual release and store deployment pattern used
 by the other extension repositories, with its own store configuration and
 reviewer instructions.
 
+The cross-repository contract and extraction boundary are documented in [Shared store deployment](STORE_DEPLOYMENT.md).
+
 - [Cut a release](#cut-a-release)
 - [Store deployment](#store-deployment)
   - [Chrome Web Store](#chrome-web-store)
@@ -48,9 +50,9 @@ failed upload deletes the draft again, so a failed run normally leaves no
 release behind and can simply be re-run. If a draft survives a cancelled run,
 delete it with `gh release delete vX.Y.Z --yes` before re-running.
 
-Releases through `v1.2.7` contain only a Chrome archive. Version `1.2.8` is
-the first release with Edge and Firefox support. Publish it after merging the
-browser build support; do not replace assets of an existing release.
+Releases through `v1.2.7` contain only a Chrome archive. Version `1.2.8` was
+the first release with Edge and Firefox support. Never replace assets of an
+existing release.
 
 ## Store deployment
 

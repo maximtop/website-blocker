@@ -9,7 +9,7 @@
 export const RELEASE_ASSET_PREFIX = 'website-blocker';
 
 /**
- * Stores this extension is deployed to; each one has a deploy-<store>.yml workflow.
+ * Stores this extension is deployed to; each one has a deploy workflow.
  */
 export const STORE_TARGETS = ['chrome', 'edge', 'firefox'] as const;
 
@@ -19,12 +19,12 @@ export const STORE_TARGETS = ['chrome', 'edge', 'firefox'] as const;
 export type StoreTarget = typeof STORE_TARGETS[number];
 
 /**
- * Firefox add-on ID (`browser_specific_settings.gecko.id`); empty when Firefox is not a target.
+ * Firefox add-on ID from `browser_specific_settings.gecko.id`.
  */
 export const GECKO_ID = 'website-blocker@maximtop.dev';
 
 /**
- * Files the Firefox source archive must contain; unused when Firefox is not a target.
+ * Files the Firefox source archive must contain.
  */
 export const SOURCE_REQUIRED_FILES = [
     'package.json',
@@ -48,11 +48,13 @@ export const SOURCE_REQUIRED_FILES = [
 ];
 
 /**
- * Reviewer notes inside the source archive, submitted to AMO with every new Firefox version.
+ * Reviewer notes submitted to AMO with every new Firefox version.
  */
 export const AMO_REVIEW_NOTES_PATH = 'docs/AMO_REVIEW.md';
 
-/** Filename of the extracted reviewer notes consumed by preflight and the upload workflow. */
+/**
+ * Filename of the extracted reviewer notes consumed by preflight and upload.
+ */
 export const AMO_APPROVAL_NOTES_FILENAME = 'approval-notes.txt';
 
 /**

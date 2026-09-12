@@ -11,6 +11,7 @@ import {
     writeFileSync,
 } from 'node:fs';
 import path from 'node:path';
+
 import {
     AMO_APPROVAL_NOTES_FILENAME,
     RELEASE_ASSET_PREFIX,
@@ -18,7 +19,6 @@ import {
     STORE_TARGETS,
     STORE_UPLOAD_DIRECTORY,
 } from './constants';
-import type { StoreTarget } from './constants';
 import {
     releaseVersion,
     requireConfiguration,
@@ -26,6 +26,8 @@ import {
     verifyManifest,
     verifySource,
 } from './release';
+
+import type { StoreTarget } from './constants';
 import type { PublishedRelease } from './release';
 
 /**

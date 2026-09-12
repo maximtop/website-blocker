@@ -12,6 +12,7 @@ import {
 } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+
 import {
     AMO_APPROVAL_NOTES_FILENAME,
     GECKO_ID,
@@ -27,8 +28,9 @@ import {
     shouldSubmit,
     verifySignedXpi,
 } from './firefox';
-import type { AmoAddon, AmoVersion } from './firefox';
 import { requireConfiguration } from './release';
+
+import type { AmoAddon, AmoVersion } from './firefox';
 
 const HUB_URL = 'https://addons.mozilla.org/en-US/developers/addon/';
 
@@ -59,7 +61,8 @@ export const run = async (env: NodeJS.ProcessEnv = process.env): Promise<void> =
     }
     const operation = env.AMO_OPERATION ?? AMO_OPERATION.Status;
     if (!Object.values(AMO_OPERATION).some((supported) => supported === operation)) {
-        throw new Error(`Invalid AMO_OPERATION; expected ${Object.values(AMO_OPERATION).join(' or ')}`);
+        const expected = Object.values(AMO_OPERATION).join(' or ');
+        throw new Error(`Invalid AMO_OPERATION; expected ${expected}`);
     }
     const token = amoToken(env.FIREFOX_CLIENT_ID ?? '', env.FIREFOX_CLIENT_SECRET ?? '');
     const addon = await readAmo<AmoAddon>(listing, '', token);

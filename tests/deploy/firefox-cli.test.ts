@@ -6,6 +6,7 @@
  */
 
 import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
+
 import {
     afterEach,
     beforeEach,
@@ -14,6 +15,7 @@ import {
     it,
     vi,
 } from 'vitest';
+
 import { GECKO_ID } from '../../scripts/deploy/constants';
 import { AMO_STATUS } from '../../scripts/deploy/firefox';
 import { AMO_OPERATION, run } from '../../scripts/deploy/firefox-cli';
@@ -33,7 +35,12 @@ const env = {
     GITHUB_OUTPUT: 'fixture-output',
     GITHUB_STEP_SUMMARY: 'fixture-summary',
 };
-const addon = { guid: GECKO_ID, slug: 'fixture', status: AMO_STATUS.Unreviewed, categories: ['appearance'] };
+const addon = {
+    guid: GECKO_ID,
+    slug: 'fixture',
+    status: AMO_STATUS.Unreviewed,
+    categories: ['appearance'],
+};
 const pending = {
     id: 123,
     version: '1.2.3',
@@ -55,13 +62,16 @@ afterEach(() => {
 });
 
 describe('Firefox deployment orchestration', () => {
-    it.each(['', 'prefligth'])('rejects invalid operation %j before contacting AMO', async (operation) => {
-        await expect(run({ ...env, AMO_OPERATION: operation })).rejects
-            .toThrow('Invalid AMO_OPERATION');
-        expect(request).not.toHaveBeenCalled();
-        expect(appendFileSync).not.toHaveBeenCalled();
-        expect(writeFileSync).not.toHaveBeenCalled();
-    });
+    it.each(['', 'prefligth'])(
+        'rejects invalid operation %j before contacting AMO',
+        async (operation) => {
+            await expect(run({ ...env, AMO_OPERATION: operation })).rejects
+                .toThrow('Invalid AMO_OPERATION');
+            expect(request).not.toHaveBeenCalled();
+            expect(appendFileSync).not.toHaveBeenCalled();
+            expect(writeFileSync).not.toHaveBeenCalled();
+        },
+    );
     it('permits one new version only when source reviewer notes are ready', async () => {
         request.mockResolvedValueOnce(new Response(null, { status: 404 }));
         await run({ ...env, AMO_OPERATION: AMO_OPERATION.Preflight });
@@ -81,16 +91,19 @@ describe('Firefox deployment orchestration', () => {
         expect(readFileSync).not.toHaveBeenCalled();
         expect(appendFileSync).toHaveBeenCalledWith('fixture-output', 'submit=false\n');
     });
-    it.each([undefined, AMO_OPERATION.Status])('reports pending review in status mode %j', async (operation) => {
-        request.mockResolvedValueOnce(json(pending));
-        await run({ ...env, AMO_OPERATION: operation });
-        expect(request).toHaveBeenCalledTimes(2);
-        expect(writeFileSync).not.toHaveBeenCalled();
-        expect(appendFileSync).toHaveBeenCalledWith(
-            'fixture-summary',
-            expect.stringContaining('awaiting Mozilla'),
-        );
-    });
+    it.each([undefined, AMO_OPERATION.Status])(
+        'reports pending review in status mode %j',
+        async (operation) => {
+            request.mockResolvedValueOnce(json(pending));
+            await run({ ...env, AMO_OPERATION: operation });
+            expect(request).toHaveBeenCalledTimes(2);
+            expect(writeFileSync).not.toHaveBeenCalled();
+            expect(appendFileSync).toHaveBeenCalledWith(
+                'fixture-summary',
+                expect.stringContaining('awaiting Mozilla'),
+            );
+        },
+    );
     it('never treats a status outage as permission to upload', async () => {
         request.mockResolvedValueOnce(new Response(null, { status: 503 }));
         await expect(run({ ...env, AMO_OPERATION: AMO_OPERATION.Preflight })).rejects
