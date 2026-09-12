@@ -5,6 +5,7 @@
  */
 
 import { createHash, createHmac } from 'node:crypto';
+
 import AdmZip from 'adm-zip';
 import {
     describe,
@@ -12,6 +13,7 @@ import {
     it,
     vi,
 } from 'vitest';
+
 import { GECKO_ID } from '../../scripts/deploy/constants';
 import {
     AMO_STATUS,
@@ -21,10 +23,14 @@ import {
     shouldSubmit,
     verifySignedXpi,
 } from '../../scripts/deploy/firefox';
+
 import type { AmoAddon, AmoVersion } from '../../scripts/deploy/firefox';
 
 const addon: AmoAddon = {
-    guid: 'fixture@test', slug: 'fixture', status: AMO_STATUS.Public, current_version: { version: '1.2.3' },
+    guid: 'fixture@test',
+    slug: 'fixture',
+    status: AMO_STATUS.Public,
+    current_version: { version: '1.2.3' },
 };
 const version: AmoVersion = {
     id: 123, version: '1.2.3', channel: 'listed', file: { status: AMO_STATUS.Unreviewed },
@@ -50,8 +56,8 @@ describe('AMO read-only checks', () => {
     });
     it('signs a short-lived JWT without exposing its secret', () => {
         const token = amoToken('issuer', 'private-secret');
-        const [header, payload, signature] = token.split('.');
-        const data = JSON.parse(Buffer.from(payload ?? '', 'base64url').toString()) as {
+        const [header = '', payload = '', signature = ''] = token.split('.');
+        const data = JSON.parse(Buffer.from(payload, 'base64url').toString()) as {
             iss: string;
             iat: number;
             exp: number;
@@ -74,7 +80,7 @@ describe('AMO read-only checks', () => {
         });
         await Promise.all(statuses.map((status) => {
             return expect(readAmo('fixture@test', '', 'jwt', request)).rejects
-                .toThrow(`HTTP ${status}`);
+                .toThrow(`HTTP ${String(status)}`);
         }));
         request.mockRejectedValueOnce(new Error('network unavailable'));
         await expect(readAmo('fixture@test', '', 'jwt', request)).rejects
@@ -97,7 +103,7 @@ describe('AMO read-only checks', () => {
         expect(describeAmoStatus(addon, version)).toContain('awaiting');
         const approved = { ...version, file: { status: AMO_STATUS.Public } };
         expect(describeAmoStatus(addon, approved)).toContain('Approved and published');
-        const unlisted = { ...addon, current_version: null };
+        const unlisted: AmoAddon = { ...addon, current_version: null };
         expect(describeAmoStatus(unlisted, approved)).toContain('not the current');
         expect(describeAmoStatus(addon, { ...approved, is_disabled: true })).toContain('Disabled');
         expect(describeAmoStatus(addon, { ...version, file: { status: AMO_STATUS.Disabled } }))
@@ -111,6 +117,14 @@ describe('AMO read-only checks', () => {
         const unsigned = zip.toBuffer();
         zip.addFile('META-INF/mozilla.rsa', Buffer.from('synthetic signature envelope'));
         const signed = zip.toBuffer();
+
+        /**
+         * Hash fixture bytes in the format returned by AMO.
+         *
+         * @param bytes Fixture package bytes.
+         *
+         * @returns SHA-256 label and hexadecimal digest.
+         */
         const hash = (bytes: Buffer): string => {
             return `sha256:${createHash('sha256').update(bytes).digest('hex')}`;
         };
