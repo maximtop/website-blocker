@@ -10,9 +10,10 @@ import type { WebsiteErrorCode } from './website-error';
  */
 export type MessageKey = keyof typeof english;
 /**
- * Messages that require an untranslated website substitution.
+ * Messages that require a literal website or formatted deadline substitution.
  */
-type WebsiteMessageKey = 'deleteWebsiteLabel' | 'blockWebsiteLabel' | 'editWebsiteLabel' | WebsiteErrorCode;
+type SubstitutionMessageKey = 'deleteWebsiteLabel' | 'blockWebsiteLabel' | 'editWebsiteLabel'
+| WebsiteErrorCode | 'blockedUntil';
 
 /**
  * Catalog keys used for each extension page title.
@@ -46,35 +47,35 @@ export const currentLocale = (): string => {
 };
 
 /**
- * Translates a message that does not need a website substitution.
+ * Translates a message that does not need a substitution.
  *
  * @param key - Catalog message to translate.
  * @returns The selected translation or English fallback.
  */
-export function t(key: Exclude<MessageKey, WebsiteMessageKey>): string;
+export function t(key: Exclude<MessageKey, SubstitutionMessageKey>): string;
 /**
- * Translates a message containing an untranslated website.
+ * Translates a message containing a literal value.
  *
- * @param key - Catalog message with a website placeholder.
- * @param website - Literal address to isolate and substitute.
- * @returns The selected translation with its website value.
+ * @param key - Catalog message with a named placeholder.
+ * @param value - Literal address or formatted deadline to isolate and substitute.
+ * @returns The selected translation with its substituted value.
  */
-export function t(key: WebsiteMessageKey, website: string): string;
+export function t(key: SubstitutionMessageKey, value: string): string;
 /**
- * Resolves translations and isolates website substitutions from surrounding RTL text.
+ * Resolves translations and isolates substituted values from surrounding RTL text.
  *
  * @param key - Catalog message to translate.
- * @param website - Optional literal address for messages with a website placeholder.
+ * @param value - Optional literal value for messages with a placeholder.
  * @returns The selected translation or fully substituted English fallback.
  */
-export function t(key: MessageKey, website?: string): string {
-    // Isolate user-entered hostnames from surrounding RTL text in either direction.
-    const substitution = website === undefined ? undefined : `\u2068${website}\u2069`;
+export function t(key: MessageKey, value?: string): string {
+    // Isolate hostnames and formatted deadlines from surrounding RTL text in either direction.
+    const substitution = value === undefined ? undefined : `\u2068${value}\u2069`;
     const translated = browser.i18n.getMessage(key, substitution);
     if (translated) {
         return translated;
     }
-    return english[key].message.replace(/\$WEBSITE\$/g, () => substitution ?? '');
+    return english[key].message.replace(/\$(?:WEBSITE|DEADLINE)\$/g, () => substitution ?? '');
 }
 
 /**

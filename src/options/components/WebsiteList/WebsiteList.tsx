@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { RootStoreContext } from '../../stores/root-store';
-import { t } from '../../../common/i18n';
+import { currentLocale, t } from '../../../common/i18n';
 import { BLOCK_DURATION } from '../../block-duration';
 
 /**
@@ -65,7 +65,7 @@ export const WebsiteList = observer(() => {
             <form className="row g-2 align-items-end mb-3" onSubmit={handleAddNewWebsite}>
                 <div className="col-12 col-md">
                     <label htmlFor="new-website" className="form-label d-block mb-0">
-                        Website
+                        {t('websiteLabel')}
                         <input
                             id="new-website"
                             type="text"
@@ -82,7 +82,7 @@ export const WebsiteList = observer(() => {
                 </div>
                 <div className="col-12 col-sm">
                     <label htmlFor="block-duration" className="form-label d-block mb-0">
-                        Block for
+                        {t('blockDuration')}
                         <select
                             id="block-duration"
                             className="form-select mt-2"
@@ -90,18 +90,18 @@ export const WebsiteList = observer(() => {
                             onChange={(event) => settingsStore.setDuration(event.target.value)}
                             disabled={isPending}
                         >
-                            <option value={BLOCK_DURATION.INDEFINITELY}>Indefinitely</option>
-                            <option value={BLOCK_DURATION.FIFTEEN_MINUTES}>15 minutes</option>
-                            <option value={BLOCK_DURATION.THIRTY_MINUTES}>30 minutes</option>
-                            <option value={BLOCK_DURATION.SIXTY_MINUTES}>60 minutes</option>
-                            <option value={BLOCK_DURATION.CUSTOM}>Custom duration</option>
+                            <option value={BLOCK_DURATION.INDEFINITELY}>{t('indefinitely')}</option>
+                            <option value={BLOCK_DURATION.FIFTEEN_MINUTES}>{t('duration15Minutes')}</option>
+                            <option value={BLOCK_DURATION.THIRTY_MINUTES}>{t('duration30Minutes')}</option>
+                            <option value={BLOCK_DURATION.SIXTY_MINUTES}>{t('duration60Minutes')}</option>
+                            <option value={BLOCK_DURATION.CUSTOM}>{t('customDuration')}</option>
                         </select>
                     </label>
                 </div>
                 {duration === BLOCK_DURATION.CUSTOM && (
                     <div className="col-12 col-sm">
                         <label htmlFor="custom-minutes" className="form-label d-block mb-0">
-                            Minutes
+                            {t('minutes')}
                             <input
                                 id="custom-minutes"
                                 type="number"
@@ -123,9 +123,9 @@ export const WebsiteList = observer(() => {
                 </div>
             </form>
             <p className="text-muted">
-                Timed blocks expire automatically. Turning blocking off does not pause the timer.
+                {t('timerExplanation')}
             </p>
-            {isLoading && <p className="text-muted" role="status">Loading websites...</p>}
+            {isLoading && <p className="text-muted" role="status">{t('loadingWebsites')}</p>}
             {websitesList.length > 0 ? (
                 <ul className="list-group">
                     {websitesList.map(({ hostname, enabled, blockedUntil }) => (
@@ -195,14 +195,11 @@ export const WebsiteList = observer(() => {
                                             {enabled !== false ? t('blockingOn') : t('blockingOff')}
                                         </span>
                                         <small className="d-block text-muted">
-                                            {blockedUntil === undefined ? 'Indefinitely' : (
-                                                <>
-                                                    Until
-                                                    {' '}
-                                                    <time dateTime={new Date(blockedUntil).toISOString()}>
-                                                        {new Date(blockedUntil).toLocaleString()}
-                                                    </time>
-                                                </>
+                                            {blockedUntil === undefined ? t('indefinitely') : (
+                                                <time dateTime={new Date(blockedUntil).toISOString()}>
+                                                    {t('blockedUntil', new Date(blockedUntil)
+                                                        .toLocaleString(currentLocale()))}
+                                                </time>
                                             )}
                                         </small>
                                     </div>

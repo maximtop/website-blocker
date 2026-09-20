@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Web"
+    },
+    "blockDuration": {
+        "message": "Doba blokování"
+    },
+    "indefinitely": {
+        "message": "Neomezeně"
+    },
+    "duration15Minutes": {
+        "message": "15 minut"
+    },
+    "duration30Minutes": {
+        "message": "30 minut"
+    },
+    "duration60Minutes": {
+        "message": "60 minut"
+    },
+    "customDuration": {
+        "message": "Vlastní doba"
+    },
+    "minutes": {
+        "message": "Minuty"
+    },
+    "timerExplanation": {
+        "message": "Časově omezené blokování skončí automaticky. Vypnutí blokování nezastaví časovač."
+    },
+    "loadingWebsites": {
+        "message": "Načítání webů..."
+    },
+    "blockedUntil": {
+        "message": "Do $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "Doba musí být kladný celý počet minut."
+    },
+    "blockDurationTooLong": {
+        "message": "Doba je příliš dlouhá."
     }
 }

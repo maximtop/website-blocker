@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Сайт"
+    },
+    "blockDuration": {
+        "message": "Тривалість блокування"
+    },
+    "indefinitely": {
+        "message": "Безстроково"
+    },
+    "duration15Minutes": {
+        "message": "15 хвилин"
+    },
+    "duration30Minutes": {
+        "message": "30 хвилин"
+    },
+    "duration60Minutes": {
+        "message": "60 хвилин"
+    },
+    "customDuration": {
+        "message": "Власна тривалість"
+    },
+    "minutes": {
+        "message": "Хвилини"
+    },
+    "timerExplanation": {
+        "message": "Блокування з таймером завершуються автоматично. Вимкнення блокування не зупиняє таймер."
+    },
+    "loadingWebsites": {
+        "message": "Завантаження сайтів..."
+    },
+    "blockedUntil": {
+        "message": "До $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "Тривалість має бути додатним цілим числом хвилин."
+    },
+    "blockDurationTooLong": {
+        "message": "Тривалість завелика."
     }
 }

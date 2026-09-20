@@ -10,7 +10,7 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 - **Per-site Control:** Turn blocking off or on for individual websites without removing them from the list.
 - **Persistent Storage:** Blocked websites are saved and loaded from browser storage.
 - **Real-time Updates:** Automatically updates the list of blocked websites when changes are made.
-- **40 languages:** Existing website controls follow the browser's selected language, with English fallback and RTL support. New duration controls currently remain in English.
+- **40 languages:** Website and duration controls follow the browser's selected language, with English fallback and RTL support.
 
 ## Installation
 
@@ -91,9 +91,9 @@ setup, deployment modes and the failure playbook.
 The 40 language catalogs use the same locale set as HN Split and No More Ago.
 Localized website controls, website-validation errors, page titles, accessible
 labels and manifest metadata live in `src/_locales/<locale>/messages.json`.
-English is the default catalog. The newly added duration controls, duration
-validation errors and loading message currently remain in English in the source;
-their localization is not yet part of the 40-catalog pack.
+Duration controls, duration-validation errors, deadlines and loading messages
+are included in every catalog. English is the default catalog. Deadlines use
+the selected catalog’s date and time format.
 
 Supported locales: `ar bg bn ca cs da de el en es es_419 fa fi fil fr he hi hr hu id
 it ja ko ms nb nl pl pt_BR pt_PT ro ru sk sr sv th tr uk vi zh_CN zh_TW`.
@@ -101,8 +101,9 @@ it ja ko ms nb nl pl pt_BR pt_PT ro ru sk sr sv th tr uk vi zh_CN zh_TW`.
 The browser selects the catalog through the standard
 [WebExtension i18n API](https://developer.chrome.com/docs/extensions/reference/api/i18n).
 Each catalog's `catalogLocale` sets the document language and direction; Arabic,
-Persian, and Hebrew use RTL. Preserve named placeholders such as `$WEBSITE$` when
-editing a message. Only untranslated site values are substituted into whole sentences.
+Persian, and Hebrew use RTL. Preserve named placeholders such as `$WEBSITE$`
+and `$DEADLINE$` when editing a message. Site values and localized deadlines
+are substituted into whole sentences.
 
 `pnpm check` validates complete catalogs, placeholders, metadata, and store limits.
 `pnpm release` copies all catalogs into the extension; `pnpm locales:verify-package`

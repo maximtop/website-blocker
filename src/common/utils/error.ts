@@ -10,7 +10,7 @@ import { BlockDurationError } from '../block-duration-error';
  */
 export function getErrorMessage(error: unknown): string {
     if (error instanceof BlockDurationError) {
-        return error.message;
+        return t(error.code);
     }
     if (error instanceof WebsiteError) {
         return t(error.code, error.website);

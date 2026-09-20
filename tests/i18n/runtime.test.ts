@@ -77,6 +77,9 @@ describe('browser-selected translations', () => {
         mocks.getMessage.mockReturnValue('');
         expect(currentLocale()).toBe('en');
         expect(t('openSettings')).toBe('Open settings');
+        expect(t('blockedUntil', '9/20/2026, 3:30:00 PM')).toBe('Until \u20689/20/2026, 3:30:00 PM\u2069');
+        expect(t('invalidBlockDuration')).toBe(english.invalidBlockDuration.message);
+        expect(t('blockDurationTooLong')).toBe(english.blockDurationTooLong.message);
         expect(t(WEBSITE_ERROR_CODE.Invalid, '$&.example')).toBe('Invalid website: \u2068$&.example\u2069');
     });
 

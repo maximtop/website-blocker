@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "网站"
+    },
+    "blockDuration": {
+        "message": "屏蔽时长"
+    },
+    "indefinitely": {
+        "message": "无限期"
+    },
+    "duration15Minutes": {
+        "message": "15分钟"
+    },
+    "duration30Minutes": {
+        "message": "30分钟"
+    },
+    "duration60Minutes": {
+        "message": "60分钟"
+    },
+    "customDuration": {
+        "message": "自定义时长"
+    },
+    "minutes": {
+        "message": "分钟"
+    },
+    "timerExplanation": {
+        "message": "定时屏蔽会自动到期。关闭屏蔽不会暂停计时器。"
+    },
+    "loadingWebsites": {
+        "message": "正在加载网站..."
+    },
+    "blockedUntil": {
+        "message": "截至 $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "时长必须为正整数分钟。"
+    },
+    "blockDurationTooLong": {
+        "message": "时长过长。"
     }
 }

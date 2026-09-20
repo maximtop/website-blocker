@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "وب‌سایت"
+    },
+    "blockDuration": {
+        "message": "مدت مسدودسازی"
+    },
+    "indefinitely": {
+        "message": "نامحدود"
+    },
+    "duration15Minutes": {
+        "message": "15 دقیقه"
+    },
+    "duration30Minutes": {
+        "message": "30 دقیقه"
+    },
+    "duration60Minutes": {
+        "message": "60 دقیقه"
+    },
+    "customDuration": {
+        "message": "مدت دلخواه"
+    },
+    "minutes": {
+        "message": "دقیقه"
+    },
+    "timerExplanation": {
+        "message": "مسدودسازی‌های زمان‌دار به‌طور خودکار پایان می‌یابند. خاموش کردن مسدودسازی، زمان‌سنج را متوقف نمی‌کند."
+    },
+    "loadingWebsites": {
+        "message": "در حال بارگیری وب‌سایت‌ها..."
+    },
+    "blockedUntil": {
+        "message": "تا $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "مدت باید بر حسب دقیقه و به‌صورت عدد صحیح مثبت باشد."
+    },
+    "blockDurationTooLong": {
+        "message": "مدت بیش از حد طولانی است."
     }
 }

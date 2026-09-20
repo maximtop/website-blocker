@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Witryna"
+    },
+    "blockDuration": {
+        "message": "Czas blokady"
+    },
+    "indefinitely": {
+        "message": "Bezterminowo"
+    },
+    "duration15Minutes": {
+        "message": "15 minut"
+    },
+    "duration30Minutes": {
+        "message": "30 minut"
+    },
+    "duration60Minutes": {
+        "message": "60 minut"
+    },
+    "customDuration": {
+        "message": "Własny czas"
+    },
+    "minutes": {
+        "message": "Minuty"
+    },
+    "timerExplanation": {
+        "message": "Blokady czasowe wygasają automatycznie. Wyłączenie blokady nie zatrzymuje odliczania."
+    },
+    "loadingWebsites": {
+        "message": "Wczytywanie witryn..."
+    },
+    "blockedUntil": {
+        "message": "Do $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "Czas musi być dodatnią całkowitą liczbą minut."
+    },
+    "blockDurationTooLong": {
+        "message": "Czas jest zbyt długi."
     }
 }

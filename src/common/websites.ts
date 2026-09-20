@@ -131,7 +131,7 @@ export class Websites {
             throw new WebsiteError(WEBSITE_ERROR_CODE.Invalid, rawWebsite);
         }
         if (durationMinutes !== undefined && (!Number.isSafeInteger(durationMinutes) || durationMinutes <= 0)) {
-            throw new BlockDurationError('Duration must be a positive whole number of minutes.');
+            throw new BlockDurationError('invalidBlockDuration');
         }
         return Websites.withWebsiteLocks([hostname], async () => {
             const websites = await Websites.readEntries();
@@ -146,7 +146,7 @@ export class Websites {
             if (durationMinutes !== undefined) {
                 const blockedUntil = Date.now() + durationMinutes * 60_000;
                 if (!Number.isSafeInteger(blockedUntil) || Number.isNaN(new Date(blockedUntil).getTime())) {
-                    throw new BlockDurationError('Duration is too long.');
+                    throw new BlockDurationError('blockDurationTooLong');
                 }
                 website.blockedUntil = blockedUntil;
             }

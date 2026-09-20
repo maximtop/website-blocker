@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "웹사이트"
+    },
+    "blockDuration": {
+        "message": "차단 기간"
+    },
+    "indefinitely": {
+        "message": "무기한"
+    },
+    "duration15Minutes": {
+        "message": "15분"
+    },
+    "duration30Minutes": {
+        "message": "30분"
+    },
+    "duration60Minutes": {
+        "message": "60분"
+    },
+    "customDuration": {
+        "message": "사용자 지정 기간"
+    },
+    "minutes": {
+        "message": "분"
+    },
+    "timerExplanation": {
+        "message": "시간제한이 있는 차단은 자동으로 만료됩니다. 차단을 꺼도 타이머는 멈추지 않습니다."
+    },
+    "loadingWebsites": {
+        "message": "웹사이트 불러오는 중..."
+    },
+    "blockedUntil": {
+        "message": "$DEADLINE$까지",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "시간은 분 단위의 양의 정수로 입력해야 합니다."
+    },
+    "blockDurationTooLong": {
+        "message": "지정한 시간이 너무 깁니다."
     }
 }

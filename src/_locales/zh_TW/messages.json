@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "網站"
+    },
+    "blockDuration": {
+        "message": "封鎖時間"
+    },
+    "indefinitely": {
+        "message": "無限期"
+    },
+    "duration15Minutes": {
+        "message": "15分鐘"
+    },
+    "duration30Minutes": {
+        "message": "30分鐘"
+    },
+    "duration60Minutes": {
+        "message": "60分鐘"
+    },
+    "customDuration": {
+        "message": "自訂時間"
+    },
+    "minutes": {
+        "message": "分鐘"
+    },
+    "timerExplanation": {
+        "message": "定時封鎖會自動到期。關閉封鎖不會暫停計時器。"
+    },
+    "loadingWebsites": {
+        "message": "正在載入網站..."
+    },
+    "blockedUntil": {
+        "message": "截至 $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "時間必須為正整數分鐘。"
+    },
+    "blockDurationTooLong": {
+        "message": "時間過長。"
     }
 }

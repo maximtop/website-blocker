@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "वेबसाइट"
+    },
+    "blockDuration": {
+        "message": "ब्लॉक करने की अवधि"
+    },
+    "indefinitely": {
+        "message": "अनिश्चित काल तक"
+    },
+    "duration15Minutes": {
+        "message": "15 मिनट"
+    },
+    "duration30Minutes": {
+        "message": "30 मिनट"
+    },
+    "duration60Minutes": {
+        "message": "60 मिनट"
+    },
+    "customDuration": {
+        "message": "अपनी पसंद की अवधि"
+    },
+    "minutes": {
+        "message": "मिनट"
+    },
+    "timerExplanation": {
+        "message": "तय अवधि वाले ब्लॉक अपने आप समाप्त हो जाते हैं। ब्लॉक करना बंद करने से टाइमर नहीं रुकता।"
+    },
+    "loadingWebsites": {
+        "message": "वेबसाइटें लोड हो रही हैं..."
+    },
+    "blockedUntil": {
+        "message": "$DEADLINE$ तक",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "अवधि मिनटों में एक धनात्मक पूर्णांक होनी चाहिए।"
+    },
+    "blockDurationTooLong": {
+        "message": "अवधि बहुत लंबी है।"
     }
 }

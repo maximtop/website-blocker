@@ -217,7 +217,7 @@ reviewer notes and listing metadata from the current release.
 [FIREFOX_LISTING.md](FIREFOX_LISTING.md) contains the Firefox-specific copy,
 privacy details and a link to the complete 40-locale pack in
 [STORE_DESCRIPTIONS.md](store/STORE_DESCRIPTIONS.md). Preserve all locales and
-review the newer timed-blocking behavior and its current English-only controls.
+review the timed-blocking behavior and localized duration controls.
 Use release `1.2.8` or later; do not upload a Chrome archive to AMO.
 
 Set `FIREFOX_AMO_ID` to the saved listing slug or numeric ID, not the manifest's

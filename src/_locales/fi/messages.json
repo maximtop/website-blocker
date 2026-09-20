@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Verkkosivusto"
+    },
+    "blockDuration": {
+        "message": "Eston kesto"
+    },
+    "indefinitely": {
+        "message": "Toistaiseksi"
+    },
+    "duration15Minutes": {
+        "message": "15 minuuttia"
+    },
+    "duration30Minutes": {
+        "message": "30 minuuttia"
+    },
+    "duration60Minutes": {
+        "message": "60 minuuttia"
+    },
+    "customDuration": {
+        "message": "Mukautettu kesto"
+    },
+    "minutes": {
+        "message": "Minuutit"
+    },
+    "timerExplanation": {
+        "message": "Määräaikaiset estot päättyvät automaattisesti. Eston poistaminen käytöstä ei keskeytä ajastinta."
+    },
+    "loadingWebsites": {
+        "message": "Ladataan verkkosivustoja..."
+    },
+    "blockedUntil": {
+        "message": "$DEADLINE$ asti",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "Keston on oltava positiivinen kokonaisluku minuutteina."
+    },
+    "blockDurationTooLong": {
+        "message": "Kesto on liian pitkä."
     }
 }

@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "เว็บไซต์"
+    },
+    "blockDuration": {
+        "message": "ระยะเวลาบล็อก"
+    },
+    "indefinitely": {
+        "message": "ไม่มีกำหนด"
+    },
+    "duration15Minutes": {
+        "message": "15 นาที"
+    },
+    "duration30Minutes": {
+        "message": "30 นาที"
+    },
+    "duration60Minutes": {
+        "message": "60 นาที"
+    },
+    "customDuration": {
+        "message": "กำหนดระยะเวลาเอง"
+    },
+    "minutes": {
+        "message": "นาที"
+    },
+    "timerExplanation": {
+        "message": "การบล็อกแบบกำหนดเวลาจะสิ้นสุดโดยอัตโนมัติ การปิดการบล็อกจะไม่หยุดตัวจับเวลา"
+    },
+    "loadingWebsites": {
+        "message": "กำลังโหลดเว็บไซต์..."
+    },
+    "blockedUntil": {
+        "message": "จนถึง $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "ระยะเวลาต้องเป็นจำนวนเต็มบวกในหน่วยนาที"
+    },
+    "blockDurationTooLong": {
+        "message": "ระยะเวลานานเกินไป"
     }
 }
