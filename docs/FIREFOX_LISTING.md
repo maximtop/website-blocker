@@ -86,14 +86,19 @@ stored settings.
 If you contact support, the information you choose to send is used to respond to
 your request. Contact: me@maximtop.dev.
 
-## First submission
+## Updates to the existing listing
 
-Release 1.2.7 and earlier contain only a Chrome package. Use 1.2.8 or later
-with its matching Firefox and source ZIPs. Do not upload the Chrome ZIP to AMO.
-The existing `website-blocker-mt` draft is unsubmitted and was prepared with an
-older English-only build. Before submitting it in Developer Hub, refresh its
-Firefox ZIP, matching source ZIP, reviewer notes and listing fields from the
-current release, including the complete locale pack and timed-blocking details.
-Select desktop Firefox only. Later versions use the manual Deploy Firefox
-workflow. A draft or a passed validator is not a submission or an approval.
-Record the AMO slug and status after saving/submitting the form.
+The public listing is [Website Blocker: MT](https://addons.mozilla.org/en-US/firefox/addon/website-blocker-mt/).
+AMO published version 1.2.9 on September 15, 2026. Read its current version and
+review state before submitting an update; do not resume an old first-submission draft.
+
+Use the manual Deploy Firefox workflow with the Firefox ZIP and matching source
+ZIP from one newer GitHub Release. Release 1.2.7 and earlier contain only a
+Chrome package; do not upload a Chrome ZIP to AMO. Keep the reviewer notes and
+listing fields aligned with the version being submitted, including the locale
+pack, timed-blocking behavior and browser sync storage.
+
+Select desktop Firefox only. A draft, a passed validator or a successful upload
+is not approval or publication. Use status mode to confirm the review outcome
+and record the actual public version. Update feature claims in the public
+listing when that version becomes available.

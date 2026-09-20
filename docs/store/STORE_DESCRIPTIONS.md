@@ -10,17 +10,29 @@ come from `src/_locales/<locale>/messages.json`. Norwegian Bokmål uses source l
 Website Blocker: MT helps you stay focused by blocking distracting websites.
 
 - Add websites to your block list in settings.
+- Choose indefinite blocking, 15, 30 or 60 minutes, or custom whole minutes.
+- Edit a website while preserving its blocking state and deadline.
 - Turn blocking on or off for each website without removing it from the list.
 - Remove a website from the list whenever you want to unblock it.
 - Blocked pages show a reminder to stay focused and a button to close the tab.
-- Your block list is saved using your browser's synced extension storage.
-- The interface automatically follows your browser's language, with support for 40 languages.
+- The interface follows your browser's language, with support for 40 languages.
+
+Timed entries expire automatically, including while the browser is closed.
+Turning blocking off does not pause or reset the timer. After expiry, navigate
+or reload to open the website again; an existing blocked page stays open.
+Adding a site does not redirect an already-open tab until it navigates or reloads.
+
+Your block list, blocking states and deadlines are saved in the browser's built-in
+sync storage. They may sync between devices when browser sync is enabled.
+Blocking decisions happen in your browser; the developer does not receive your
+list or browsing history. There are no ads, analytics, accounts or paid features.
 
 To get started, open the extension, choose Open settings, and add a website to block.
+The extension uses browser navigation permission to redirect blocked websites
+and storage permission to save your settings. It does not provide recurring
+schedules, passwords or parental controls.
 
-The extension uses browser navigation permission to monitor navigation and redirect blocked websites,
-and storage permission to save your list. It contains no analytics or advertising.
-
+Free and open source under the MIT license.
 Source code and support: https://github.com/maximtop/website-blocker
 
 ## Arabic (ar)
