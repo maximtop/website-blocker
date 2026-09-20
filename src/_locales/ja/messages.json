@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "ウェブサイト"
+    },
+    "blockDuration": {
+        "message": "ブロック期間"
+    },
+    "indefinitely": {
+        "message": "無期限"
+    },
+    "duration15Minutes": {
+        "message": "15分"
+    },
+    "duration30Minutes": {
+        "message": "30分"
+    },
+    "duration60Minutes": {
+        "message": "60分"
+    },
+    "customDuration": {
+        "message": "期間を指定"
+    },
+    "minutes": {
+        "message": "分"
+    },
+    "timerExplanation": {
+        "message": "時間制限付きのブロックは自動的に解除されます。ブロックをオフにしてもタイマーは一時停止しません。"
+    },
+    "loadingWebsites": {
+        "message": "ウェブサイトを読み込み中..."
+    },
+    "blockedUntil": {
+        "message": "$DEADLINE$まで",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "分数は正の整数で入力してください。"
+    },
+    "blockDurationTooLong": {
+        "message": "指定した期間が長すぎます。"
     }
 }

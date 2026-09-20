@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Site web"
+    },
+    "blockDuration": {
+        "message": "Durata blocării"
+    },
+    "indefinitely": {
+        "message": "Pe termen nelimitat"
+    },
+    "duration15Minutes": {
+        "message": "15 minute"
+    },
+    "duration30Minutes": {
+        "message": "30 de minute"
+    },
+    "duration60Minutes": {
+        "message": "60 de minute"
+    },
+    "customDuration": {
+        "message": "Durată personalizată"
+    },
+    "minutes": {
+        "message": "Minute"
+    },
+    "timerExplanation": {
+        "message": "Blocările temporare expiră automat. Dezactivarea blocării nu întrerupe cronometrul."
+    },
+    "loadingWebsites": {
+        "message": "Se încarcă site-urile web..."
+    },
+    "blockedUntil": {
+        "message": "Până la $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "Durata trebuie să fie un număr întreg pozitiv de minute."
+    },
+    "blockDurationTooLong": {
+        "message": "Durata este prea lungă."
     }
 }

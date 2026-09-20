@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "אתר"
+    },
+    "blockDuration": {
+        "message": "משך החסימה"
+    },
+    "indefinitely": {
+        "message": "ללא הגבלת זמן"
+    },
+    "duration15Minutes": {
+        "message": "15 דקות"
+    },
+    "duration30Minutes": {
+        "message": "30 דקות"
+    },
+    "duration60Minutes": {
+        "message": "60 דקות"
+    },
+    "customDuration": {
+        "message": "משך מותאם אישית"
+    },
+    "minutes": {
+        "message": "דקות"
+    },
+    "timerExplanation": {
+        "message": "חסימות זמניות מסתיימות אוטומטית. כיבוי החסימה אינו משהה את הטיימר."
+    },
+    "loadingWebsites": {
+        "message": "האתרים נטענים..."
+    },
+    "blockedUntil": {
+        "message": "עד $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "משך הזמן חייב להיות מספר שלם וחיובי של דקות."
+    },
+    "blockDurationTooLong": {
+        "message": "משך הזמן ארוך מדי."
     }
 }

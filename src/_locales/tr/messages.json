@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Web sitesi"
+    },
+    "blockDuration": {
+        "message": "Engelleme süresi"
+    },
+    "indefinitely": {
+        "message": "Süresiz"
+    },
+    "duration15Minutes": {
+        "message": "15 dakika"
+    },
+    "duration30Minutes": {
+        "message": "30 dakika"
+    },
+    "duration60Minutes": {
+        "message": "60 dakika"
+    },
+    "customDuration": {
+        "message": "Özel süre"
+    },
+    "minutes": {
+        "message": "Dakika"
+    },
+    "timerExplanation": {
+        "message": "Süreli engellemeler otomatik olarak sona erer. Engellemeyi kapatmak zamanlayıcıyı duraklatmaz."
+    },
+    "loadingWebsites": {
+        "message": "Web siteleri yükleniyor..."
+    },
+    "blockedUntil": {
+        "message": "Bitiş: $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "Süre, dakika cinsinden pozitif bir tam sayı olmalıdır."
+    },
+    "blockDurationTooLong": {
+        "message": "Süre çok uzun."
     }
 }

@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Website"
+    },
+    "blockDuration": {
+        "message": "Block for"
+    },
+    "indefinitely": {
+        "message": "Indefinitely"
+    },
+    "duration15Minutes": {
+        "message": "15 minutes"
+    },
+    "duration30Minutes": {
+        "message": "30 minutes"
+    },
+    "duration60Minutes": {
+        "message": "60 minutes"
+    },
+    "customDuration": {
+        "message": "Custom duration"
+    },
+    "minutes": {
+        "message": "Minutes"
+    },
+    "timerExplanation": {
+        "message": "Timed blocks expire automatically. Turning blocking off does not pause the timer."
+    },
+    "loadingWebsites": {
+        "message": "Loading websites..."
+    },
+    "blockedUntil": {
+        "message": "Until $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "Duration must be a positive whole number of minutes."
+    },
+    "blockDurationTooLong": {
+        "message": "Duration is too long."
     }
 }

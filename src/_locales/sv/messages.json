@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Webbplats"
+    },
+    "blockDuration": {
+        "message": "Blockeringstid"
+    },
+    "indefinitely": {
+        "message": "Tills vidare"
+    },
+    "duration15Minutes": {
+        "message": "15 minuter"
+    },
+    "duration30Minutes": {
+        "message": "30 minuter"
+    },
+    "duration60Minutes": {
+        "message": "60 minuter"
+    },
+    "customDuration": {
+        "message": "Anpassad tid"
+    },
+    "minutes": {
+        "message": "Minuter"
+    },
+    "timerExplanation": {
+        "message": "Tidsbegränsade blockeringar upphör automatiskt. Att stänga av blockeringen pausar inte timern."
+    },
+    "loadingWebsites": {
+        "message": "Läser in webbplatser..."
+    },
+    "blockedUntil": {
+        "message": "Till $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "Tiden måste vara ett positivt helt antal minuter."
+    },
+    "blockDurationTooLong": {
+        "message": "Tiden är för lång."
     }
 }

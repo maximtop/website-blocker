@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Веб-сајт"
+    },
+    "blockDuration": {
+        "message": "Трајање блокирања"
+    },
+    "indefinitely": {
+        "message": "Неограничено"
+    },
+    "duration15Minutes": {
+        "message": "15 минута"
+    },
+    "duration30Minutes": {
+        "message": "30 минута"
+    },
+    "duration60Minutes": {
+        "message": "60 минута"
+    },
+    "customDuration": {
+        "message": "Прилагођено трајање"
+    },
+    "minutes": {
+        "message": "Минути"
+    },
+    "timerExplanation": {
+        "message": "Временски ограничене блокаде истичу аутоматски. Искључивање блокирања не зауставља тајмер."
+    },
+    "loadingWebsites": {
+        "message": "Учитавање веб-сајтова..."
+    },
+    "blockedUntil": {
+        "message": "До $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "Трајање мора бити позитиван цео број минута."
+    },
+    "blockDurationTooLong": {
+        "message": "Трајање је предуго."
     }
 }

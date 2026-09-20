@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Website"
+    },
+    "blockDuration": {
+        "message": "Sperrdauer"
+    },
+    "indefinitely": {
+        "message": "Unbegrenzt"
+    },
+    "duration15Minutes": {
+        "message": "15 Minuten"
+    },
+    "duration30Minutes": {
+        "message": "30 Minuten"
+    },
+    "duration60Minutes": {
+        "message": "60 Minuten"
+    },
+    "customDuration": {
+        "message": "Benutzerdefinierte Dauer"
+    },
+    "minutes": {
+        "message": "Minuten"
+    },
+    "timerExplanation": {
+        "message": "Zeitlich begrenzte Sperren enden automatisch. Das Ausschalten der Sperre hält den Timer nicht an."
+    },
+    "loadingWebsites": {
+        "message": "Websites werden geladen..."
+    },
+    "blockedUntil": {
+        "message": "Bis $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "Die Dauer muss eine positive ganze Zahl von Minuten sein."
+    },
+    "blockDurationTooLong": {
+        "message": "Die Dauer ist zu lang."
     }
 }

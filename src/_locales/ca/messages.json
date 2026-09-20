@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Lloc web"
+    },
+    "blockDuration": {
+        "message": "Durada del bloqueig"
+    },
+    "indefinitely": {
+        "message": "Indefinidament"
+    },
+    "duration15Minutes": {
+        "message": "15 minuts"
+    },
+    "duration30Minutes": {
+        "message": "30 minuts"
+    },
+    "duration60Minutes": {
+        "message": "60 minuts"
+    },
+    "customDuration": {
+        "message": "Durada personalitzada"
+    },
+    "minutes": {
+        "message": "Minuts"
+    },
+    "timerExplanation": {
+        "message": "Els bloquejos temporals caduquen automàticament. Desactivar el bloqueig no pausa el temporitzador."
+    },
+    "loadingWebsites": {
+        "message": "S’estan carregant els llocs web..."
+    },
+    "blockedUntil": {
+        "message": "Fins a $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "La durada ha de ser un nombre enter positiu de minuts."
+    },
+    "blockDurationTooLong": {
+        "message": "La durada és massa llarga."
     }
 }

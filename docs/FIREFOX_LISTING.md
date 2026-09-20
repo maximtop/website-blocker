@@ -6,8 +6,7 @@
 - AMO slug: website-blocker-mt
 - Default listing locale: English (US); use the complete 40-locale pack below.
 - UI languages: 40 browser-selected catalogs with English fallback and RTL
-  support; the newer duration controls, duration errors and loading message
-  currently remain in English.
+  support, including duration controls, validation errors and loading messages.
 - Summary: Stay focused by blocking distracting websites.
 - Category: Other (AMO's "My add-on doesn't fit into any of the categories";
   Productivity is not offered in this submission form)
@@ -57,8 +56,8 @@ Website matching ignores a leading www. Other subdomains can be added separately
 This is a lightweight focus tool with one-time durations; it does not provide
 recurring schedules, passwords, or parental controls.
 
-The interface supports 40 languages. The newer duration controls, duration
-errors and loading message currently appear in English.
+The interface supports 40 languages, including duration controls, validation
+errors and loading messages. Deadlines use the selected language’s date and time format.
 
 Your block list, blocking states and deadlines are stored in the browser's
 built-in sync storage and may sync between your devices if Firefox Sync is enabled.

@@ -128,5 +128,51 @@
                 "example": "example.com"
             }
         }
+    },
+    "websiteLabel": {
+        "message": "Website"
+    },
+    "blockDuration": {
+        "message": "Blokkeerduur"
+    },
+    "indefinitely": {
+        "message": "Voor onbepaalde tijd"
+    },
+    "duration15Minutes": {
+        "message": "15 minuten"
+    },
+    "duration30Minutes": {
+        "message": "30 minuten"
+    },
+    "duration60Minutes": {
+        "message": "60 minuten"
+    },
+    "customDuration": {
+        "message": "Aangepaste duur"
+    },
+    "minutes": {
+        "message": "Minuten"
+    },
+    "timerExplanation": {
+        "message": "Tijdelijke blokkeringen verlopen automatisch. Het uitschakelen van de blokkering pauzeert de timer niet."
+    },
+    "loadingWebsites": {
+        "message": "Websites laden..."
+    },
+    "blockedUntil": {
+        "message": "Tot $DEADLINE$",
+        "description": "Blocking deadline with a date and time formatted in this catalog’s locale. Keep the placeholder intact.",
+        "placeholders": {
+            "deadline": {
+                "content": "$1",
+                "example": "9/20/2026, 3:30:00 PM"
+            }
+        }
+    },
+    "invalidBlockDuration": {
+        "message": "De duur moet een positief geheel aantal minuten zijn."
+    },
+    "blockDurationTooLong": {
+        "message": "De duur is te lang."
     }
 }

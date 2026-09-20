@@ -36,10 +36,9 @@ minified, but it is generated, so the original source is attached.
 
 The source includes all 40 locale catalogs in `src/_locales/`; the Firefox
 package includes all 40. English is the default, and Arabic, Persian and Hebrew
-use right-to-left layouts. The popup, blocked page and existing website controls
-follow the browser's language. The newer duration controls, duration errors and
-loading message currently remain in English. The complete locale list and
-package checks are documented in [README.md](../README.md#translations).
+use right-to-left layouts. The popup, blocked page, website and duration controls,
+validation errors and loading message follow the browser-selected catalog.
+The complete locale list and package checks are documented in [README.md](../README.md#translations).
 
 ## Test the behavior
 
@@ -88,8 +87,8 @@ manual Firefox test.
 13. Remove an indefinite entry and confirm the site loads again.
 14. Check the popup, options page and blocked page in a non-English browser
     language, including a right-to-left language. Translated controls should
-    use the selected catalog without raw message keys. Duration controls,
-    duration errors and the loading message are currently English.
+    use the selected catalog without raw message keys, including duration controls,
+    duration errors, deadlines and the loading message.
 15. If testing private windows, first allow the extension in private windows
     through Firefox's add-on settings. Without that permission it does not
     operate in private windows.
