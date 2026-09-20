@@ -25,8 +25,44 @@ type NavigationDetails = browser.WebNavigation.OnCommittedDetailsType & {
  * @returns Returns true if the URL matches a blocked website, otherwise false.
  */
 function isBlocked(url: string): boolean {
+    if (!/^https?:\/\//i.test(url)) {
+        return false;
+    }
     const normalizedHostname = getHostname(url);
     return normalizedHostname !== null && isWebsiteBlocked(blockedWebsites[normalizedHostname]);
+}
+
+/**
+ * Redirects matching tabs across all accessible windows using the latest successful read.
+ *
+ * @param request - Storage revision that requested this scan.
+ * @returns Resolves after all redirects, including tabs closed during the scan, settle.
+ */
+async function blockOpenTabs(request: number): Promise<void> {
+    try {
+        const tabs = await browser.tabs.query({});
+        await Promise.all(tabs.map(async (tab) => {
+            if (request !== loadRequest || tab.id === undefined || !isBlocked(tab.pendingUrl || tab.url || '')) {
+                return;
+            }
+            try {
+                // The tab may have navigated or closed since the query finished.
+                const current = await browser.tabs.get(tab.id);
+                if (request !== loadRequest || !isBlocked(current.pendingUrl || current.url || '')) {
+                    return;
+                }
+                await browser.tabs.update(tab.id, { url: browser.runtime.getURL('blocked.html') });
+            } catch (error: unknown) {
+                // A disappearing or inaccessible tab must not prevent other tabs from being blocked.
+                // eslint-disable-next-line no-console
+                console.error('Unable to redirect an open tab.', error);
+            }
+        }));
+    } catch (error: unknown) {
+        // Navigation blocking still uses the successfully refreshed preferences.
+        // eslint-disable-next-line no-console
+        console.error('Unable to query open tabs.', error);
+    }
 }
 
 /**
@@ -39,10 +75,11 @@ function updateBlockedWebsites(): Promise<void> {
     const request = loadRequest;
     needsRefresh = true;
     const updatePromise = Websites.getWebsites()
-        .then((websites) => {
+        .then(async (websites) => {
             if (request === loadRequest) {
                 blockedWebsites = websites;
                 needsRefresh = false;
+                await blockOpenTabs(request);
             }
         })
         .catch((error: unknown) => {
@@ -121,9 +158,9 @@ const syncInit = () => {
 };
 
 /**
- * Starts listeners and the first handled storage refresh.
+ * Starts listeners, loads preferences and applies blocking to existing tabs on enable or restart.
  *
- * @returns Resolves once the initial storage refresh has settled.
+ * @returns Resolves once the initial storage refresh and open-tab scan have settled.
  */
 const init = () => {
     // Event pages must register listeners before asynchronous storage reads.

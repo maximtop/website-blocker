@@ -17,6 +17,7 @@ const browserMock = vi.hoisted(() => ({
     navigationAddListener: vi.fn(),
     installedAddListener: vi.fn(),
     startupAddListener: vi.fn(),
+    queryTabs: vi.fn(),
     updateTab: vi.fn(),
 }));
 
@@ -37,7 +38,7 @@ vi.mock('webextension-polyfill', () => ({
         webNavigation: {
             onCommitted: { addListener: browserMock.navigationAddListener },
         },
-        tabs: { update: browserMock.updateTab },
+        tabs: { query: browserMock.queryTabs, update: browserMock.updateTab },
     },
 }));
 
@@ -61,6 +62,7 @@ const notifyStorageChanged = () => {
 
 beforeEach(() => {
     vi.resetAllMocks();
+    browserMock.queryTabs.mockResolvedValue([]);
     persistedWebsites = {
         'enabled.com': { hostname: 'enabled.com', enabled: true },
         'disabled.com': { hostname: 'disabled.com', enabled: false },

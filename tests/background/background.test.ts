@@ -24,7 +24,7 @@ vi.mock('webextension-polyfill', () => ({
             onInstalled: { addListener: vi.fn() },
             onStartup: { addListener: vi.fn() },
         },
-        tabs: { update: vi.fn() },
+        tabs: { query: vi.fn().mockResolvedValue([]), update: vi.fn() },
         webNavigation: { onCommitted: { addListener: vi.fn() } },
     },
 }));
@@ -82,6 +82,7 @@ const storageChanged = async () => {
 
 beforeEach(() => {
     vi.resetAllMocks();
+    vi.mocked(browser.tabs.query).mockResolvedValue([]);
     vi.useFakeTimers();
     vi.setSystemTime(NOW);
     persisted = {};

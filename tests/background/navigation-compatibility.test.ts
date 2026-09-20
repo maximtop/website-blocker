@@ -17,7 +17,7 @@ vi.mock('webextension-polyfill', () => ({
             onStartup: { addListener: vi.fn() },
             getURL: vi.fn(),
         },
-        tabs: { update: vi.fn() },
+        tabs: { query: vi.fn().mockResolvedValue([]), update: vi.fn() },
         webNavigation: { onCommitted: { addListener: vi.fn() } },
         storage: { sync: { onChanged: { addListener: vi.fn() } } },
     },
@@ -56,6 +56,7 @@ const startBackground = async () => {
 beforeEach(() => {
     vi.resetModules();
     vi.resetAllMocks();
+    vi.mocked(browser.tabs.query).mockResolvedValue([]);
     vi.mocked(Websites.getWebsites).mockResolvedValue(blockedWebsites);
     vi.mocked(browser.runtime.getURL).mockReturnValue('moz-extension://fixture/blocked.html');
 });

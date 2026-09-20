@@ -53,7 +53,7 @@ describe('browser manifests', () => {
         expect(manifest.manifest_version).toBe(3);
         expect(manifest.version).toBe(version);
         expect(manifest.permissions).toEqual(sourceManifest.permissions);
-        expect(manifest.permissions).toEqual(expect.arrayContaining(['webNavigation', 'storage']));
+        expect(manifest.permissions).toEqual(expect.arrayContaining(['webNavigation', 'storage', 'tabs']));
         expect(manifest.action.default_popup).toBe('popup.html');
         expect(manifest.options_page).toBe('options.html');
         expect(manifest.web_accessible_resources).toEqual([
