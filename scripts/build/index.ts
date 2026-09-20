@@ -4,7 +4,12 @@
 import { program } from 'commander';
 
 import { bundleRunner } from './bundle-runner';
-import { Browser, BROWSERS } from './constants';
+import {
+    Browser,
+    BROWSERS,
+    BUILD_ENV,
+    BuildTargetEnv,
+} from './constants';
 import { getWebpackConfig } from './webpack-config';
 import { validateCatalogs } from '../i18n/catalogs';
 
@@ -38,6 +43,7 @@ const main = async (browsers: readonly Browser[], options: CommanderOptions) => 
 };
 
 program
+    .allowExcessArguments(false)
     .option('--watch', 'Builds in watch mode', false)
     .option(
         '--no-cache',
@@ -48,6 +54,7 @@ program
 BROWSERS.forEach((browser) => {
     program
         .command(browser)
+        .allowExcessArguments(false)
         .description(`Builds extension for ${browser} browser`)
         .action(async () => {
             await main([browser], program.opts<CommanderOptions>());
@@ -55,9 +62,10 @@ BROWSERS.forEach((browser) => {
 });
 
 program
-    .description('By default builds for all platforms')
+    .description('Defaults to Chrome for development and all browsers for release')
     .action(async () => {
-        await main(BROWSERS, program.opts<CommanderOptions>());
+        const browsers = BUILD_ENV === BuildTargetEnv.Dev ? [Browser.Chrome] : BROWSERS;
+        await main(browsers, program.opts<CommanderOptions>());
     });
 
 program.parse(process.argv);
