@@ -23,6 +23,7 @@ const mocks = vi.hoisted(() => ({
     onStartup: vi.fn<(listener: StorageListener) => void>(),
     onChanged: vi.fn<(listener: StorageListener) => void>(),
     getWebsites: vi.fn<() => Promise<WebsitesMap>>(),
+    queryTabs: vi.fn(),
     updateTab: vi.fn(),
 }));
 
@@ -34,7 +35,7 @@ vi.mock('webextension-polyfill', () => ({
             getURL: (path: string) => `moz-extension://fixture/${path}`,
         },
         webNavigation: { onCommitted: { addListener: mocks.onCommitted } },
-        tabs: { update: mocks.updateTab },
+        tabs: { query: mocks.queryTabs, update: mocks.updateTab },
         storage: { sync: { onChanged: { addListener: vi.fn() } } },
     },
 }));
@@ -76,6 +77,7 @@ describe('background navigation blocking', () => {
     beforeEach(() => {
         vi.resetModules();
         vi.resetAllMocks();
+        mocks.queryTabs.mockResolvedValue([]);
         mocks.getWebsites.mockResolvedValue(blocked);
     });
 
