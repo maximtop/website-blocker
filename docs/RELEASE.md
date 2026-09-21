@@ -208,6 +208,9 @@ attachment; it does not wait for signing.
 A new submission requires `docs/AMO_REVIEW.md` inside that same release's
 source archive. Update these [reviewer instructions](AMO_REVIEW.md) whenever
 build requirements change.
+AMO accepts at most 3000 characters in its reviewer-notes field. Longer instructions
+stay in the matching source archive; the submitted field points the reviewer to
+that complete file instead of truncating it.
 
 The existing public Website Blocker listing slug is `website-blocker-mt`.
 Submit updates through the manual workflow using the Firefox archive and matching

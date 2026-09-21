@@ -145,6 +145,21 @@ describe('published release contract', () => {
             }).toThrow('background');
         },
     );
+    it('preserves notes at the AMO limit and points to attached instructions above it', () => {
+        const notes = 'a'.repeat(3000);
+        expect(verifySource(pack({
+            ...sourceFiles,
+            [AMO_REVIEW_NOTES_PATH]: notes,
+        }), '1.2.3', true)).toBe(notes);
+
+        const result = verifySource(pack({
+            ...sourceFiles,
+            [AMO_REVIEW_NOTES_PATH]: `${notes}a`,
+        }), '1.2.3', true);
+        expect(result.length).toBeLessThanOrEqual(3000);
+        expect(result).toContain(AMO_REVIEW_NOTES_PATH);
+        expect(result).toContain('attached source archive');
+    });
     it('requires matching source and notes for new submissions, permits historical checks', () => {
         expect(verifySource(pack(sourceFiles), '1.2.3', true)).toContain('Reviewer instructions');
         expect(() => {
