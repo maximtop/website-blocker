@@ -1,6 +1,6 @@
-# Website Blocker by MT
+# Website Blocker: MT
 
-Website Blocker by MT is a simple browser extension designed to help you stay focused by blocking distracting websites. This extension allows you to specify a list of websites to block, ensuring that you can maintain productivity and avoid distractions.
+Website Blocker: MT is a simple browser extension designed to help you stay focused by blocking distracting websites. This extension allows you to specify a list of websites to block, ensuring that you can maintain productivity and avoid distractions.
 
 ## Features
 
@@ -54,7 +54,8 @@ Website Blocker by MT is a simple browser extension designed to help you stay fo
 
 ## Download
 
-You can install the Website Blocker by MT extension directly from the [Chrome Web Store](https://chromewebstore.google.com/detail/website-blocker-by-mt/enffllmgjpgoifnfeljkfhpedcadnpbj).
+Install Website Blocker: MT from the [Chrome Web Store](https://chromewebstore.google.com/detail/enffllmgjpgoifnfeljkfhpedcadnpbj)
+or [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/website-blocker-mt/).
 
 ## Development
 

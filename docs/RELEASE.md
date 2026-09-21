@@ -209,11 +209,11 @@ A new submission requires `docs/AMO_REVIEW.md` inside that same release's
 source archive. Update these [reviewer instructions](AMO_REVIEW.md) whenever
 build requirements change.
 
-The saved Website Blocker listing slug is `website-blocker-mt`. Complete that
-first listing in Developer Hub with the Firefox archive and matching source
-archive; the saved draft has not yet been submitted and contains an older
-English-only build. Before submitting it, refresh its package, matching source,
-reviewer notes and listing metadata from the current release.
+The existing public Website Blocker listing slug is `website-blocker-mt`.
+Submit updates through the manual workflow using the Firefox archive and matching
+source archive from one newer GitHub Release. Check current AMO status before
+submitting; do not resume an old first-submission draft. Keep reviewer notes
+and listing metadata aligned with the release.
 [FIREFOX_LISTING.md](FIREFOX_LISTING.md) contains the Firefox-specific copy,
 privacy details and a link to the complete 40-locale pack in
 [STORE_DESCRIPTIONS.md](store/STORE_DESCRIPTIONS.md). Preserve all locales and
@@ -338,9 +338,11 @@ Chrome Web Store:
 - **Upload rejected because a submission is pending review:** the store
   refuses every package upload in that state regardless of version. Wait for
   the verdict or cancel the review in the Developer Dashboard, then re-run.
-- **Upload rejected because an approved submission is staged:** publish the
-  staged version in the Developer Dashboard, or let the 30-day expiry return
-  it to a draft, then re-run.
+- **Upload rejected because an approved submission is staged:** verify its
+  version before taking any action. Publish it only if it is the intended release.
+  For an obsolete staged version, use the Developer Dashboard to cancel or discard
+  it if available, or let the 30-day expiry return it to a draft before uploading
+  the newer release. Do not publish an old package merely to unblock an upload.
 - **Review rejected:** no workflow signal exists; the verdict arrives by
   e-mail. Address the feedback and ship a new version.
 
