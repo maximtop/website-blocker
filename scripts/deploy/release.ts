@@ -145,7 +145,7 @@ export const verifyManifest = (bytes: Buffer, version: string, browser: string):
  * @param version Selected package version.
  * @param requireNotes Whether this is a new Firefox submission.
  *
- * @returns Reviewer notes, empty when the archive has none.
+ * @returns AMO-sized reviewer notes, empty when the archive has none.
  *
  * @throws If the source is incomplete or belongs to another version.
  */
@@ -165,5 +165,11 @@ export const verifySource = (bytes: Buffer, version: string, requireNotes: boole
             `Source has no ${AMO_REVIEW_NOTES_PATH}; use the Developer Hub for this release`,
         );
     }
-    return notes;
+    // AMO limits approval_notes to 3000 characters. The matching source ZIP
+    // retains the complete instructions, so point there instead of truncating them.
+    return notes.length > 3000
+        ? `Full build and reviewer instructions are in ${AMO_REVIEW_NOTES_PATH} `
+            + 'in the attached source archive for this version. Follow that file to reproduce '
+            + 'the package and test its behavior. The source archive matches the submitted extension.'
+        : notes;
 };
