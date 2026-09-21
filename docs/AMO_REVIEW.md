@@ -54,7 +54,8 @@ manual Firefox test.
 4. Open an unrelated website. It should remain accessible. Subframe navigation
    should not redirect its containing tab.
 5. Switch `example.com` off and reload the site. It should load normally while
-   its entry remains saved. Switch it back on and reload to confirm blocking.
+   its entry remains saved. Switch it back on and confirm the open tab redirects
+   without a reload and stays open.
 6. Click **Edit** for `example.com`. Its address should be selected. Change it
    to `example.org` and click **Save**. The old site should load and the new one
    should be blocked. Reopen settings to confirm the edit persisted. Editing
@@ -93,8 +94,12 @@ manual Firefox test.
     through Firefox's add-on settings. Without that permission it does not
     operate in private windows.
 
-Adding an already-open site's hostname does not redirect that tab until it
-navigates or reloads. Expiration stops future redirects; it does not automatically
+Also open matching sites in multiple windows before adding a hostname, editing
+an entry to that hostname, or re-enabling the extension. Each matching tab should
+redirect without closing; unrelated sites and browser pages should stay unchanged.
+Private windows participate only when the extension has access to them.
+
+Expiration stops future redirects; it does not automatically
 restore a tab already showing the blocked page. Deadlines use the browser's
 wall clock, continue while the browser is closed and are not paused by turning
 a site's blocking switch off. Renaming preserves the deadline, switch and list
@@ -109,10 +114,10 @@ this is a focus tool, not a network firewall or parental-control security bounda
 
 - `webNavigation`: observe top-level HTTP/HTTPS navigation and compare its
   hostname with the block list inside the browser.
-- Tab updates redirect a blocked tab to the packaged `blocked.html` page.
-  `tabs.update` does not require the `tabs` permission; sensitive tab fields
-  are not read and that permission is not requested. No content scripts or
-  host permissions are requested.
+- `tabs`: read open-tab addresses to apply the current blocking rules across
+  accessible windows. Tab updates redirect matching tabs to the packaged
+  `blocked.html` page without closing them. No content scripts or host
+  permissions are requested.
 - `storage`: save hostnames, enabled/disabled settings, optional expiration
   timestamps and list-order metadata in `browser.storage.sync`. Firefox may
   synchronize these settings between the user's browsers when Firefox Sync is

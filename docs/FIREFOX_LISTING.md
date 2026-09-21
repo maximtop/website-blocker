@@ -47,6 +47,7 @@ get back to what you were doing.
 - Switch blocking off or on for each website without deleting its entry.
 - Remove a website whenever you want to allow it again.
 - Keep your block list and unexpired deadlines across browser restarts.
+- Apply blocking to matching open tabs when you add or enable a site, without closing them.
 
 Timed entries disappear from the visible list when their deadlines pass.
 Turning blocking off does not pause or reset the timer. After expiry, navigate
@@ -71,8 +72,9 @@ Free and open source under the MIT license.
 Website Blocker: MT does not send your browsing history or block list to the
 developer and has no analytics, advertising, or developer-operated backend.
 
-The extension checks website hostnames inside your browser to apply your blocking
-rules. It stores the websites you add, their enabled/disabled settings,
+The extension checks website hostnames and reads open-tab addresses inside your
+browser to apply your blocking rules. Private windows are included only when you
+allow the extension there. It stores the websites you add, their enabled/disabled settings,
 optional expiration timestamps and list-order metadata in browser.storage.sync.
 Firefox may synchronize these preferences between your devices when Firefox
 Sync is enabled; that browser service is controlled by your

@@ -20,7 +20,8 @@ Website Blocker: MT helps you stay focused by blocking distracting websites.
 Timed entries expire automatically, including while the browser is closed.
 Turning blocking off does not pause or reset the timer. After expiry, navigate
 or reload to open the website again; an existing blocked page stays open.
-Adding a site does not redirect an already-open tab until it navigates or reloads.
+Adding or enabling a site also redirects matching open tabs to the blocked page.
+The tabs stay open. Private windows are included only if you allow the extension there.
 
 Your block list, blocking states and deadlines are saved in the browser's built-in
 sync storage. They may sync between devices when browser sync is enabled.
@@ -28,8 +29,9 @@ Blocking decisions happen in your browser; the developer does not receive your
 list or browsing history. There are no ads, analytics, accounts or paid features.
 
 To get started, open the extension, choose Open settings, and add a website to block.
-The extension uses browser navigation permission to redirect blocked websites
-and storage permission to save your settings. It does not provide recurring
+The extension uses browser navigation permission to redirect blocked websites,
+tabs permission to check open-tab addresses, and storage permission to save your settings.
+It does not provide recurring
 schedules, passwords or parental controls.
 
 Free and open source under the MIT license.
