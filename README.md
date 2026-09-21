@@ -49,6 +49,8 @@ Website Blocker: MT is a simple browser extension designed to help you stay focu
 - Editing an address preserves its blocking switch setting.
 - Use the switch next to a website to turn blocking off or on. Disabled entries remain visible until removed or until their deadline expires.
 - The extension blocks matching navigations while an entry is enabled and unexpired. Saved choices and deadlines survive restarts; expiry does not reopen tabs already showing the blocked page.
+- Enabling the extension, adding or editing a site, or turning its blocking back on also redirects matching open tabs in every accessible window to the blocked page. Tabs stay open; unrelated sites and browser pages stay unchanged.
+- The `tabs` permission lets the extension read open-tab addresses to apply these rules. Private windows are included only when the browser grants the extension access.
 
 ## Download
 
