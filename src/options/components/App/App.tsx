@@ -1,6 +1,7 @@
 import React from 'react';
-import { WebsiteList } from '../WebsiteList';
+
 import { t } from '../../../common/i18n';
+import { WebsiteList } from '../WebsiteList';
 
 /**
  * Renders the options page for managing blocked websites.

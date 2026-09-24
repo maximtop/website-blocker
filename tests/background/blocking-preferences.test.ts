@@ -7,8 +7,11 @@ import {
     it,
     vi,
 } from 'vitest';
+
 import { init } from '../../src/background/background';
-import { Websites, WebsitesMap } from '../../src/common/websites';
+import { Websites } from '../../src/common/websites';
+
+import type { WebsitesMap } from '../../src/common/websites';
 
 const browserMock = vi.hoisted(() => ({
     storageGet: vi.fn(),

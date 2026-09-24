@@ -6,24 +6,28 @@ import { WEBSITE_ERROR_CODE, WebsiteError } from './website-error';
 /**
  * A saved website with independent blocking preferences and an optional deadline.
  */
-export type Website = {
+export interface Website {
     /**
      * Normalized hostname used for navigation matching.
      */
     hostname: string;
+
     /**
      * Whether blocking is enabled; missing flags in older entries mean enabled.
      */
     enabled?: boolean;
+
     /**
      * Absolute expiration in milliseconds, omitted for permanent entries.
      */
     blockedUntil?: number;
-};
+}
+
 /**
  * Visible saved entries indexed by normalized hostname.
  */
 export type WebsitesMap = Record<string, Website>;
+
 /**
  * Persisted entry metadata that keeps a renamed site in its original list position.
  */
@@ -39,6 +43,7 @@ type StoredWebsite = Website & {
  *
  * @param website - Saved entry, if one exists.
  * @param now - Wall-clock time to compare with the deadline.
+ *
  * @returns Whether blocking is enabled and the deadline has not elapsed.
  */
 export function isWebsiteBlocked(website: Website | null | undefined, now = Date.now()): boolean {
@@ -60,14 +65,17 @@ export class Websites {
      *
      * @param hostnames - Normalized hosts affected by the mutation.
      * @param operation - Read and write to perform while all affected hosts are locked.
+     *
      * @returns The confirmed website list returned by the mutation.
      */
     private static withWebsiteLocks(hostnames: string[], operation: () => Promise<WebsitesMap>): Promise<WebsitesMap> {
         const hosts = Array.from(new Set(hostnames)).sort();
+
         /**
          * Acquires each host in stable order before starting the storage operation.
          *
          * @param index - Next host to lock.
+         *
          * @returns The mutation result after releasing every acquired lock.
          */
         const acquire = (index: number): Promise<WebsitesMap> => {
@@ -109,6 +117,7 @@ export class Websites {
      * Removes internal ordering metadata from the public list.
      *
      * @param websites - Ordered stored entries to present to callers.
+     *
      * @returns Entries containing only user-visible website preferences.
      */
     private static visibleEntries(websites: Record<string, StoredWebsite>): WebsitesMap {
@@ -122,7 +131,9 @@ export class Websites {
      *
      * @param rawWebsite - Hostname or URL to normalize.
      * @param durationMinutes - Optional positive whole-minute duration.
+     *
      * @returns The confirmed list after the write, without a fallible read after saving.
+     *
      * @throws If input is invalid, an unexpired entry exists, or storage fails.
      */
     public static async addWebsite(rawWebsite: string, durationMinutes?: number): Promise<WebsitesMap> {
@@ -160,7 +171,9 @@ export class Websites {
      *
      * @param originalHostname - Existing normalized hostname to rename.
      * @param rawWebsite - New hostname or URL to normalize.
+     *
      * @returns The confirmed list, or the current list when the normalized address is unchanged.
+     *
      * @throws If input is invalid, the original is absent, a duplicate exists, or storage fails.
      */
     public static async updateWebsite(originalHostname: string, rawWebsite: string): Promise<WebsitesMap> {
@@ -195,6 +208,7 @@ export class Websites {
      * Deletes one website without overwriting other hosts, including across independent contexts.
      *
      * @param hostname - Normalized hostname to delete.
+     *
      * @returns The confirmed remaining list.
      */
     public static async deleteWebsite(hostname: string): Promise<WebsitesMap> {
@@ -212,7 +226,9 @@ export class Websites {
      *
      * @param hostname - Normalized hostname to change.
      * @param enabled - Whether navigation should be blocked until the existing deadline.
+     *
      * @returns The confirmed updated list.
+     *
      * @throws If the website no longer exists or storage fails.
      */
     public static async setWebsiteEnabled(hostname: string, enabled: boolean): Promise<WebsitesMap> {
@@ -241,6 +257,7 @@ export class Websites {
      * Recognizes legacy and per-host updates in browser storage events.
      *
      * @param changes - Changed storage keys received from the browser.
+     *
      * @returns Whether the visible website list may have changed.
      */
     public static isWebsiteChange(changes: Record<string, unknown>): boolean {

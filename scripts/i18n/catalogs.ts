@@ -1,16 +1,23 @@
-/** Validate the complete locale pack before it is shipped. */
+/**
+ * Validate the complete locale pack before it is shipped.
+ */
 import fs from 'node:fs';
 import path from 'node:path';
+
 import english from '../../src/_locales/en/messages.json';
 
-/** Same 40 source locales as HN Split and No More Ago. */
+/**
+ * Same 40 source locales as HN Split and No More Ago.
+ */
 export const LOCALES = [
     'ar', 'bg', 'bn', 'ca', 'cs', 'da', 'de', 'el', 'en', 'es', 'es_419', 'fa', 'fi', 'fil',
     'fr', 'he', 'hi', 'hr', 'hu', 'id', 'it', 'ja', 'ko', 'ms', 'nb', 'nl', 'pl', 'pt_BR',
     'pt_PT', 'ro', 'ru', 'sk', 'sr', 'sv', 'th', 'tr', 'uk', 'vi', 'zh_CN', 'zh_TW',
 ] as const;
 
-/** Chromium requires a Norwegian catalog alias in addition to the shared source locale. */
+/**
+ * Chromium requires a Norwegian catalog alias in addition to the shared source locale.
+ */
 export const CHROMIUM_LOCALE_ALIAS = {
     source: 'nb',
     target: 'no',
@@ -25,7 +32,12 @@ const BASE_CATALOG: Catalog = english;
 const BASE_KEYS = Object.keys(english).sort();
 export const LOCALES_PATH = path.resolve(__dirname, '../../src/_locales');
 
-/** Check catalog schema, translated values, placeholders and store limits. */
+/**
+ * Check catalog schema, translated values, placeholders and store limits.
+ *
+ * @param locale
+ * @param catalog
+ */
 export const validateCatalog = (locale: string, catalog: Catalog): void => {
     const fail = (reason: string): never => {
         throw new Error(`${locale}: ${reason}`);
@@ -62,7 +74,9 @@ export const validateCatalog = (locale: string, catalog: Catalog): void => {
     }
 };
 
-/** Validate all sources, rejecting missing and unexpected locale directories. */
+/**
+ * Validate all sources, rejecting missing and unexpected locale directories.
+ */
 export const validateCatalogs = (): void => {
     const directories = fs.readdirSync(LOCALES_PATH, { withFileTypes: true })
         .filter((entry) => entry.isDirectory()).map((entry) => entry.name).sort();

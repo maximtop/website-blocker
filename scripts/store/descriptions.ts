@@ -1,11 +1,18 @@
-/** Extract complete localized store descriptions from the canonical markdown. */
+/**
+ * Extract complete localized store descriptions from the canonical markdown.
+ */
 import fs from 'node:fs';
 import path from 'node:path';
+
 import { LOCALES, validateCatalogs } from '../i18n/catalogs';
 
 export const DESCRIPTION_SOURCE = path.resolve(__dirname, '../../docs/store/STORE_DESCRIPTIONS.md');
 
-/** Split locale sections and reject incomplete or duplicate listing packs. */
+/**
+ * Split locale sections and reject incomplete or duplicate listing packs.
+ *
+ * @param content
+ */
 export const extractDescriptions = (content: string): Record<string, string> => {
     const headings = Array.from(content.matchAll(/^## .+ \(([a-zA-Z0-9_]+)\)\s*$/gm));
     const descriptions: Record<string, string> = {};

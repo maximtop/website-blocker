@@ -1,15 +1,21 @@
-/** Verify every release ZIP, including the Chromium Norwegian alias. */
+/**
+ * Verify every release ZIP, including the Chromium Norwegian alias.
+ */
 import fs from 'node:fs';
 import path from 'node:path';
+
 import AdmZip from 'adm-zip';
+
 import { Browser, BROWSERS } from '../build/constants';
+
 import {
-    Catalog,
     CHROMIUM_LOCALE_ALIAS,
     LOCALES,
     LOCALES_PATH,
     validateCatalog,
 } from './catalogs';
+
+import type { Catalog } from './catalogs';
 
 BROWSERS.forEach((browser) => {
     const archive = new AdmZip(path.resolve(__dirname, `../../dist/release/${browser}.zip`));

@@ -7,8 +7,11 @@ import {
     it,
     vi,
 } from 'vitest';
+
 import { Storage } from '../../src/common/storage';
-import { Websites, WebsitesMap } from '../../src/common/websites';
+import { Websites } from '../../src/common/websites';
+
+import type { WebsitesMap } from '../../src/common/websites';
 
 vi.mock('../../src/common/storage', () => ({
     Storage: {

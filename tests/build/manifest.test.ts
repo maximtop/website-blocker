@@ -1,10 +1,11 @@
 // @vitest-environment node
 
 import { describe, expect, it } from 'vitest';
-import sourceManifest from '../../src/manifest.json';
+
 import { Browser, BROWSERS } from '../../scripts/build/constants';
 import { updateManifest } from '../../scripts/build/manifest';
 import { GECKO_ID, STORE_TARGETS } from '../../scripts/deploy/constants';
+import sourceManifest from '../../src/manifest.json';
 
 const version = '3.2.1';
 const manifestFor = (browser: Browser) => {

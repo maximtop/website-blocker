@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { locks } from 'node:worker_threads';
-import React from 'react';
+
 import {
     cleanup,
     fireEvent,
@@ -13,6 +13,7 @@ import {
     within,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import {
     afterEach,
     beforeEach,
@@ -26,8 +27,8 @@ import {
 import { LOCALES, LOCALES_PATH, type Catalog } from '../../scripts/i18n/catalogs';
 import { applyDocumentLocale, PAGE_TITLE } from '../../src/common/i18n';
 import { Storage } from '../../src/common/storage';
-import { RootStore, RootStoreContext } from '../../src/options/stores/root-store';
 import { WebsiteList } from '../../src/options/components/WebsiteList/WebsiteList';
+import { RootStore, RootStoreContext } from '../../src/options/stores/root-store';
 
 vi.mock('../../src/common/storage', () => ({
     Storage: {
@@ -84,7 +85,7 @@ describe('localized timer interface', () => {
         const catalog = openList(locale);
         const message = (key: string) => catalog[key].message;
         expect(screen.getByRole('status').textContent).toBe(message('loadingWebsites'));
-        expect((screen.getByRole('combobox') as HTMLSelectElement).disabled).toBe(true);
+        expect((screen.getByRole('combobox')).disabled).toBe(true);
         await ready();
         expect(document.documentElement.lang).toBe(message('catalogLocale'));
         expect(document.documentElement.dir).toBe(['ar', 'fa', 'he'].includes(locale) ? 'rtl' : 'ltr');
@@ -124,15 +125,14 @@ describe('localized timer interface', () => {
         const website = screen.getByRole('textbox', { name: catalog.websiteInputPlaceholder.message });
         const saved = persisted;
         // Preset additions share one form and must run sequentially.
-        // eslint-disable-next-line no-restricted-syntax
+
         for (const minutes of [15, 30, 60]) {
-            // eslint-disable-next-line no-await-in-loop
             await user.selectOptions(selector, `${minutes}`);
-            // eslint-disable-next-line no-await-in-loop
+
             await user.type(website, `timer${minutes}.com`);
-            // eslint-disable-next-line no-await-in-loop
+
             await user.click(screen.getByRole('button', { name: catalog.addWebsite.message }));
-            // eslint-disable-next-line no-await-in-loop
+
             await waitFor(() => expect(saved[`website:timer${minutes}.com`]).toMatchObject({
                 blockedUntil: NOW + minutes * MINUTE,
             }));
@@ -153,18 +153,18 @@ describe('localized timer interface', () => {
         const catalog = openList(locale);
         await ready();
         fireEvent.change(screen.getByRole('combobox'), { target: { value: 'custom' } });
-        const minutes = screen.getByRole('spinbutton') as HTMLInputElement;
+        const minutes = screen.getByRole('spinbutton');
         const website = screen.getByRole('textbox', { name: catalog.websiteInputPlaceholder.message });
         const button = screen.getByRole('button', { name: catalog.addWebsite.message });
         fireEvent.change(website, { target: { value: 'timed.com' } });
         // Each invalid draft replaces the previous one in the same mounted form.
-        // eslint-disable-next-line no-restricted-syntax
+
         for (const value of ['', '0', '-1', '1.5', '999999999999999']) {
             fireEvent.change(minutes, { target: { value } });
             expect(minutes.checkValidity()).toBe(value === '999999999999999');
             // Exercise application validation through a submit event, even when native constraints reject it.
             fireEvent.submit(button.closest('form')!);
-            // eslint-disable-next-line no-await-in-loop
+
             await waitFor(() => expect(screen.getByRole('alert').textContent).toBe(
                 value === '999999999999999'
                     ? catalog.blockDurationTooLong.message : catalog.invalidBlockDuration.message,
@@ -186,7 +186,7 @@ describe('localized timer interface', () => {
         }));
         const catalog = openList(locale);
         expect(screen.getByRole('status').textContent).toBe(catalog.loadingWebsites.message);
-        expect((screen.getByRole('combobox') as HTMLSelectElement).disabled).toBe(true);
+        expect((screen.getByRole('combobox')).disabled).toBe(true);
         rejectLoad!(new Error('Storage unavailable'));
         expect((await screen.findByRole('alert')).textContent).toBe(catalog.loadError.message);
         expect(screen.queryByRole('status')).toBeNull();

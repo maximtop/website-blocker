@@ -17,7 +17,7 @@ import {
 /**
  * GitHub metadata required to select a stable release.
  */
-export type PublishedRelease = {
+export interface PublishedRelease {
     /**
      * Git tag of the release, `vX.Y.Z` for stable releases.
      */
@@ -32,7 +32,7 @@ export type PublishedRelease = {
      * Whether the release is marked as a pre-release.
      */
     isPrerelease: boolean;
-};
+}
 
 /**
  * Read a nested field of parsed JSON without assuming its shape.

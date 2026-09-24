@@ -1,4 +1,3 @@
-import browser from 'webextension-polyfill';
 import {
     afterEach,
     beforeEach,
@@ -7,6 +6,7 @@ import {
     it,
     vi,
 } from 'vitest';
+import browser from 'webextension-polyfill';
 
 vi.mock('webextension-polyfill', () => ({
     default: {
@@ -39,7 +39,9 @@ function tab(id: number, url: string, windowId = 1): browser.Tabs.Tab {
 
 function deferred<T>() {
     let resolve!: (value: T) => void;
-    const promise = new Promise<T>((finish) => { resolve = finish; });
+    const promise = new Promise<T>((finish) => {
+        resolve = finish;
+    });
     return { promise, resolve };
 }
 
@@ -86,7 +88,9 @@ beforeEach(() => {
     });
 });
 
-afterEach(() => { vi.restoreAllMocks(); });
+afterEach(() => {
+    vi.restoreAllMocks();
+});
 
 describe('blocking existing tabs', () => {
     it.each([undefined, NOW + 60_000])('blocks existing tabs on extension enable: %s', async (blockedUntil) => {

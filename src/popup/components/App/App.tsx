@@ -1,8 +1,10 @@
 import React from 'react';
 import browser from 'webextension-polyfill';
+
 import { t } from '../../../common/i18n';
 
 // TODO change the content of the popup depending on whether the site is blocked or not.
+
 /**
  * Renders the extension popup with a link to website settings.
  *

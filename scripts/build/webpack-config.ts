@@ -1,6 +1,6 @@
 import { Browser } from './constants';
-import { genCommonConfig } from './webpack.common';
 import { getBrowserConf } from './helpers';
+import { genCommonConfig } from './webpack.common';
 
 export const getWebpackConfig = (browser: Browser, isWatchMode: boolean) => {
     switch (browser) {

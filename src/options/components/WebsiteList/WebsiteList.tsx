@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
+import React, { useContext, useEffect, useRef } from 'react';
 
-import { RootStoreContext } from '../../stores/root-store';
 import { currentLocale, t } from '../../../common/i18n';
 import { BLOCK_DURATION } from '../../block-duration';
+import { RootStoreContext } from '../../stores/root-store';
 
 /**
  * Renders the observable blocked website list with add and edit forms.

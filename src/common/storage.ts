@@ -10,6 +10,7 @@ export class Storage {
      * Reads a stored value by its key.
      *
      * @param key - Name of the stored setting.
+     *
      * @returns The stored value, or undefined when the key is absent.
      */
     public static async get(key: string) {
@@ -22,6 +23,7 @@ export class Storage {
      *
      * @param key - Name of the setting to write.
      * @param value - Serializable value to store.
+     *
      * @returns Resolves after browser storage accepts the change.
      */
     public static async set(key: string, value: any) {
@@ -41,6 +43,7 @@ export class Storage {
      * Saves related keys together, such as a renamed website and its old-host tombstone.
      *
      * @param values - Keys to change without replacing unrelated settings.
+     *
      * @returns Resolves when the browser accepts the write.
      */
     public static async setMany(values: Record<string, unknown>): Promise<void> {
@@ -51,6 +54,7 @@ export class Storage {
      * Removes a setting by key.
      *
      * @param key - Name of the setting to remove.
+     *
      * @returns Resolves after removal.
      */
     public static async remove(key: string): Promise<void> {

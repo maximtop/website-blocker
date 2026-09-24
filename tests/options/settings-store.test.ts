@@ -14,10 +14,12 @@ import {
 import english from '../../src/_locales/en/messages.json';
 import russian from '../../src/_locales/ru/messages.json';
 import { Storage } from '../../src/common/storage';
-import { Websites, WebsitesMap } from '../../src/common/websites';
-import { SettingsStore } from '../../src/options/stores/settings-store/SettingsStore';
-import { type RootStore } from '../../src/options/stores/root-store';
+import { Websites } from '../../src/common/websites';
 import { MOBX_ACTION_MODE } from '../../src/options/stores/mobx-config';
+import { type RootStore } from '../../src/options/stores/root-store';
+import { SettingsStore } from '../../src/options/stores/settings-store/SettingsStore';
+
+import type { WebsitesMap } from '../../src/common/websites';
 
 vi.mock('../../src/common/storage', () => ({
     Storage: {
@@ -85,7 +87,7 @@ describe('SettingsStore website forms', () => {
     });
 
     it('notifies observers when editing begins and cancelling discards the draft without storage writes', () => {
-        const editingStates: Array<string | null> = [];
+        const editingStates: (string | null)[] = [];
         const stop = autorun(() => editingStates.push(store.editingWebsite));
 
         store.editWebsite('old.com');
@@ -436,7 +438,9 @@ describe('timed settings lifecycle', () => {
 
     it('ignores an older options-page read completing after a successful mutation', async () => {
         let resolveOld!: (value: Record<string, unknown>) => void;
-        vi.mocked(Storage.getAll).mockImplementationOnce(() => new Promise((resolve) => { resolveOld = resolve; }));
+        vi.mocked(Storage.getAll).mockImplementationOnce(() => new Promise((resolve) => {
+            resolveOld = resolve;
+        }));
         const oldLoad = store.loadWebsites();
         store.setNewWebsite('added.com');
         await store.addNewWebsite();
@@ -451,7 +455,9 @@ describe('timed settings lifecycle', () => {
             await store.loadWebsites();
             let finishWrite!: () => void;
             vi.mocked(Storage.set).mockImplementationOnce((key, value) => new Promise((resolve) => {
-                finishWrite = () => { overrides[key] = value; resolve(); };
+                finishWrite = () => {
+                    overrides[key] = value; resolve();
+                };
             }));
             store.setNewWebsite('local.com');
             const saving = store.addNewWebsite();

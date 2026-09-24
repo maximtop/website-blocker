@@ -1,21 +1,23 @@
 import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
-import ZipWebpackPlugin from 'zip-webpack-plugin';
+
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
-import { Configuration, WebpackPluginInstance } from 'webpack';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import ZipWebpackPlugin from 'zip-webpack-plugin';
+
+import { CHROMIUM_LOCALE_ALIAS, LOCALES_PATH } from '../i18n/catalogs';
 
 import {
     BUILD_PATH,
     BuildTargetEnv,
     BUILD_ENV,
-    BrowserConfig,
     Browser,
 } from './constants';
-
 import { getEnvConf } from './helpers';
 import { updateManifest } from './manifest';
-import { CHROMIUM_LOCALE_ALIAS, LOCALES_PATH } from '../i18n/catalogs';
+
+import type { BrowserConfig } from './constants';
+import type { Configuration, WebpackPluginInstance } from 'webpack';
 
 const config = getEnvConf(BUILD_ENV);
 
@@ -142,7 +144,7 @@ export const genCommonConfig = (
                 chunks: [POPUP_OUTPUT],
                 scriptLoading: 'blocking',
                 cache: false,
-            }) as WebpackPluginInstance,
+            }),
         ],
     };
 

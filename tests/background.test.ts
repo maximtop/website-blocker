@@ -1,6 +1,5 @@
 // @vitest-environment node
 
-import type browser from 'webextension-polyfill';
 import {
     beforeEach,
     describe,
@@ -8,7 +7,9 @@ import {
     it,
     vi,
 } from 'vitest';
+
 import type { WebsitesMap } from '../src/common/websites';
+import type browser from 'webextension-polyfill';
 
 type NavigationDetails = browser.WebNavigation.OnCommittedDetailsType & {
     frameType?: string;

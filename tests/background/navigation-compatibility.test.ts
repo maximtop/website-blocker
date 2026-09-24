@@ -1,6 +1,5 @@
 // @vitest-environment node
 
-import browser from 'webextension-polyfill';
 import {
     beforeEach,
     describe,
@@ -8,7 +7,11 @@ import {
     it,
     vi,
 } from 'vitest';
-import { Websites, WebsitesMap } from '../../src/common/websites';
+import browser from 'webextension-polyfill';
+
+import { Websites } from '../../src/common/websites';
+
+import type { WebsitesMap } from '../../src/common/websites';
 
 vi.mock('webextension-polyfill', () => ({
     default: {

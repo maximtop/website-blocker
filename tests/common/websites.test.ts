@@ -7,12 +7,15 @@ import {
     vi,
 } from 'vitest';
 
-import { WEBSITE_ERROR_CODE } from '../../src/common/website-error';
 import { Storage } from '../../src/common/storage';
+import { WEBSITE_ERROR_CODE } from '../../src/common/website-error';
 import {
     isWebsiteBlocked,
-    Website,
     Websites,
+} from '../../src/common/websites';
+
+import type {
+    Website,
     WebsitesMap,
 } from '../../src/common/websites';
 

@@ -1,11 +1,12 @@
-/* eslint-disable no-console */
-import webpack, { Stats } from 'webpack';
+import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 
-type Options = {
-    watch: boolean,
-    cache: boolean,
-};
+import type { Stats } from 'webpack';
+
+interface Options {
+    watch: boolean;
+    cache: boolean;
+}
 
 type RunCallback<T> = (err: Error | null, stats: T | undefined) => void;
 

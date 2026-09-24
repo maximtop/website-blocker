@@ -1,8 +1,12 @@
 import fs from 'node:fs';
+
 import { describe, expect, it } from 'vitest';
-import english from '../../src/_locales/en/messages.json';
-import { Catalog, validateCatalog, validateCatalogs } from '../../scripts/i18n/catalogs';
+
+import { validateCatalog, validateCatalogs } from '../../scripts/i18n/catalogs';
 import { DESCRIPTION_SOURCE, extractDescriptions } from '../../scripts/store/descriptions';
+import english from '../../src/_locales/en/messages.json';
+
+import type { Catalog } from '../../scripts/i18n/catalogs';
 
 describe('shipped translation sources', () => {
     it('contains every message and placeholder in each of the 40 catalogs', () => {
@@ -13,14 +17,24 @@ describe('shipped translation sources', () => {
         'rejects a broken catalog: %s',
         (damage) => {
             const catalog: Catalog = structuredClone(english);
-            if (damage === 'missing') delete catalog.closeTab;
-            if (damage === 'empty') catalog.closeTab.message = ' ';
-            if (damage === 'placeholder') catalog.invalidWebsite.message = 'Invalid website';
+            if (damage === 'missing') {
+                delete catalog.closeTab;
+            }
+            if (damage === 'empty') {
+                catalog.closeTab.message = ' ';
+            }
+            if (damage === 'placeholder') {
+                catalog.invalidWebsite.message = 'Invalid website';
+            }
             if (damage === 'position') {
                 catalog.invalidWebsite.placeholders = { website: { content: '$2' } };
             }
-            if (damage === 'metadata') catalog.catalogLocale.message = 'ar';
-            if (damage === 'length') catalog.extensionDescription.message = 'x'.repeat(133);
+            if (damage === 'metadata') {
+                catalog.catalogLocale.message = 'ar';
+            }
+            if (damage === 'length') {
+                catalog.extensionDescription.message = 'x'.repeat(133);
+            }
             expect(() => validateCatalog('en', catalog)).toThrow();
         },
     );

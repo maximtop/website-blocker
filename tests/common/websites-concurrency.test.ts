@@ -1,4 +1,3 @@
-import browser from 'webextension-polyfill';
 import {
     afterEach,
     beforeEach,
@@ -7,6 +6,7 @@ import {
     it,
     vi,
 } from 'vitest';
+import browser from 'webextension-polyfill';
 
 vi.mock('webextension-polyfill', () => ({
     default: {
@@ -93,7 +93,9 @@ describe('website mutations across independent contexts', () => {
         const toggling = first.setWebsiteEnabled('old.com', false);
         await vi.waitFor(() => expect(writes).toHaveLength(1));
         const deleting = second.deleteWebsite('old.com');
-        await new Promise<void>((resolve) => { setImmediate(resolve); });
+        await new Promise<void>((resolve) => {
+            setImmediate(resolve);
+        });
         expect(browser.storage.sync.get).toHaveBeenCalledTimes(1);
         writes[0].commit();
         await vi.waitFor(() => expect(writes).toHaveLength(2));

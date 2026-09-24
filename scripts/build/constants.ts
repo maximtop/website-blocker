@@ -15,10 +15,10 @@ if (!isValidBuildEnv(BUILD_ENV)) {
     throw new Error(`Invalid BUILD_ENV: ${BUILD_ENV}`);
 }
 
-export type EnvConfig = {
+export interface EnvConfig {
     outputPath: string;
     mode: 'development' | 'production';
-};
+}
 
 export const ENV_CONF: Record<BuildTargetEnv, EnvConfig> = {
     [BuildTargetEnv.Dev]: {
@@ -43,11 +43,11 @@ export const FIREFOX_STRICT_MIN_VERSION = '140.0';
 
 export const BUILD_PATH = path.resolve(__dirname, '../../dist');
 
-export type BrowserConfig = {
+export interface BrowserConfig {
     browser: Browser;
     devtools: boolean;
     buildDir: string;
-};
+}
 
 export const BROWSERS_CONF: Record<Browser, BrowserConfig> = {
     [Browser.Chrome]: {

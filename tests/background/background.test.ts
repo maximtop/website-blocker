@@ -1,4 +1,3 @@
-import browser from 'webextension-polyfill';
 import {
     afterEach,
     beforeEach,
@@ -7,6 +6,7 @@ import {
     it,
     vi,
 } from 'vitest';
+import browser from 'webextension-polyfill';
 
 import type { WebsitesMap } from '../../src/common/websites';
 

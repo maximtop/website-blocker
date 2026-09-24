@@ -5,8 +5,9 @@ import {
     it,
     vi,
 } from 'vitest';
-import english from '../../src/_locales/en/messages.json';
+
 import arabic from '../../src/_locales/ar/messages.json';
+import english from '../../src/_locales/en/messages.json';
 import russian from '../../src/_locales/ru/messages.json';
 import {
     applyDocumentLocale,
@@ -15,9 +16,9 @@ import {
     PAGE_TITLE,
     t,
 } from '../../src/common/i18n';
+import { getErrorMessage } from '../../src/common/utils/error';
 import { WEBSITE_ERROR_CODE } from '../../src/common/website-error';
 import { Websites } from '../../src/common/websites';
-import { getErrorMessage } from '../../src/common/utils/error';
 
 const mocks = vi.hoisted(() => ({ getMessage: vi.fn(), get: vi.fn(), set: vi.fn() }));
 vi.mock('webextension-polyfill', () => ({

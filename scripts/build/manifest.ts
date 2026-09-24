@@ -1,8 +1,13 @@
 import { GECKO_ID } from '../deploy/constants';
+
 import { Browser, FIREFOX_STRICT_MIN_VERSION } from './constants';
 
 /**
  * Stamps the release version and adapts the shared manifest to a browser's MV3 background.
+ *
+ * @param content
+ * @param browser
+ * @param version
  */
 export const updateManifest = (content: Buffer | string, browser: Browser, version: string): string => {
     const manifest = JSON.parse(content.toString());

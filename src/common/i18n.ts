@@ -2,13 +2,16 @@
  * Browser-selected translations shared by all extension pages.
  */
 import browser from 'webextension-polyfill';
+
 import english from '../_locales/en/messages.json';
+
 import type { WebsiteErrorCode } from './website-error';
 
 /**
  * Message identifiers available in the English fallback catalog.
  */
 export type MessageKey = keyof typeof english;
+
 /**
  * Messages that require a literal website or formatted deadline substitution.
  */
@@ -50,22 +53,27 @@ export const currentLocale = (): string => {
  * Translates a message that does not need a substitution.
  *
  * @param key - Catalog message to translate.
+ *
  * @returns The selected translation or English fallback.
  */
 export function t(key: Exclude<MessageKey, SubstitutionMessageKey>): string;
+
 /**
  * Translates a message containing a literal value.
  *
  * @param key - Catalog message with a named placeholder.
  * @param value - Literal address or formatted deadline to isolate and substitute.
+ *
  * @returns The selected translation with its substituted value.
  */
 export function t(key: SubstitutionMessageKey, value: string): string;
+
 /**
  * Resolves translations and isolates substituted values from surrounding RTL text.
  *
  * @param key - Catalog message to translate.
  * @param value - Optional literal value for messages with a placeholder.
+ *
  * @returns The selected translation or fully substituted English fallback.
  */
 export function t(key: MessageKey, value?: string): string {

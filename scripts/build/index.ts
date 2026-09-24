@@ -1,7 +1,6 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-console */
 import { program } from 'commander';
+
+import { validateCatalogs } from '../i18n/catalogs';
 
 import { bundleRunner } from './bundle-runner';
 import {
@@ -11,12 +10,11 @@ import {
     BuildTargetEnv,
 } from './constants';
 import { getWebpackConfig } from './webpack-config';
-import { validateCatalogs } from '../i18n/catalogs';
 
-type CommanderOptions = {
-    watch: boolean,
-    cache: boolean,
-};
+interface CommanderOptions {
+    watch: boolean;
+    cache: boolean;
+}
 
 const bundleBrowser = (browser: Browser, options: CommanderOptions) => {
     validateCatalogs();
