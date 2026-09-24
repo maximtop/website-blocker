@@ -1,5 +1,5 @@
 /**
- * @file Configuration for this repository's shared extension deployment flow.
+ * @file Configuration of this repository's store deployment flow.
  */
 
 /**

@@ -91,7 +91,7 @@ setup, deployment modes and the failure playbook.
 
 ## Translations
 
-The 40 language catalogs use the same locale set as HN Split and No More Ago.
+The extension ships 40 language catalogs.
 Localized website controls, website-validation errors, page titles, accessible
 labels and manifest metadata live in `src/_locales/<locale>/messages.json`.
 Duration controls, duration-validation errors, deadlines and loading messages

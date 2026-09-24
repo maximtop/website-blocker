@@ -1,6 +1,6 @@
 # Development
 
-## Shared developer commands
+## Developer commands
 
 | Make | pnpm | Meaning |
 | --- | --- | --- |
@@ -53,9 +53,15 @@ and `pnpm-lock.yaml` in source archives so reviewers use the same inputs.
 | `pnpm check` | ESLint, TypeScript and Vitest. |
 
 The Makefile forwards browser arguments in the same way, for example
-`make release firefox`. TypeScript checks use ES modules and strict null
-checking; the `ts-node` override keeps the Webpack build runner in CommonJS.
-Deployment helpers execute with `tsx`, matching the other extensions.
+`make release firefox`. TypeScript checks use ES modules and strict mode; the
+`ts-node` override keeps the Webpack build runner in CommonJS. Deployment
+helpers execute with `tsx`.
+
+Lint and compiler rules live in `eslint.config.mjs` and `tsconfig.base.json`.
+Ignores, globals and extra rules that only this repository needs go to
+`eslint.local.mjs`; it cannot override a rule set in `eslint.config.mjs`.
+`tsconfig.json` adds only types, JSX and the `ts-node` override; strictness,
+target and module options stay in `tsconfig.base.json`.
 
 ## Browser behavior
 
@@ -88,11 +94,10 @@ listing must preserve the configured Gecko ID on all later updates.
 publishes `website-blocker-<version>-<browser>.zip`, a source ZIP of the tagged
 commit, and `SHA256SUMS.txt`. Store workflows consume those published bytes.
 
-The Edge and Firefox workflows, deploy helpers and their tests follow the
-shared deployment contract used by the other extension repositories.
-Repository-specific values belong in `scripts/deploy/constants.ts`, the
-Release workflow's top-level environment, or GitHub variables and secrets.
-Preserve this boundary when moving the shared code into reusable actions.
+The store workflows, the deploy helpers in `scripts/deploy` and their tests in
+`tests/deploy` form the deployment flow. Repository-specific values belong in
+`scripts/deploy/constants.ts`, the Release workflow's top-level environment,
+or GitHub variables and secrets.
 
 See [the release guide](docs/RELEASE.md) for store onboarding, deployment modes
 and credentials. [Firefox reviewer notes](docs/AMO_REVIEW.md) travel inside
