@@ -1,3 +1,7 @@
+/**
+ * @file Build environments, target browsers and output paths.
+ */
+
 import path from 'path';
 
 export enum BuildTargetEnv {
@@ -5,18 +9,37 @@ export enum BuildTargetEnv {
     Release = 'release',
 }
 
-const isValidBuildEnv = (buildEnv: any): buildEnv is BuildTargetEnv => {
+/**
+ * Checks that a BUILD_ENV value names a known build environment.
+ *
+ * @param buildEnv - Value from the environment.
+ *
+ * @returns True for a known build environment.
+ */
+const isValidBuildEnv = (buildEnv: string): buildEnv is BuildTargetEnv => {
     return Object.values(BuildTargetEnv).includes(buildEnv as BuildTargetEnv);
 };
 
-export const BUILD_ENV = process.env.BUILD_ENV as BuildTargetEnv || BuildTargetEnv.Dev;
+const buildEnv = process.env.BUILD_ENV || BuildTargetEnv.Dev;
 
-if (!isValidBuildEnv(BUILD_ENV)) {
-    throw new Error(`Invalid BUILD_ENV: ${BUILD_ENV}`);
+if (!isValidBuildEnv(buildEnv)) {
+    throw new Error(`Invalid BUILD_ENV: ${buildEnv}`);
 }
 
+export const BUILD_ENV = buildEnv;
+
+/**
+ * Output settings of a build environment.
+ */
 export interface EnvConfig {
+    /**
+     * Output directory under the build path.
+     */
     outputPath: string;
+
+    /**
+     * Webpack mode.
+     */
     mode: 'development' | 'production';
 }
 
@@ -43,9 +66,23 @@ export const FIREFOX_STRICT_MIN_VERSION = '140.0';
 
 export const BUILD_PATH = path.resolve(__dirname, '../../dist');
 
+/**
+ * Build settings of a target browser.
+ */
 export interface BrowserConfig {
+    /**
+     * Target browser.
+     */
     browser: Browser;
+
+    /**
+     * Developer tools flag; the current build does not read it.
+     */
     devtools: boolean;
+
+    /**
+     * Output directory of the browser build.
+     */
     buildDir: string;
 }
 

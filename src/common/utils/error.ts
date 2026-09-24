@@ -1,3 +1,7 @@
+/**
+ * @file Localized error messages for the settings interface.
+ */
+
 import { BlockDurationError } from '../block-duration-error';
 import { t } from '../i18n';
 import { WebsiteError } from '../website-error';

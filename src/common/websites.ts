@@ -1,3 +1,7 @@
+/**
+ * @file Saved websites: storage, validation and blocking state.
+ */
+
 import { BlockDurationError } from './block-duration-error';
 import { Storage } from './storage';
 import { getHostname } from './utils/url';

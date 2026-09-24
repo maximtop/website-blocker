@@ -1,7 +1,21 @@
+/**
+ * @file Webpack configuration of a target browser.
+ */
+
 import { Browser } from './constants';
 import { getBrowserConf } from './helpers';
 import { genCommonConfig } from './webpack.common';
 
+/**
+ * Returns the webpack configuration of a browser build.
+ *
+ * @param browser - Target browser.
+ * @param isWatchMode - Whether webpack runs in watch mode.
+ *
+ * @returns Webpack configuration.
+ *
+ * @throws If the browser is unknown.
+ */
 export const getWebpackConfig = (browser: Browser, isWatchMode: boolean) => {
     switch (browser) {
         case Browser.Chrome:
@@ -10,7 +24,7 @@ export const getWebpackConfig = (browser: Browser, isWatchMode: boolean) => {
             return genCommonConfig(getBrowserConf(browser), isWatchMode);
         }
         default: {
-            throw new Error(`Unknown browser: "${browser}"`);
+            throw new Error(`Unknown browser: "${String(browser)}"`);
         }
     }
 };

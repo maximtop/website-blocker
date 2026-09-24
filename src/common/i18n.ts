@@ -1,5 +1,5 @@
 /**
- * Browser-selected translations shared by all extension pages.
+ * @file Browser-selected translations shared by all extension pages.
  */
 import browser from 'webextension-polyfill';
 

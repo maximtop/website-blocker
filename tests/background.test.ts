@@ -8,6 +8,8 @@ import {
     vi,
 } from 'vitest';
 
+import type * as Background from '../src/background/background';
+import type * as WebsitesModule from '../src/common/websites';
 import type { WebsitesMap } from '../src/common/websites';
 import type browser from 'webextension-polyfill';
 
@@ -15,8 +17,8 @@ type NavigationDetails = browser.WebNavigation.OnCommittedDetailsType & {
     frameType?: string;
     documentLifecycle?: string;
 };
-type NavigationListener = (details: NavigationDetails) => Promise<void>;
-type StorageListener = () => Promise<void>;
+type NavigationListener = (details: NavigationDetails) => void;
+type StorageListener = () => void;
 
 const mocks = vi.hoisted(() => ({
     onCommitted: vi.fn<(listener: NavigationListener, filter: unknown) => void>(),
@@ -41,7 +43,7 @@ vi.mock('webextension-polyfill', () => ({
     },
 }));
 vi.mock('../src/common/websites', async (importOriginal) => ({
-    ...await importOriginal<typeof import('../src/common/websites')>(),
+    ...await importOriginal<typeof WebsitesModule>(),
     Websites: {
         getWebsites: mocks.getWebsites,
         onChanged: { addListener: mocks.onChanged },
@@ -66,12 +68,19 @@ function deferredWebsites() {
     return { promise, resolve: resolve! };
 }
 
+let background: typeof Background;
+
+async function load() {
+    background = await import('../src/background/background');
+    return background;
+}
+
 function navigate(overrides: Partial<NavigationDetails> = {}) {
-    return mocks.onCommitted.mock.calls[0][0]({ ...navigation, ...overrides });
+    return background.handleOnCommitted({ ...navigation, ...overrides });
 }
 
 function refresh() {
-    return mocks.onChanged.mock.calls[0][0]();
+    return background.updateBlockedWebsites();
 }
 
 describe('background navigation blocking', () => {
@@ -85,7 +94,7 @@ describe('background navigation blocking', () => {
     it('registers listeners synchronously and waits for startup storage before blocking', async () => {
         const initial = deferredWebsites();
         mocks.getWebsites.mockReturnValue(initial.promise);
-        const { init } = await import('../src/background/background');
+        const { init } = await load();
         const ready = init();
 
         expect(mocks.onInstalled).toHaveBeenCalledOnce();
@@ -108,14 +117,24 @@ describe('background navigation blocking', () => {
     });
 
     it('blocks a Firefox top-level navigation without Chromium-only fields', async () => {
-        const { init } = await import('../src/background/background');
+        const { init } = await load();
         await init();
         await navigate();
         expect(mocks.updateTab).toHaveBeenCalledOnce();
     });
 
+    it('handles navigation and storage events through the registered listeners', async () => {
+        const { init } = await load();
+        await init();
+        mocks.onCommitted.mock.calls[0]![0](navigation);
+        await vi.waitFor(() => expect(mocks.updateTab).toHaveBeenCalledOnce());
+
+        mocks.onChanged.mock.calls[0]![0]();
+        await vi.waitFor(() => expect(mocks.getWebsites).toHaveBeenCalledTimes(2));
+    });
+
     it('blocks an active Chromium top-level navigation', async () => {
-        const { init } = await import('../src/background/background');
+        const { init } = await load();
         await init();
         await navigate({ frameType: 'outermost_frame', documentLifecycle: 'active' });
         expect(mocks.updateTab).toHaveBeenCalledOnce();
@@ -127,14 +146,14 @@ describe('background navigation blocking', () => {
         { frameType: 'outermost_frame', documentLifecycle: 'prerender' },
         { url: 'https://allowed.example.org/' },
     ])('does not redirect a subframe, prerender or allowed URL: %j', async (details) => {
-        const { init } = await import('../src/background/background');
+        const { init } = await load();
         await init();
         await navigate(details);
         expect(mocks.updateTab).not.toHaveBeenCalled();
     });
 
     it('applies storage removals before checking another navigation', async () => {
-        const { init } = await import('../src/background/background');
+        const { init } = await load();
         await init();
         const changed = deferredWebsites();
         mocks.getWebsites.mockReturnValue(changed.promise);
@@ -151,7 +170,7 @@ describe('background navigation blocking', () => {
         const initial = deferredWebsites();
         const changed = deferredWebsites();
         mocks.getWebsites.mockReturnValueOnce(initial.promise).mockReturnValueOnce(changed.promise);
-        const { init } = await import('../src/background/background');
+        const { init } = await load();
         const ready = init();
         const pendingNavigation = navigate();
         const refreshing = refresh();
@@ -170,7 +189,7 @@ describe('background navigation blocking', () => {
         const initial = deferredWebsites();
         const changed = deferredWebsites();
         mocks.getWebsites.mockReturnValueOnce(initial.promise).mockReturnValueOnce(changed.promise);
-        const { init } = await import('../src/background/background');
+        const { init } = await load();
         const ready = init();
         const refreshing = refresh();
 

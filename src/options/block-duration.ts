@@ -1,4 +1,8 @@
 /**
+ * @file Blocking duration options.
+ */
+
+/**
  * Shared values for the blocking-duration selector and its settings-store state.
  */
 export const BLOCK_DURATION = {

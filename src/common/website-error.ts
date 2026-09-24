@@ -1,4 +1,8 @@
 /**
+ * @file Website validation error and its codes.
+ */
+
+/**
  * Stable codes shared by website validation and translated error messages.
  */
 export const WEBSITE_ERROR_CODE = {

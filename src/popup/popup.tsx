@@ -1,3 +1,7 @@
+/**
+ * @file Popup bootstrap.
+ */
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -16,6 +20,8 @@ import './styles.css';
 export const popup = {
     /**
      * Renders the popup with a fresh store context.
+     *
+     * @throws If the page has no root element.
      */
     init: () => {
         applyDocumentLocale(PAGE_TITLE.Popup);

@@ -1,3 +1,7 @@
+/**
+ * @file URL and hostname normalization.
+ */
+
 import { parse } from 'tldts';
 
 /**

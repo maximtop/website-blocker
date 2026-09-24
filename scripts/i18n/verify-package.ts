@@ -1,5 +1,5 @@
 /**
- * Verify every release ZIP, including the Chromium Norwegian alias.
+ * @file Verify every release ZIP, including the Chromium Norwegian alias.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -19,7 +19,7 @@ import type { Catalog } from './catalogs';
 
 BROWSERS.forEach((browser) => {
     const archive = new AdmZip(path.resolve(__dirname, `../../dist/release/${browser}.zip`));
-    const manifest = JSON.parse(archive.readAsText('manifest.json'));
+    const manifest = JSON.parse(archive.readAsText('manifest.json')) as Record<string, unknown>;
     if (manifest.default_locale !== 'en' || manifest.name !== '__MSG_extensionName__'
         || manifest.description !== '__MSG_extensionDescription__') {
         throw new Error(`${browser}: manifest must use the English default and localized metadata`);
@@ -34,7 +34,7 @@ BROWSERS.forEach((browser) => {
     LOCALES.forEach((locale) => {
         const filename = `_locales/${locale}/messages.json`;
         const content = archive.readAsText(filename);
-        const catalog: Catalog = JSON.parse(content);
+        const catalog = JSON.parse(content) as Catalog;
         validateCatalog(locale, catalog);
         const source = fs.readFileSync(path.join(LOCALES_PATH, locale, 'messages.json'), 'utf8');
         if (source !== content) {

@@ -21,19 +21,19 @@ describe('shipped translation sources', () => {
                 delete catalog.closeTab;
             }
             if (damage === 'empty') {
-                catalog.closeTab.message = ' ';
+                catalog.closeTab!.message = ' ';
             }
             if (damage === 'placeholder') {
-                catalog.invalidWebsite.message = 'Invalid website';
+                catalog.invalidWebsite!.message = 'Invalid website';
             }
             if (damage === 'position') {
-                catalog.invalidWebsite.placeholders = { website: { content: '$2' } };
+                catalog.invalidWebsite!.placeholders = { website: { content: '$2' } };
             }
             if (damage === 'metadata') {
-                catalog.catalogLocale.message = 'ar';
+                catalog.catalogLocale!.message = 'ar';
             }
             if (damage === 'length') {
-                catalog.extensionDescription.message = 'x'.repeat(133);
+                catalog.extensionDescription!.message = 'x'.repeat(133);
             }
             expect(() => validateCatalog('en', catalog)).toThrow();
         },

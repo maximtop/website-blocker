@@ -1,3 +1,7 @@
+/**
+ * @file Options page content.
+ */
+
 import React from 'react';
 
 import { t } from '../../../common/i18n';

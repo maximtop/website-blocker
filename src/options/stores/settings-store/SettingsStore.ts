@@ -1,3 +1,7 @@
+/**
+ * @file Options page state: the website list, form drafts and pending changes.
+ */
+
 import {
     action,
     computed,
@@ -345,7 +349,6 @@ export class SettingsStore {
         } catch (ex) {
             if (!(ex instanceof WebsiteError) && !(ex instanceof BlockDurationError)) {
                 // Preserve unexpected storage failures for local troubleshooting.
-
                 console.error('Failed to save websites', ex);
             }
             runInAction(() => {

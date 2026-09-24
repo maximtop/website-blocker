@@ -1,3 +1,7 @@
+/**
+ * @file Popup content.
+ */
+
 import React from 'react';
 import browser from 'webextension-polyfill';
 
@@ -15,7 +19,7 @@ export function App() {
      * Opens the options page in response to the settings button.
      */
     const handleClick = () => {
-        browser.runtime.openOptionsPage();
+        void browser.runtime.openOptionsPage();
     };
 
     return (

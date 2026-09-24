@@ -1,3 +1,7 @@
+/**
+ * @file Editable list of blocked websites.
+ */
+
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useRef } from 'react';
 
@@ -46,7 +50,7 @@ export const WebsiteList = observer(() => {
      */
     const handleAddNewWebsite = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        settingsStore.addNewWebsite();
+        void settingsStore.addNewWebsite();
     };
 
     /**
@@ -56,7 +60,7 @@ export const WebsiteList = observer(() => {
      */
     const handleSaveWebsite = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        settingsStore.updateWebsite();
+        void settingsStore.updateWebsite();
     };
 
     return (
@@ -185,7 +189,7 @@ export const WebsiteList = observer(() => {
                                             checked={enabled !== false}
                                             disabled={isPending}
                                             onChange={(event) => {
-                                                settingsStore.setWebsiteEnabled(hostname, event.target.checked);
+                                                void settingsStore.setWebsiteEnabled(hostname, event.target.checked);
                                             }}
                                         />
                                         <label className="form-check-label text-break" htmlFor={`block-${hostname}`}>
@@ -216,7 +220,9 @@ export const WebsiteList = observer(() => {
                                         <button
                                             type="button"
                                             className="btn btn-danger btn-sm"
-                                            onClick={() => settingsStore.deleteWebsite(hostname)}
+                                            onClick={() => {
+                                                void settingsStore.deleteWebsite(hostname);
+                                            }}
                                             aria-label={t('deleteWebsiteLabel', hostname)}
                                             disabled={isPending}
                                         >

@@ -1,3 +1,7 @@
+/**
+ * @file Blocked page bootstrap.
+ */
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -14,6 +18,8 @@ import '../common/styles.css';
 export const blocked = {
     /**
      * Renders the blocked page in its root element.
+     *
+     * @throws If the page has no root element.
      */
     init: () => {
         applyDocumentLocale(PAGE_TITLE.Blocked);

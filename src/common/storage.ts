@@ -1,3 +1,7 @@
+/**
+ * @file Synchronized browser storage wrapper.
+ */
+
 import browser from 'webextension-polyfill';
 
 /**
@@ -13,7 +17,7 @@ export class Storage {
      *
      * @returns The stored value, or undefined when the key is absent.
      */
-    public static async get(key: string) {
+    public static async get(key: string): Promise<unknown> {
         const response = await Storage.storage.get(key);
         return response[key];
     }
@@ -26,7 +30,7 @@ export class Storage {
      *
      * @returns Resolves after browser storage accepts the change.
      */
-    public static async set(key: string, value: any) {
+    public static async set(key: string, value: unknown) {
         return Storage.storage.set({ [key]: value });
     }
 

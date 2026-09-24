@@ -1,3 +1,7 @@
+/**
+ * @file Webpack configuration shared by all browser builds.
+ */
+
 import path from 'path';
 
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
@@ -34,6 +38,14 @@ const OUTPUT_PATH = config.outputPath;
 
 const isDev = BUILD_ENV === BuildTargetEnv.Dev;
 
+/**
+ * Builds the webpack configuration of one browser.
+ *
+ * @param browserConfig - Build settings of the browser.
+ * @param isWatchMode - Whether webpack runs in watch mode; the ZIP archive is skipped then.
+ *
+ * @returns Webpack configuration.
+ */
 export const genCommonConfig = (
     browserConfig: BrowserConfig,
     isWatchMode: boolean,

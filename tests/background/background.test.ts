@@ -8,6 +8,7 @@ import {
 } from 'vitest';
 import browser from 'webextension-polyfill';
 
+import type * as Background from '../../src/background/background';
 import type { WebsitesMap } from '../../src/common/websites';
 
 vi.mock('webextension-polyfill', () => ({
@@ -50,16 +51,15 @@ const navigation = (overrides: Partial<NavigationDetails> = {}): NavigationDetai
     ...overrides,
 });
 
+let background: typeof Background;
+
 const startWorker = async () => {
     vi.resetModules();
     vi.mocked(browser.webNavigation.onCommitted.addListener).mockClear();
-    const { init } = await import('../../src/background/background');
-    init();
-    const listener = vi.mocked(browser.webNavigation.onCommitted.addListener).mock.calls[0]?.[0];
-    if (!listener) {
-        throw new Error('Background did not register its navigation listener');
-    }
-    return listener;
+    background = await import('../../src/background/background');
+    void background.init();
+    expect(browser.webNavigation.onCommitted.addListener).toHaveBeenCalledOnce();
+    return background.handleOnCommitted;
 };
 
 const deferStorageRead = () => {
@@ -72,13 +72,7 @@ const deferStorageRead = () => {
     return { promise, resolve, reject };
 };
 
-const storageChanged = async () => {
-    const listener = vi.mocked(browser.storage.sync.onChanged.addListener).mock.calls[0]?.[0];
-    if (!listener) {
-        throw new Error('Background did not register its storage listener');
-    }
-    await listener({ websites: { newValue: persisted } });
-};
+const storageChanged = () => background.updateBlockedWebsites();
 
 beforeEach(() => {
     vi.resetAllMocks();

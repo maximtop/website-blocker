@@ -1,3 +1,7 @@
+/**
+ * @file Background blocking: keeps the saved website list and redirects blocked tabs.
+ */
+
 import browser from 'webextension-polyfill';
 
 import { getHostname } from '../common/utils/url';
@@ -59,13 +63,11 @@ async function blockOpenTabs(request: number): Promise<void> {
                 await browser.tabs.update(tab.id, { url: browser.runtime.getURL('blocked.html') });
             } catch (error: unknown) {
                 // A disappearing or inaccessible tab must not prevent other tabs from being blocked.
-
                 console.error('Unable to redirect an open tab.', error);
             }
         }));
     } catch (error: unknown) {
         // Navigation blocking still uses the successfully refreshed preferences.
-
         console.error('Unable to query open tabs.', error);
     }
 }
@@ -91,7 +93,6 @@ function updateBlockedWebsites(): Promise<void> {
             if (request === loadRequest) {
                 // Keep the last known list and retry on the next navigation.
                 needsRefresh = true;
-
                 console.error('Unable to load blocked websites.', error);
             }
         })
@@ -155,11 +156,17 @@ const handleOnCommitted = async (
  * Registers browser lifecycle, storage and navigation listeners.
  */
 const syncInit = () => {
-    browser.runtime.onInstalled.addListener(updateBlockedWebsites);
-    browser.runtime.onStartup.addListener(updateBlockedWebsites);
-    Websites.onChanged.addListener(updateBlockedWebsites);
+    // Browsers ignore listener return values; the refresh handles its own errors.
+    const refresh = () => {
+        void updateBlockedWebsites();
+    };
+    browser.runtime.onInstalled.addListener(refresh);
+    browser.runtime.onStartup.addListener(refresh);
+    Websites.onChanged.addListener(refresh);
 
-    browser.webNavigation.onCommitted.addListener(handleOnCommitted, { url: [{ schemes: ['http', 'https'] }] });
+    browser.webNavigation.onCommitted.addListener((details) => {
+        void handleOnCommitted(details);
+    }, { url: [{ schemes: ['http', 'https'] }] });
 };
 
 /**
@@ -173,4 +180,4 @@ const init = () => {
     return updateBlockedWebsites();
 };
 
-export { init };
+export { handleOnCommitted, init, updateBlockedWebsites };

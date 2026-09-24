@@ -1,3 +1,7 @@
+/**
+ * @file Root store of the options page and its React context.
+ */
+
 import { configure } from 'mobx';
 import { createContext } from 'react';
 
