@@ -1,7 +1,10 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-console */
+/**
+ * @file Command-line entry point of the extension build.
+ */
+
 import { program } from 'commander';
+
+import { validateCatalogs } from '../i18n/catalogs';
 
 import { bundleRunner } from './bundle-runner';
 import {
@@ -11,19 +14,42 @@ import {
     BuildTargetEnv,
 } from './constants';
 import { getWebpackConfig } from './webpack-config';
-import { validateCatalogs } from '../i18n/catalogs';
 
-type CommanderOptions = {
-    watch: boolean,
-    cache: boolean,
-};
+/**
+ * Options parsed from the command line.
+ */
+interface CommanderOptions {
+    /**
+     * Whether to keep rebuilding on changes.
+     */
+    watch: boolean;
 
+    /**
+     * Whether watch mode uses the webpack cache.
+     */
+    cache: boolean;
+}
+
+/**
+ * Validates the locale catalogs and builds the extension for one browser.
+ *
+ * @param browser - Target browser.
+ * @param options - Command-line options.
+ *
+ * @returns Resolves after the build.
+ */
 const bundleBrowser = (browser: Browser, options: CommanderOptions) => {
     validateCatalogs();
     const webpackConfig = getWebpackConfig(browser, options.watch);
     return bundleRunner(webpackConfig, { watch: options.watch, cache: options.cache });
 };
 
+/**
+ * Builds the extension for each browser in turn.
+ *
+ * @param browsers - Target browsers.
+ * @param options - Command-line options.
+ */
 const runBuild = async (
     browsers: readonly Browser[],
     options: CommanderOptions,
@@ -33,6 +59,12 @@ const runBuild = async (
     }
 };
 
+/**
+ * Runs the build and exits with code 1 if it fails.
+ *
+ * @param browsers - Target browsers.
+ * @param options - Command-line options.
+ */
 const main = async (browsers: readonly Browser[], options: CommanderOptions) => {
     try {
         await runBuild(browsers, options);

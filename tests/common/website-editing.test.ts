@@ -9,8 +9,10 @@ import {
 } from 'vitest';
 
 import { Storage } from '../../src/common/storage';
-import { Websites, WebsitesMap } from '../../src/common/websites';
 import { WEBSITE_ERROR_CODE } from '../../src/common/website-error';
+import { Websites } from '../../src/common/websites';
+
+import type { WebsitesMap } from '../../src/common/websites';
 
 vi.mock('../../src/common/storage', () => ({
     Storage: {
@@ -63,7 +65,7 @@ describe('Websites.updateWebsite', () => {
     });
 
     it.each([true, false])('preserves the enabled flag %s when renaming a website', async (enabled) => {
-        persistedWebsites['old.com'].enabled = enabled;
+        persistedWebsites['old.com']!.enabled = enabled;
 
         await Websites.updateWebsite('old.com', 'new.com');
 
@@ -150,7 +152,7 @@ describe('timed entries with existing website editing', () => {
 
     it('does not extend the deadline when disabling and re-enabling a timed entry', async () => {
         const deadline = Date.now() + 60_000;
-        persistedWebsites['old.com'].blockedUntil = deadline;
+        persistedWebsites['old.com']!.blockedUntil = deadline;
         await Websites.setWebsiteEnabled('old.com', false);
         await Websites.setWebsiteEnabled('old.com', true);
         expect((await Websites.getWebsites())['old.com']).toEqual({

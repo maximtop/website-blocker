@@ -1,4 +1,3 @@
-import browser from 'webextension-polyfill';
 import {
     afterEach,
     beforeEach,
@@ -7,6 +6,7 @@ import {
     it,
     vi,
 } from 'vitest';
+import browser from 'webextension-polyfill';
 
 vi.mock('webextension-polyfill', () => ({
     default: {
@@ -32,7 +32,7 @@ async function independentContexts() {
     vi.resetModules();
     const second = (await import('../../src/common/websites')).Websites;
     expect(first).not.toBe(second);
-    return [first, second];
+    return [first, second] as const;
 }
 
 async function commitBoth(firstKey: string, secondKey: string) {
@@ -56,7 +56,7 @@ beforeEach(() => {
     });
     vi.mocked(browser.storage.sync.set).mockImplementation((items) => {
         return new Promise((resolve) => {
-            const [key] = Object.keys(items);
+            const [key] = Object.keys(items) as [string];
             writes.push({
                 key,
                 commit: () => {
@@ -93,11 +93,13 @@ describe('website mutations across independent contexts', () => {
         const toggling = first.setWebsiteEnabled('old.com', false);
         await vi.waitFor(() => expect(writes).toHaveLength(1));
         const deleting = second.deleteWebsite('old.com');
-        await new Promise<void>((resolve) => { setImmediate(resolve); });
+        await new Promise<void>((resolve) => {
+            setImmediate(resolve);
+        });
         expect(browser.storage.sync.get).toHaveBeenCalledTimes(1);
-        writes[0].commit();
+        writes[0]!.commit();
         await vi.waitFor(() => expect(writes).toHaveLength(2));
-        writes[1].commit();
+        writes[1]!.commit();
         await Promise.all([toggling, deleting]);
 
         expect(await first.getWebsites()).toEqual({});
@@ -111,7 +113,7 @@ describe('website mutations across independent contexts', () => {
         await vi.waitFor(() => expect(writes).toHaveLength(1));
         const toggling = second.setWebsiteEnabled('old.com', false);
         const results = Promise.allSettled([deleting, toggling]);
-        writes[0].commit();
+        writes[0]!.commit();
 
         expect((await results).map(({ status }) => status)).toEqual(['fulfilled', 'rejected']);
         expect(writes).toHaveLength(1);
@@ -126,7 +128,7 @@ describe('website mutations across independent contexts', () => {
         const toggling = second.setWebsiteEnabled('old.com', false);
         const adding = second.addWebsite('new.com');
         const results = Promise.allSettled([renaming, toggling, adding]);
-        writes[0].commit();
+        writes[0]!.commit();
 
         expect((await results).map(({ status }) => status)).toEqual(['fulfilled', 'rejected', 'rejected']);
         expect(writes).toHaveLength(1);
@@ -144,7 +146,7 @@ describe('website mutations across independent contexts', () => {
             second.setWebsiteEnabled('old.com', false),
         ]);
         await vi.waitFor(() => expect(writes).toHaveLength(1));
-        writes[0].commit();
+        writes[0]!.commit();
 
         expect((await results).map(({ status }) => status)).toEqual(['rejected', 'fulfilled']);
         expect(await first.getWebsites()).toEqual({ 'old.com': { hostname: 'old.com', enabled: false } });

@@ -1,23 +1,13 @@
 {
+    "extends": "./tsconfig.base.json",
     "ts-node": {
         "compilerOptions": {
             "module": "commonjs"
         }
     },
     "compilerOptions": {
-        "outDir": "dist",
         "jsx": "react",
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "module": "ESNext",
-        "target": "es5",
-        "lib": ["ES2022", "DOM"],
-        "allowJs": true,
-        "moduleResolution": "node",
-        "skipLibCheck": true,
-        "resolveJsonModule": true,
+        "types": ["node", "webextension-polyfill"]
     },
     "exclude": ["node_modules", "dist"]
 }

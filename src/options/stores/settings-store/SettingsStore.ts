@@ -1,3 +1,7 @@
+/**
+ * @file Options page state: the website list, form drafts and pending changes.
+ */
+
 import {
     action,
     computed,
@@ -6,13 +10,15 @@ import {
     runInAction,
 } from 'mobx';
 
-import { type RootStore } from '../root-store';
-import { Websites, WebsitesMap, Website } from '../../../common/websites';
-import { getErrorMessage } from '../../../common/utils/error';
-import { t } from '../../../common/i18n';
-import { WebsiteError } from '../../../common/website-error';
 import { BlockDurationError } from '../../../common/block-duration-error';
+import { t } from '../../../common/i18n';
+import { getErrorMessage } from '../../../common/utils/error';
+import { WebsiteError } from '../../../common/website-error';
+import { Websites } from '../../../common/websites';
 import { BLOCK_DURATION } from '../../block-duration';
+import { type RootStore } from '../root-store';
+
+import type { WebsitesMap, Website } from '../../../common/websites';
 
 /**
  * Owns the blocked website list, form drafts, validation errors and pending changes.
@@ -22,17 +28,17 @@ export class SettingsStore {
 
     @observable websites: WebsitesMap = {};
 
-    @observable newWebsite: string = '';
+    @observable newWebsite = '';
 
-    @observable error: string = '';
+    @observable error = '';
 
     @observable editingWebsite: string | null = null;
 
-    @observable editedWebsite: string = '';
+    @observable editedWebsite = '';
 
-    @observable editError: string = '';
+    @observable editError = '';
 
-    @observable isPending: boolean = false;
+    @observable isPending = false;
 
     @observable isLoading = true;
 
@@ -60,6 +66,7 @@ export class SettingsStore {
      * Reloads blocked websites and closes an editor whose original website disappeared.
      *
      * @returns Resolves after the observable list and editor have been synchronized.
+     *
      * @throws If reading persisted websites fails.
      */
     async loadWebsites() {
@@ -106,6 +113,7 @@ export class SettingsStore {
      */
     watchWebsites() {
         let disposed = false;
+
         /**
          * Reloads the current list and reports errors while the page remains mounted.
          */
@@ -116,6 +124,7 @@ export class SettingsStore {
                 }
             });
         };
+
         /**
          * Refreshes website changes immediately or after a pending local mutation.
          *
@@ -178,7 +187,6 @@ export class SettingsStore {
      */
     @action
     reportError(error: unknown) {
-        // eslint-disable-next-line no-console
         console.error('Failed to load websites', error);
         this.error = t('loadError');
     }
@@ -219,6 +227,7 @@ export class SettingsStore {
      * Deletes a blocked website and reports storage errors above the list.
      *
      * @param hostname - Normalized hostname to remove.
+     *
      * @returns Resolves after the attempt finishes, or immediately when another change is pending.
      */
     @action
@@ -238,6 +247,7 @@ export class SettingsStore {
      *
      * @param hostname - Normalized hostname whose blocking state should change.
      * @param enabled - Whether blocking should be enabled for the website.
+     *
      * @returns Resolves after the attempt finishes, or immediately when another change is pending.
      */
     @action
@@ -260,7 +270,7 @@ export class SettingsStore {
     @action
     editWebsite(hostname: string) {
         if (this.isPending || this.editingWebsite !== null
-            || !Object.prototype.hasOwnProperty.call(this.websites, hostname)) {
+            || !Object.hasOwn(this.websites, hostname)) {
             return;
         }
         this.editingWebsite = hostname;
@@ -319,6 +329,7 @@ export class SettingsStore {
      *
      * @param operation - Storage change and success state updates to run.
      * @param onError - Form state update that receives a failure message inside an action.
+     *
      * @returns Resolves after pending state is cleared, or immediately when another change is pending.
      */
     @action
@@ -338,7 +349,6 @@ export class SettingsStore {
         } catch (ex) {
             if (!(ex instanceof WebsiteError) && !(ex instanceof BlockDurationError)) {
                 // Preserve unexpected storage failures for local troubleshooting.
-                // eslint-disable-next-line no-console
                 console.error('Failed to save websites', ex);
             }
             runInAction(() => {

@@ -7,12 +7,15 @@ import {
     vi,
 } from 'vitest';
 
-import { WEBSITE_ERROR_CODE } from '../../src/common/website-error';
 import { Storage } from '../../src/common/storage';
+import { WEBSITE_ERROR_CODE } from '../../src/common/website-error';
 import {
     isWebsiteBlocked,
-    Website,
     Websites,
+} from '../../src/common/websites';
+
+import type {
+    Website,
     WebsitesMap,
 } from '../../src/common/websites';
 
@@ -40,7 +43,7 @@ beforeEach(() => {
     vi.mocked(Storage.get).mockImplementation(async () => structuredClone(persisted));
     vi.mocked(Storage.getAll).mockImplementation(async () => structuredClone({ websites: persisted, ...overrides }));
     vi.mocked(Storage.set).mockImplementation(async (key, value) => {
-        overrides[key] = structuredClone(value);
+        overrides[key] = structuredClone(value) as Website | null;
     });
     vi.mocked(Storage.remove).mockImplementation(async (key) => {
         delete overrides[key];
@@ -118,12 +121,13 @@ describe('Websites', () => {
     });
 
     it.each([undefined, NOW + MINUTE])('rejects a duplicate active block expiring at %s', async (blockedUntil) => {
-        persisted = { 'example.com': { hostname: 'example.com', blockedUntil } };
+        const website = { hostname: 'example.com', ...(blockedUntil === undefined ? {} : { blockedUntil }) };
+        persisted = { 'example.com': website };
 
         await expect(Websites.addWebsite('https://www.example.com/', 30)).rejects.toMatchObject({ code: WEBSITE_ERROR_CODE.Duplicate });
 
         expect(Storage.set).not.toHaveBeenCalled();
-        expect(persisted['example.com'].blockedUntil).toBe(blockedUntil);
+        expect(persisted['example.com']!.blockedUntil).toBe(blockedUntil);
     });
 
     it.each([undefined, 30])('allows an expired website to be blocked again for %s minutes', async (duration) => {

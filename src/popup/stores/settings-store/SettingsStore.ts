@@ -1,3 +1,7 @@
+/**
+ * @file Settings store of the popup.
+ */
+
 import { type RootStore } from '../root-store';
 
 /**

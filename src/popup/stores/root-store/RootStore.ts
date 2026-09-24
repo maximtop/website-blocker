@@ -1,3 +1,7 @@
+/**
+ * @file Root store of the popup and its React context.
+ */
+
 import { createContext } from 'react';
 
 import { SettingsStore } from '../settings-store';

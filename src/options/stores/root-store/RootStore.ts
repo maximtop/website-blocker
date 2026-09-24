@@ -1,9 +1,12 @@
-import { createContext } from 'react';
+/**
+ * @file Root store of the options page and its React context.
+ */
 
 import { configure } from 'mobx';
+import { createContext } from 'react';
 
-import { SettingsStore } from '../settings-store';
 import { MOBX_ACTION_MODE } from '../mobx-config';
+import { SettingsStore } from '../settings-store';
 
 configure({
     enforceActions: MOBX_ACTION_MODE.ALWAYS,

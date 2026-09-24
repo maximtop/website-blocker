@@ -1,3 +1,7 @@
+/**
+ * @file Synchronized browser storage wrapper.
+ */
+
 import browser from 'webextension-polyfill';
 
 /**
@@ -10,9 +14,10 @@ export class Storage {
      * Reads a stored value by its key.
      *
      * @param key - Name of the stored setting.
+     *
      * @returns The stored value, or undefined when the key is absent.
      */
-    public static async get(key: string) {
+    public static async get(key: string): Promise<unknown> {
         const response = await Storage.storage.get(key);
         return response[key];
     }
@@ -22,9 +27,10 @@ export class Storage {
      *
      * @param key - Name of the setting to write.
      * @param value - Serializable value to store.
+     *
      * @returns Resolves after browser storage accepts the change.
      */
-    public static async set(key: string, value: any) {
+    public static async set(key: string, value: unknown) {
         return Storage.storage.set({ [key]: value });
     }
 
@@ -41,6 +47,7 @@ export class Storage {
      * Saves related keys together, such as a renamed website and its old-host tombstone.
      *
      * @param values - Keys to change without replacing unrelated settings.
+     *
      * @returns Resolves when the browser accepts the write.
      */
     public static async setMany(values: Record<string, unknown>): Promise<void> {
@@ -51,6 +58,7 @@ export class Storage {
      * Removes a setting by key.
      *
      * @param key - Name of the setting to remove.
+     *
      * @returns Resolves after removal.
      */
     public static async remove(key: string): Promise<void> {

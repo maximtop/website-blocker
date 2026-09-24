@@ -1,16 +1,27 @@
-/** Extract complete localized store descriptions from the canonical markdown. */
+/**
+ * @file Extract complete localized store descriptions from the canonical markdown.
+ */
 import fs from 'node:fs';
 import path from 'node:path';
+
 import { LOCALES, validateCatalogs } from '../i18n/catalogs';
 
 export const DESCRIPTION_SOURCE = path.resolve(__dirname, '../../docs/store/STORE_DESCRIPTIONS.md');
 
-/** Split locale sections and reject incomplete or duplicate listing packs. */
+/**
+ * Split locale sections and reject incomplete or duplicate listing packs.
+ *
+ * @param content - Markdown with one `## Language (locale)` section per locale.
+ *
+ * @returns Description text keyed by locale.
+ *
+ * @throws If a locale is duplicated, missing or unexpected, or its description is empty or too long.
+ */
 export const extractDescriptions = (content: string): Record<string, string> => {
     const headings = Array.from(content.matchAll(/^## .+ \(([a-zA-Z0-9_]+)\)\s*$/gm));
     const descriptions: Record<string, string> = {};
     headings.forEach((heading, index) => {
-        const locale = heading[1];
+        const locale = heading[1]!;
         if (Object.hasOwn(descriptions, locale)) {
             throw new Error(`Duplicate store description: ${locale}`);
         }

@@ -1,6 +1,5 @@
 // @vitest-environment node
 
-import browser from 'webextension-polyfill';
 import {
     beforeEach,
     describe,
@@ -8,7 +7,12 @@ import {
     it,
     vi,
 } from 'vitest';
-import { Websites, WebsitesMap } from '../../src/common/websites';
+import browser from 'webextension-polyfill';
+
+import { Websites } from '../../src/common/websites';
+
+import type * as WebsitesModule from '../../src/common/websites';
+import type { WebsitesMap } from '../../src/common/websites';
 
 vi.mock('webextension-polyfill', () => ({
     default: {
@@ -23,7 +27,7 @@ vi.mock('webextension-polyfill', () => ({
     },
 }));
 vi.mock('../../src/common/websites', async (importOriginal) => ({
-    ...await importOriginal<typeof import('../../src/common/websites')>(),
+    ...await importOriginal<typeof WebsitesModule>(),
     Websites: {
         getWebsites: vi.fn(),
         onChanged: { addListener: vi.fn() },
@@ -47,10 +51,9 @@ const navigation = (overrides: Partial<NavigationDetails> = {}): NavigationDetai
     ...overrides,
 });
 const startBackground = async () => {
-    const { init } = await import('../../src/background/background');
-    init();
-    return vi.mocked(browser.webNavigation.onCommitted.addListener).mock.calls[0][0] as
-        (details: NavigationDetails) => Promise<void>;
+    const { handleOnCommitted, init } = await import('../../src/background/background');
+    void init();
+    return handleOnCommitted;
 };
 
 beforeEach(() => {

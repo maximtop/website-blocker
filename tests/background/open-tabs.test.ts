@@ -1,4 +1,3 @@
-import browser from 'webextension-polyfill';
 import {
     afterEach,
     beforeEach,
@@ -7,6 +6,9 @@ import {
     it,
     vi,
 } from 'vitest';
+import browser from 'webextension-polyfill';
+
+import type * as Background from '../../src/background/background';
 
 vi.mock('webextension-polyfill', () => ({
     default: {
@@ -30,22 +32,32 @@ const BLOCKED = 'moz-extension://fixture/blocked.html';
 let stored: Record<string, unknown>;
 let tabs: browser.Tabs.Tab[];
 let storageUpdates: Promise<void>[];
+let background: typeof Background;
 
-function tab(id: number, url: string, windowId = 1): browser.Tabs.Tab {
+function tab(id: number | undefined, url: string | undefined, windowId = 1): browser.Tabs.Tab {
     return {
-        id, url, windowId, index: 0, active: false, pinned: false, highlighted: false, incognito: false,
+        ...(id === undefined ? {} : { id }),
+        ...(url === undefined ? {} : { url }),
+        windowId,
+        index: 0,
+        active: false,
+        pinned: false,
+        highlighted: false,
+        incognito: false,
     };
 }
 
 function deferred<T>() {
     let resolve!: (value: T) => void;
-    const promise = new Promise<T>((finish) => { resolve = finish; });
+    const promise = new Promise<T>((finish) => {
+        resolve = finish;
+    });
     return { promise, resolve };
 }
 
 async function start() {
-    const { init } = await import('../../src/background/background');
-    await init();
+    background = await import('../../src/background/background');
+    await background.init();
     return (await import('../../src/common/websites')).Websites;
 }
 
@@ -64,9 +76,8 @@ beforeEach(() => {
     vi.mocked(browser.storage.sync.get).mockImplementation(async () => structuredClone(stored));
     vi.mocked(browser.storage.sync.set).mockImplementation(async (items) => {
         Object.assign(stored, structuredClone(items));
-        const changes = Object.fromEntries(Object.entries(items).map(([key, newValue]) => [key, { newValue }]));
-        const listener = vi.mocked(browser.storage.sync.onChanged.addListener).mock.calls[0][0];
-        storageUpdates.push(Promise.resolve(listener(changes)));
+        // Stands in for the storage.onChanged listener, whose refresh the test needs to await.
+        storageUpdates.push(background.updateBlockedWebsites());
     });
     vi.mocked(browser.tabs.query).mockImplementation(async () => structuredClone(tabs));
     vi.mocked(browser.tabs.get).mockImplementation(async (id) => {
@@ -86,7 +97,9 @@ beforeEach(() => {
     });
 });
 
-afterEach(() => { vi.restoreAllMocks(); });
+afterEach(() => {
+    vi.restoreAllMocks();
+});
 
 describe('blocking existing tabs', () => {
     it.each([undefined, NOW + 60_000])('blocks existing tabs on extension enable: %s', async (blockedUntil) => {
@@ -132,8 +145,8 @@ describe('blocking existing tabs', () => {
             tab(8, 'file://example.com/a'),
             tab(9, BLOCKED),
             tab(10, 'about:blank'),
-            { ...tab(11, ''), url: undefined },
-            { ...tab(12, 'https://example.com/'), id: undefined },
+            tab(11, undefined),
+            tab(undefined, 'https://example.com/'),
         ];
         tabs.push(...structuredClone(unchanged));
         await start();
@@ -166,22 +179,22 @@ describe('blocking existing tabs', () => {
     it('blocks again after background restart and browser startup', async () => {
         stored = { websites: { 'example.com': { hostname: 'example.com' } } };
         await start();
-        tabs[0].url = 'https://example.com/';
-        await vi.mocked(browser.runtime.onStartup.addListener).mock.calls[0][0]();
-        expect(tabs[0].url).toBe(BLOCKED);
+        tabs[0]!.url = 'https://example.com/';
+        vi.mocked(browser.runtime.onStartup.addListener).mock.calls[0]![0]();
+        await vi.waitFor(() => expect(tabs[0]!.url).toBe(BLOCKED));
 
-        tabs[0].url = 'https://example.com/';
+        tabs[0]!.url = 'https://example.com/';
         vi.resetModules();
         await start();
-        expect(tabs[0].url).toBe(BLOCKED);
+        expect(tabs[0]!.url).toBe(BLOCKED);
     });
 
     it('does not redirect a tab that navigated away after enumeration', async () => {
         stored = { websites: { 'example.com': { hostname: 'example.com' } } };
         vi.mocked(browser.tabs.query).mockImplementationOnce(async () => {
             const snapshot = structuredClone(tabs);
-            tabs[0].url = 'https://unrelated.org/';
-            tabs[1].pendingUrl = 'https://unrelated.org/';
+            tabs[0]!.url = 'https://unrelated.org/';
+            tabs[1]!.pendingUrl = 'https://unrelated.org/';
             return snapshot;
         });
         await start();
@@ -217,7 +230,7 @@ describe('blocking existing tabs', () => {
         await browser.storage.sync.set({ 'website:example.com': { hostname: 'example.com', enabled: false } });
         await storageUpdates[1];
         query.resolve(snapshot);
-        get.resolve(snapshot[0]);
+        get.resolve(snapshot[0]!);
         await Promise.all(storageUpdates);
         expect(browser.tabs.update).not.toHaveBeenCalled();
     });
@@ -227,7 +240,7 @@ describe('blocking existing tabs', () => {
         stored = { websites: { 'example.com': { hostname: 'example.com' } } };
         vi.mocked(browser.tabs[boundary]).mockRejectedValueOnce(new Error('Tab was closed'));
         await start();
-        expect(tabs[1].url).toBe(BLOCKED);
+        expect(tabs[1]!.url).toBe(BLOCKED);
         expect(browser.tabs.remove).not.toHaveBeenCalled();
     });
 
@@ -236,10 +249,9 @@ describe('blocking existing tabs', () => {
         stored = { websites: { 'example.com': { hostname: 'example.com' } } };
         vi.mocked(browser.tabs.query).mockRejectedValueOnce(new Error('Query failed'));
         await start();
-        const listener = vi.mocked(browser.webNavigation.onCommitted.addListener).mock.calls[0][0];
-        await listener({ tabId: 1, url: 'https://example.com/', frameId: 0 } as
+        await background.handleOnCommitted({ tabId: 1, url: 'https://example.com/', frameId: 0 } as
             browser.WebNavigation.OnCommittedDetailsType);
-        expect(tabs[0].url).toBe(BLOCKED);
+        expect(tabs[0]!.url).toBe(BLOCKED);
         expect(browser.storage.sync.get).toHaveBeenCalledTimes(1);
     });
 

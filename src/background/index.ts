@@ -1,3 +1,7 @@
+/**
+ * @file Starts the background blocking.
+ */
+
 import { init } from './background';
 
-init();
+void init();

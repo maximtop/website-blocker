@@ -2,7 +2,7 @@
 
 /**
  * @file Exercise the deployment preparation protocol against simulated GitHub and Git responses.
- * Identical in every extension repository; repository specifics come from scripts/deploy/constants.
+ * Repository specifics come from scripts/deploy/constants.
  */
 
 import { execFileSync } from 'node:child_process';

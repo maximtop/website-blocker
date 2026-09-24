@@ -7,8 +7,11 @@ import {
     it,
     vi,
 } from 'vitest';
-import { init } from '../../src/background/background';
-import { Websites, WebsitesMap } from '../../src/common/websites';
+
+import { handleOnCommitted, init } from '../../src/background/background';
+import { Websites } from '../../src/common/websites';
+
+import type { WebsitesMap } from '../../src/common/websites';
 
 const browserMock = vi.hoisted(() => ({
     storageGet: vi.fn(),
@@ -46,17 +49,16 @@ let persistedWebsites: WebsitesMap;
 let overrides: Record<string, unknown>;
 
 const navigate = async (url: string, browser: 'firefox' | 'chromium' = 'chromium') => {
-    const listener = browserMock.navigationAddListener.mock.calls[0][0];
-    await listener({
+    await handleOnCommitted({
         url,
         tabId: 42,
         frameId: 0,
         ...(browser === 'chromium' ? { frameType: 'outermost_frame', documentLifecycle: 'active' } : {}),
-    });
+    } as Parameters<typeof handleOnCommitted>[0]);
 };
 
 const notifyStorageChanged = () => {
-    const listener = browserMock.storageAddListener.mock.calls[0][0];
+    const listener = browserMock.storageAddListener.mock.calls[0]![0];
     listener({ websites: { newValue: structuredClone(persistedWebsites) } });
 };
 
@@ -76,7 +78,7 @@ beforeEach(() => {
         Object.assign(overrides, structuredClone(data));
     });
     browserMock.updateTab.mockResolvedValue(undefined);
-    init();
+    void init();
 });
 
 describe('navigation with per-website blocking preferences', () => {

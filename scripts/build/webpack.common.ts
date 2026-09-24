@@ -1,21 +1,27 @@
+/**
+ * @file Webpack configuration shared by all browser builds.
+ */
+
 import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
-import ZipWebpackPlugin from 'zip-webpack-plugin';
+
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
-import { Configuration, WebpackPluginInstance } from 'webpack';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import ZipWebpackPlugin from 'zip-webpack-plugin';
+
+import { CHROMIUM_LOCALE_ALIAS, LOCALES_PATH } from '../i18n/catalogs';
 
 import {
     BUILD_PATH,
     BuildTargetEnv,
     BUILD_ENV,
-    BrowserConfig,
     Browser,
 } from './constants';
-
 import { getEnvConf } from './helpers';
 import { updateManifest } from './manifest';
-import { CHROMIUM_LOCALE_ALIAS, LOCALES_PATH } from '../i18n/catalogs';
+
+import type { BrowserConfig } from './constants';
+import type { Configuration, WebpackPluginInstance } from 'webpack';
 
 const config = getEnvConf(BUILD_ENV);
 
@@ -32,6 +38,14 @@ const OUTPUT_PATH = config.outputPath;
 
 const isDev = BUILD_ENV === BuildTargetEnv.Dev;
 
+/**
+ * Builds the webpack configuration of one browser.
+ *
+ * @param browserConfig - Build settings of the browser.
+ * @param isWatchMode - Whether webpack runs in watch mode; the ZIP archive is skipped then.
+ *
+ * @returns Webpack configuration.
+ */
 export const genCommonConfig = (
     browserConfig: BrowserConfig,
     isWatchMode: boolean,
@@ -142,7 +156,7 @@ export const genCommonConfig = (
                 chunks: [POPUP_OUTPUT],
                 scriptLoading: 'blocking',
                 cache: false,
-            }) as WebpackPluginInstance,
+            }),
         ],
     };
 

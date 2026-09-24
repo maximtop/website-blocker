@@ -1,7 +1,13 @@
+/**
+ * @file Background blocking: keeps the saved website list and redirects blocked tabs.
+ */
+
 import browser from 'webextension-polyfill';
 
-import { isWebsiteBlocked, Websites, WebsitesMap } from '../common/websites';
 import { getHostname } from '../common/utils/url';
+import { isWebsiteBlocked, Websites } from '../common/websites';
+
+import type { WebsitesMap } from '../common/websites';
 
 let blockedWebsites: WebsitesMap = {};
 let blockedWebsitesPromise: Promise<void> | null = null;
@@ -21,7 +27,9 @@ type NavigationDetails = browser.WebNavigation.OnCommittedDetailsType & {
 
 /**
  * Checks if a given URL matches any of the blocked websites.
+ *
  * @param url - The URL of the website to check.
+ *
  * @returns Returns true if the URL matches a blocked website, otherwise false.
  */
 function isBlocked(url: string): boolean {
@@ -36,6 +44,7 @@ function isBlocked(url: string): boolean {
  * Redirects matching tabs across all accessible windows using the latest successful read.
  *
  * @param request - Storage revision that requested this scan.
+ *
  * @returns Resolves after all redirects, including tabs closed during the scan, settle.
  */
 async function blockOpenTabs(request: number): Promise<void> {
@@ -54,13 +63,11 @@ async function blockOpenTabs(request: number): Promise<void> {
                 await browser.tabs.update(tab.id, { url: browser.runtime.getURL('blocked.html') });
             } catch (error: unknown) {
                 // A disappearing or inaccessible tab must not prevent other tabs from being blocked.
-                // eslint-disable-next-line no-console
                 console.error('Unable to redirect an open tab.', error);
             }
         }));
     } catch (error: unknown) {
         // Navigation blocking still uses the successfully refreshed preferences.
-        // eslint-disable-next-line no-console
         console.error('Unable to query open tabs.', error);
     }
 }
@@ -86,7 +93,6 @@ function updateBlockedWebsites(): Promise<void> {
             if (request === loadRequest) {
                 // Keep the last known list and retry on the next navigation.
                 needsRefresh = true;
-                // eslint-disable-next-line no-console
                 console.error('Unable to load blocked websites.', error);
             }
         })
@@ -107,7 +113,6 @@ function updateBlockedWebsites(): Promise<void> {
 async function waitForUpdates() {
     // A storage event can start a newer read while navigation awaits an older one.
     while (blockedWebsitesPromise) {
-        // eslint-disable-next-line no-await-in-loop
         await blockedWebsitesPromise;
     }
 }
@@ -116,6 +121,7 @@ async function waitForUpdates() {
  * Loads current blocking preferences and redirects matching top-level navigation.
  *
  * @param details - Committed browser navigation to check.
+ *
  * @returns Resolves after any required refresh and redirect.
  */
 const handleOnCommitted = async (
@@ -150,11 +156,17 @@ const handleOnCommitted = async (
  * Registers browser lifecycle, storage and navigation listeners.
  */
 const syncInit = () => {
-    browser.runtime.onInstalled.addListener(updateBlockedWebsites);
-    browser.runtime.onStartup.addListener(updateBlockedWebsites);
-    Websites.onChanged.addListener(updateBlockedWebsites);
+    // Browsers ignore listener return values; the refresh handles its own errors.
+    const refresh = () => {
+        void updateBlockedWebsites();
+    };
+    browser.runtime.onInstalled.addListener(refresh);
+    browser.runtime.onStartup.addListener(refresh);
+    Websites.onChanged.addListener(refresh);
 
-    browser.webNavigation.onCommitted.addListener(handleOnCommitted, { url: [{ schemes: ['http', 'https'] }] });
+    browser.webNavigation.onCommitted.addListener((details) => {
+        void handleOnCommitted(details);
+    }, { url: [{ schemes: ['http', 'https'] }] });
 };
 
 /**
@@ -168,4 +180,4 @@ const init = () => {
     return updateBlockedWebsites();
 };
 
-export { init };
+export { handleOnCommitted, init, updateBlockedWebsites };

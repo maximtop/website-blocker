@@ -1,14 +1,40 @@
-/* eslint-disable no-console */
-import webpack, { Stats } from 'webpack';
+/**
+ * @file Runs a webpack compilation once or in watch mode.
+ */
+
+import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 
-type Options = {
-    watch: boolean,
-    cache: boolean,
-};
+import type { Stats } from 'webpack';
 
+/**
+ * Compilation options chosen on the command line.
+ */
+interface Options {
+    /**
+     * Whether to keep rebuilding on changes.
+     */
+    watch: boolean;
+
+    /**
+     * Whether watch mode uses the webpack cache.
+     */
+    cache: boolean;
+}
+
+/**
+ * Callback that receives the result of one compilation.
+ */
 type RunCallback<T> = (err: Error | null, stats: T | undefined) => void;
 
+/**
+ * Compiles the extension and prints the webpack report.
+ *
+ * @param webpackConfig - Configuration of the compilation.
+ * @param options - Watch and cache settings.
+ *
+ * @returns Resolves after a successful compilation, or on the first watch build.
+ */
 export const bundleRunner = (webpackConfig: webpack.Configuration, options: Options): Promise<void> => {
     const { watch, cache } = options;
 
@@ -35,12 +61,10 @@ export const bundleRunner = (webpackConfig: webpack.Configuration, options: Opti
         run((err, stats) => {
             if (err) {
                 console.error(err.stack || err);
-                // @ts-ignore
-                if (err.details) {
-                    // @ts-ignore
+                if ('details' in err && err.details) {
                     console.error(err.details);
                 }
-                reject();
+                reject(new Error('Webpack compilation failed'));
                 return;
             }
             if (stats) {
@@ -52,7 +76,7 @@ export const bundleRunner = (webpackConfig: webpack.Configuration, options: Opti
                         moduleTrace: true,
                         logging: 'error',
                     }));
-                    reject();
+                    reject(new Error('Webpack compilation has errors'));
                     return;
                 }
 

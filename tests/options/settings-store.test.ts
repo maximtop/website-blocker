@@ -14,10 +14,12 @@ import {
 import english from '../../src/_locales/en/messages.json';
 import russian from '../../src/_locales/ru/messages.json';
 import { Storage } from '../../src/common/storage';
-import { Websites, WebsitesMap } from '../../src/common/websites';
-import { SettingsStore } from '../../src/options/stores/settings-store/SettingsStore';
-import { type RootStore } from '../../src/options/stores/root-store';
+import { Websites } from '../../src/common/websites';
 import { MOBX_ACTION_MODE } from '../../src/options/stores/mobx-config';
+import { type RootStore } from '../../src/options/stores/root-store';
+import { SettingsStore } from '../../src/options/stores/settings-store/SettingsStore';
+
+import type { WebsitesMap } from '../../src/common/websites';
 
 vi.mock('../../src/common/storage', () => ({
     Storage: {
@@ -85,7 +87,7 @@ describe('SettingsStore website forms', () => {
     });
 
     it('notifies observers when editing begins and cancelling discards the draft without storage writes', () => {
-        const editingStates: Array<string | null> = [];
+        const editingStates: (string | null)[] = [];
         const stop = autorun(() => editingStates.push(store.editingWebsite));
 
         store.editWebsite('old.com');
@@ -255,7 +257,7 @@ describe('SettingsStore website forms', () => {
     });
 
     it('preserves a disabled website when its address is edited', async () => {
-        persistedWebsites['old.com'].enabled = false;
+        persistedWebsites['old.com']!.enabled = false;
         await store.loadWebsites();
         store.editWebsite('old.com');
         store.setEditedWebsite('new.com');
@@ -263,7 +265,7 @@ describe('SettingsStore website forms', () => {
         await store.updateWebsite();
 
         expect(store.websites['new.com']).toEqual({ hostname: 'new.com', enabled: false });
-        expect((await Websites.getWebsites())['new.com'].enabled).toBe(false);
+        expect((await Websites.getWebsites())['new.com']!.enabled).toBe(false);
     });
 
     it('updates blocking state and keeps an unrelated edit draft', async () => {
@@ -272,8 +274,8 @@ describe('SettingsStore website forms', () => {
 
         await store.setWebsiteEnabled('other.com', false);
 
-        expect(store.websites['other.com'].enabled).toBe(false);
-        expect((await Websites.getWebsites())['other.com'].enabled).toBe(false);
+        expect(store.websites['other.com']!.enabled).toBe(false);
+        expect((await Websites.getWebsites())['other.com']!.enabled).toBe(false);
         expect(store.editingWebsite).toBe('old.com');
         expect(store.editedWebsite).toBe('new.com');
         expect(store.isPending).toBe(false);
@@ -284,13 +286,13 @@ describe('SettingsStore website forms', () => {
 
         await store.setWebsiteEnabled('other.com', false);
 
-        expect(store.websites['other.com'].enabled).not.toBe(false);
+        expect(store.websites['other.com']!.enabled).not.toBe(false);
         expect(store.error).toBe(english.saveError.message);
         expect(store.isPending).toBe(false);
 
         await store.setWebsiteEnabled('other.com', false);
 
-        expect(store.websites['other.com'].enabled).toBe(false);
+        expect(store.websites['other.com']!.enabled).toBe(false);
         expect(store.error).toBe('');
         expect(store.isPending).toBe(false);
     });
@@ -360,7 +362,7 @@ describe('timed settings lifecycle', () => {
         rejectOld(new Error('Obsolete read failed'));
 
         await expect(oldLoad).resolves.toBeUndefined();
-        expect(store.websites['other.com'].enabled).toBe(false);
+        expect(store.websites['other.com']!.enabled).toBe(false);
         expect(store.error).toBe('');
         expect(diagnostics).not.toHaveBeenCalled();
     });
@@ -371,14 +373,14 @@ describe('timed settings lifecycle', () => {
             await store.loadWebsites();
             vi.mocked(Storage.set).mockImplementationOnce(async (key, value) => {
                 overrides[key] = structuredClone(value);
-                const listener = vi.mocked(Storage.onChanged.addListener).mock.calls[0][0];
+                const listener = vi.mocked(Storage.onChanged.addListener).mock.calls[0]![0];
                 listener({ [key]: { newValue: value } });
                 vi.mocked(Storage.getAll).mockRejectedValueOnce(new Error('Refresh failed'));
             });
 
             await store.setWebsiteEnabled('other.com', false);
 
-            expect(store.websites['other.com'].enabled).toBe(false);
+            expect(store.websites['other.com']!.enabled).toBe(false);
             expect(overrides['website:other.com']).toMatchObject({ enabled: false });
             expect(store.error).toBe(english.loadError.message);
             expect(store.isPending).toBe(false);
@@ -394,7 +396,7 @@ describe('timed settings lifecycle', () => {
         store.setDuration(duration);
         store.setCustomMinutes('7');
         await store.addNewWebsite();
-        expect(store.websites['timed.com'].blockedUntil).toBe(
+        expect(store.websites['timed.com']!.blockedUntil).toBe(
             now + (duration === 'custom' ? 7 : Number(duration)) * 60_000,
         );
         expect(store.newWebsite).toBe('');
@@ -427,7 +429,7 @@ describe('timed settings lifecycle', () => {
         } finally {
             stop();
             expect(Storage.onChanged.removeListener).toHaveBeenCalledWith(
-                vi.mocked(Storage.onChanged.addListener).mock.calls[0][0],
+                vi.mocked(Storage.onChanged.addListener).mock.calls[0]![0],
             );
             expect(vi.getTimerCount()).toBe(0);
             vi.useRealTimers();
@@ -436,7 +438,9 @@ describe('timed settings lifecycle', () => {
 
     it('ignores an older options-page read completing after a successful mutation', async () => {
         let resolveOld!: (value: Record<string, unknown>) => void;
-        vi.mocked(Storage.getAll).mockImplementationOnce(() => new Promise((resolve) => { resolveOld = resolve; }));
+        vi.mocked(Storage.getAll).mockImplementationOnce(() => new Promise((resolve) => {
+            resolveOld = resolve;
+        }));
         const oldLoad = store.loadWebsites();
         store.setNewWebsite('added.com');
         await store.addNewWebsite();
@@ -451,13 +455,16 @@ describe('timed settings lifecycle', () => {
             await store.loadWebsites();
             let finishWrite!: () => void;
             vi.mocked(Storage.set).mockImplementationOnce((key, value) => new Promise((resolve) => {
-                finishWrite = () => { overrides[key] = value; resolve(); };
+                finishWrite = () => {
+                    overrides[key] = value;
+                    resolve();
+                };
             }));
             store.setNewWebsite('local.com');
             const saving = store.addNewWebsite();
             await vi.waitFor(() => expect(Storage.set).toHaveBeenCalledTimes(1));
             overrides['website:remote.com'] = { hostname: 'remote.com', enabled: true };
-            const listener = vi.mocked(Storage.onChanged.addListener).mock.calls[0][0];
+            const listener = vi.mocked(Storage.onChanged.addListener).mock.calls[0]![0];
             listener({ 'website:remote.com': { newValue: overrides['website:remote.com'] } });
             finishWrite();
             await saving;

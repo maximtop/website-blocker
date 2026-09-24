@@ -1,4 +1,9 @@
+/**
+ * @file Blocked page content.
+ */
+
 import React from 'react';
+
 import { t } from '../../../common/i18n';
 
 /**
