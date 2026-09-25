@@ -8,10 +8,12 @@ import { createHash } from 'node:crypto';
 import AdmZip from 'adm-zip';
 
 import {
+    AMO_APPROVAL_NOTES_OWN_LIMIT,
     AMO_REVIEW_NOTES_PATH,
     GECKO_ID,
     RELEASE_TAG_PATTERN,
     SOURCE_REQUIRED_FILES,
+    Store,
 } from './constants';
 
 /**
@@ -124,7 +126,7 @@ export const verifyManifest = (bytes: Buffer, version: string, browser: string):
         throw new Error('Package manifest version does not match the selected release');
     }
     const serviceWorker = read(manifest, 'background', 'service_worker');
-    if (browser === 'firefox') {
+    if (browser === Store.Firefox) {
         const backgroundScripts = read(manifest, 'background', 'scripts');
         const hasValidBackground = backgroundScripts === undefined
             || Array.isArray(backgroundScripts);
@@ -139,13 +141,39 @@ export const verifyManifest = (bytes: Buffer, version: string, browser: string):
 };
 
 /**
- * Check matching source metadata and obtain reviewer notes from that release.
+ * Count reviewer notes the way the limit is defined: trimmed, in Unicode code points.
+ *
+ * @param notes Reviewer notes as submitted.
+ *
+ * @returns Unicode code points after trimming surrounding whitespace.
+ */
+export const amoNotesLength = (notes: string): number => [...notes.trim()].length;
+
+/**
+ * Fail before upload if the approval notes exceed our own length limit, which sits below the one
+ * AMO enforces.
+ *
+ * @param notes Approval notes as they will be submitted.
+ *
+ * @throws If the notes exceed the limit.
+ */
+export const verifyAmoNotes = (notes: string): void => {
+    const length = amoNotesLength(notes);
+    if (length > AMO_APPROVAL_NOTES_OWN_LIMIT) {
+        throw new Error(
+            `AMO approval notes are ${length} characters; the limit is ${AMO_APPROVAL_NOTES_OWN_LIMIT}`,
+        );
+    }
+};
+
+/**
+ * Check matching source metadata and obtain reviewer instructions from that release.
  *
  * @param bytes Source ZIP from the same release.
  * @param version Selected package version.
  * @param requireNotes Whether this is a new Firefox submission.
  *
- * @returns AMO-sized reviewer notes, empty when the archive has none.
+ * @returns Reviewer instructions, empty when the archive has none.
  *
  * @throws If the source is incomplete or belongs to another version.
  */
@@ -165,11 +193,5 @@ export const verifySource = (bytes: Buffer, version: string, requireNotes: boole
             `Source has no ${AMO_REVIEW_NOTES_PATH}; use the Developer Hub for this release`,
         );
     }
-    // AMO limits approval_notes to 3000 characters. The matching source ZIP
-    // retains the complete instructions, so point there instead of truncating them.
-    return notes.length > 3000
-        ? `Full build and reviewer instructions are in ${AMO_REVIEW_NOTES_PATH} `
-            + 'in the attached source archive for this version. Follow that file to reproduce '
-            + 'the package and test its behavior. The source archive matches the submitted extension.'
-        : notes;
+    return notes;
 };

@@ -201,10 +201,14 @@ attachment; it does not wait for signing.
 
 A new submission requires `docs/AMO_REVIEW.md` inside that same release's
 source archive. Update these [reviewer instructions](AMO_REVIEW.md) whenever
-build requirements change.
-AMO accepts at most 3000 characters in its reviewer-notes field. Longer instructions
-stay in the matching source archive; the submitted field points the reviewer to
-that complete file instead of truncating it.
+build requirements change; they have no length limit. The approval notes sent
+to AMO are not that file: `prepare.ts` builds a short fixed text from the
+summary in `scripts/deploy/constants.ts` and a link to `docs/AMO_REVIEW.md`
+pinned to the release tag, and says the same file is in the source archive.
+AMO rejects notes longer than 3000 characters, so the generated notes are
+checked against our own limit of 2500 (surrounding whitespace trimmed, Unicode
+code points counted). `validate` and `submit` enforce it and the tests check
+it; `status` does not.
 
 The existing public Website Blocker listing slug is `website-blocker-mt`.
 Submit updates through the manual workflow using the Firefox archive and matching
