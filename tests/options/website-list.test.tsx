@@ -83,7 +83,9 @@ afterEach(() => {
 describe('localized timer interface', () => {
     it.each(LOCALES)('renders and submits translated duration controls in %s', async (locale) => {
         const catalog = openList(locale);
-        const message = (key: string) => catalog[key]!.message;
+        const message = (key: string) => {
+            return catalog[key]!.message;
+        };
         expect(screen.getByRole('status').textContent).toBe(message('loadingWebsites'));
         expect(screen.getByRole<HTMLSelectElement>('combobox').disabled).toBe(true);
         await ready();

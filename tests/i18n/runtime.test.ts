@@ -34,7 +34,9 @@ const selectCatalog = (catalog: Messages): void => {
         return (catalog[key]?.message ?? '').replace(/\$WEBSITE\$/g, () => substitution ?? '');
     });
 };
-const page = () => ({ documentElement: { lang: '', dir: '' }, title: '' });
+const page = () => {
+    return { documentElement: { lang: '', dir: '' }, title: '' };
+};
 
 beforeEach(() => {
     vi.resetAllMocks();

@@ -69,7 +69,9 @@ export const validateCatalog = (locale: string, catalog: Catalog): void => {
             fail(`Message placeholders differ: ${key}`);
         }
     });
-    const message = (key: string): string => catalog[key]?.message ?? fail(`Missing message: ${key}`);
+    const message = (key: string): string => {
+        return catalog[key]?.message ?? fail(`Missing message: ${key}`);
+    };
     if (message('catalogLocale') !== locale.replace('_', '-')) {
         fail('catalogLocale must identify the actual catalog using BCP 47');
     }
