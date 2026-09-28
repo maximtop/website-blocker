@@ -91,7 +91,8 @@ describe('Websites.updateWebsite', () => {
 
     it.each(['', 'not-a-website', 'https://'])('rejects invalid input %j without changing storage', async (input) => {
         await expect(Websites.updateWebsite('old.com', input)).rejects.toMatchObject({
-            code: WEBSITE_ERROR_CODE.Invalid, website: input,
+            code: WEBSITE_ERROR_CODE.Invalid,
+            website: input,
         });
 
         expect(Storage.setMany).not.toHaveBeenCalled();
@@ -155,7 +156,9 @@ describe('timed entries with existing website editing', () => {
         const reloaded = await Websites.getWebsites();
         expect(Object.keys(reloaded)).toEqual(['renamed.com', 'last.com', 'added.com']);
         expect(reloaded['renamed.com']).toEqual({
-            hostname: 'renamed.com', enabled: false, blockedUntil: deadline,
+            hostname: 'renamed.com',
+            enabled: false,
+            blockedUntil: deadline,
         });
     });
 
@@ -165,7 +168,9 @@ describe('timed entries with existing website editing', () => {
         await Websites.setWebsiteEnabled('old.com', false);
         await Websites.setWebsiteEnabled('old.com', true);
         expect((await Websites.getWebsites())['old.com']).toEqual({
-            hostname: 'old.com', enabled: true, blockedUntil: deadline,
+            hostname: 'old.com',
+            enabled: true,
+            blockedUntil: deadline,
         });
     });
 });

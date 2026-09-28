@@ -101,7 +101,9 @@ describe('Websites', () => {
         await Websites.addWebsite('https://www.example.com/articles');
 
         expect(Storage.set).toHaveBeenCalledWith('website:example.com', {
-            hostname: 'example.com', enabled: true, position: NOW,
+            hostname: 'example.com',
+            enabled: true,
+            position: NOW,
         });
     });
 
@@ -184,7 +186,9 @@ describe('Websites', () => {
         });
         expect(Storage.set).toHaveBeenCalledWith('website:example.com', null);
         expect(persisted['example.com']).toEqual({
-            hostname: 'example.com', enabled: true, blockedUntil: NOW + 30 * MINUTE,
+            hostname: 'example.com',
+            enabled: true,
+            blockedUntil: NOW + 30 * MINUTE,
         });
     });
 

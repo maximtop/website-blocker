@@ -49,7 +49,8 @@ describe('browser-selected translations', () => {
         applyDocumentLocale(PAGE_TITLE.Options, target as unknown as Document);
         expect(currentLocale()).toBe('en');
         expect(target).toEqual({
-            documentElement: { lang: 'en', dir: 'ltr' }, title: english.optionsTitle.message,
+            documentElement: { lang: 'en', dir: 'ltr' },
+            title: english.optionsTitle.message,
         });
     });
 

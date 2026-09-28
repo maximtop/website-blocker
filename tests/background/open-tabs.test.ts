@@ -21,7 +21,10 @@ vi.mock('webextension-polyfill', () => ({
             onStartup: { addListener: vi.fn() },
         },
         tabs: {
-            query: vi.fn(), get: vi.fn(), update: vi.fn(), remove: vi.fn(),
+            query: vi.fn(),
+            get: vi.fn(),
+            update: vi.fn(),
+            remove: vi.fn(),
         },
         webNavigation: { onCommitted: { addListener: vi.fn() } },
     },
