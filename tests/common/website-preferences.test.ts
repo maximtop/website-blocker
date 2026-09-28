@@ -74,7 +74,9 @@ describe('website blocking preferences', () => {
         });
         expect(Storage.set).toHaveBeenCalledTimes(2);
         expect(Storage.set).toHaveBeenLastCalledWith('website:example.com', {
-            hostname: 'example.com', enabled: true, position: 0,
+            hostname: 'example.com',
+            enabled: true,
+            position: 0,
         });
     });
 

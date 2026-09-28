@@ -39,17 +39,19 @@ const NOW = Date.UTC(2026, 8, 7, 12);
 const MINUTE = 60_000;
 let persisted: WebsitesMap;
 
-const navigation = (overrides: Partial<NavigationDetails> = {}): NavigationDetails => ({
-    tabId: 42,
-    url: 'https://www.example.com/articles',
-    frameId: 0,
-    frameType: 'outermost_frame',
-    documentLifecycle: 'active',
-    transitionType: 'link',
-    transitionQualifiers: [],
-    timeStamp: Date.now(),
-    ...overrides,
-});
+const navigation = (overrides: Partial<NavigationDetails> = {}): NavigationDetails => {
+    return {
+        tabId: 42,
+        url: 'https://www.example.com/articles',
+        frameId: 0,
+        frameType: 'outermost_frame',
+        documentLifecycle: 'active',
+        transitionType: 'link',
+        transitionQualifiers: [],
+        timeStamp: Date.now(),
+        ...overrides,
+    };
+};
 
 let background: typeof Background;
 
@@ -72,7 +74,9 @@ const deferStorageRead = () => {
     return { promise, resolve, reject };
 };
 
-const storageChanged = () => background.updateBlockedWebsites();
+const storageChanged = () => {
+    return background.updateBlockedWebsites();
+};
 
 beforeEach(() => {
     vi.resetAllMocks();

@@ -83,7 +83,9 @@ afterEach(() => {
 describe('localized timer interface', () => {
     it.each(LOCALES)('renders and submits translated duration controls in %s', async (locale) => {
         const catalog = openList(locale);
-        const message = (key: string) => catalog[key]!.message;
+        const message = (key: string) => {
+            return catalog[key]!.message;
+        };
         expect(screen.getByRole('status').textContent).toBe(message('loadingWebsites'));
         expect(screen.getByRole<HTMLSelectElement>('combobox').disabled).toBe(true);
         await ready();
@@ -111,7 +113,9 @@ describe('localized timer interface', () => {
         const deadlineLabel = await screen.findByText(expected, { normalizer: (text) => text });
         expect(deadlineLabel.getAttribute('datetime')).toBe(deadline.toISOString());
         expect(persisted['website:timed.com']).toMatchObject({
-            hostname: 'timed.com', enabled: true, blockedUntil: deadline.getTime(),
+            hostname: 'timed.com',
+            enabled: true,
+            blockedUntil: deadline.getTime(),
         });
         expect((website as HTMLInputElement).value).toBe('');
         expect(diagnostics).not.toHaveBeenCalled();
@@ -136,7 +140,8 @@ describe('localized timer interface', () => {
         const toggle = screen.getByRole('switch', { name: /timer15.com/ });
         await user.click(toggle);
         await waitFor(() => expect(persisted['website:timer15.com']).toMatchObject({
-            enabled: false, blockedUntil: NOW + 15 * MINUTE,
+            enabled: false,
+            blockedUntil: NOW + 15 * MINUTE,
         }));
         await user.selectOptions(selector, 'indefinitely');
         await user.type(website, 'forever.com');

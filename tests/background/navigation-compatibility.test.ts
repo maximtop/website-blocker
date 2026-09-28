@@ -41,15 +41,17 @@ type NavigationDetails = browser.WebNavigation.OnCommittedDetailsType & {
 const blockedWebsites: WebsitesMap = {
     'example.com': { hostname: 'example.com' },
 };
-const navigation = (overrides: Partial<NavigationDetails> = {}): NavigationDetails => ({
-    tabId: 17,
-    frameId: 0,
-    url: 'https://www.example.com/blocked-page',
-    timeStamp: 123,
-    transitionType: 'link',
-    transitionQualifiers: [],
-    ...overrides,
-});
+const navigation = (overrides: Partial<NavigationDetails> = {}): NavigationDetails => {
+    return {
+        tabId: 17,
+        frameId: 0,
+        url: 'https://www.example.com/blocked-page',
+        timeStamp: 123,
+        transitionType: 'link',
+        transitionQualifiers: [],
+        ...overrides,
+    };
+};
 const startBackground = async () => {
     const { handleOnCommitted, init } = await import('../../src/background/background');
     void init();

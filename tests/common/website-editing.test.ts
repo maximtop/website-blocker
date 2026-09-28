@@ -1,6 +1,7 @@
 // @vitest-environment node
 
 import {
+    afterEach,
     beforeEach,
     describe,
     expect,
@@ -24,11 +25,15 @@ vi.mock('../../src/common/storage', () => ({
     },
 }));
 
+const NOW = Date.UTC(2026, 8, 7, 12);
+const MINUTE = 60_000;
 let persistedWebsites: WebsitesMap;
 let overrides: Record<string, unknown>;
 
 beforeEach(() => {
     vi.resetAllMocks();
+    vi.useFakeTimers();
+    vi.setSystemTime(NOW);
     persistedWebsites = {
         'first.com': { hostname: 'first.com' },
         'old.com': { hostname: 'old.com' },
@@ -44,6 +49,10 @@ beforeEach(() => {
     vi.mocked(Storage.setMany).mockImplementation(async (values) => {
         Object.assign(overrides, structuredClone(values));
     });
+});
+
+afterEach(() => {
+    vi.useRealTimers();
 });
 
 describe('Websites.updateWebsite', () => {
@@ -82,7 +91,8 @@ describe('Websites.updateWebsite', () => {
 
     it.each(['', 'not-a-website', 'https://'])('rejects invalid input %j without changing storage', async (input) => {
         await expect(Websites.updateWebsite('old.com', input)).rejects.toMatchObject({
-            code: WEBSITE_ERROR_CODE.Invalid, website: input,
+            code: WEBSITE_ERROR_CODE.Invalid,
+            website: input,
         });
 
         expect(Storage.setMany).not.toHaveBeenCalled();
@@ -136,7 +146,7 @@ describe('Websites.updateWebsite', () => {
 
 describe('timed entries with existing website editing', () => {
     it('retains deadline and order across repeated renames, a neighboring deletion, and a new addition', async () => {
-        const deadline = Date.now() + 60_000;
+        const deadline = NOW + MINUTE;
         persistedWebsites['old.com'] = { hostname: 'old.com', enabled: false, blockedUntil: deadline };
         await Websites.updateWebsite('old.com', 'new.com');
         await Websites.deleteWebsite('first.com');
@@ -146,17 +156,21 @@ describe('timed entries with existing website editing', () => {
         const reloaded = await Websites.getWebsites();
         expect(Object.keys(reloaded)).toEqual(['renamed.com', 'last.com', 'added.com']);
         expect(reloaded['renamed.com']).toEqual({
-            hostname: 'renamed.com', enabled: false, blockedUntil: deadline,
+            hostname: 'renamed.com',
+            enabled: false,
+            blockedUntil: deadline,
         });
     });
 
     it('does not extend the deadline when disabling and re-enabling a timed entry', async () => {
-        const deadline = Date.now() + 60_000;
+        const deadline = NOW + MINUTE;
         persistedWebsites['old.com']!.blockedUntil = deadline;
         await Websites.setWebsiteEnabled('old.com', false);
         await Websites.setWebsiteEnabled('old.com', true);
         expect((await Websites.getWebsites())['old.com']).toEqual({
-            hostname: 'old.com', enabled: true, blockedUntil: deadline,
+            hostname: 'old.com',
+            enabled: true,
+            blockedUntil: deadline,
         });
     });
 });
