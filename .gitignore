@@ -178,3 +178,7 @@ dist
 # Store deployment downloads (deploy-*.yml)
 store-upload/
 build/store-descriptions/
+
+# Browser test artifacts
+test-results/
+playwright-report/

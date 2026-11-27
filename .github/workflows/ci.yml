@@ -69,10 +69,23 @@ jobs:
           asset-prefix: website-blocker
           locale-dir: src/_locales
 
+  browser:
+    name: Popup layout
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged && github.event.pull_request.merge_commit_sha || github.sha }}
+          persist-credentials: false
+      - uses: ./.github/actions/setup-toolchain
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:browser
+
   check:
     name: check
     if: always()
-    needs: [lint, typecheck, test, package]
+    needs: [lint, typecheck, test, package, browser]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -82,5 +95,6 @@ jobs:
             ${{ needs.lint.result == 'success' &&
             needs.typecheck.result == 'success' &&
             needs.test.result == 'success' &&
-            needs.package.result == 'success' }}
+            needs.package.result == 'success' &&
+            needs.browser.result == 'success' }}
         run: test "$PASSED" = true

@@ -31,7 +31,8 @@
     "store:descriptions": "ts-node scripts/store/descriptions.ts",
     "typecheck": "tsc --noEmit",
     "dev": "pnpm build",
-    "package": "pnpm release"
+    "package": "pnpm release",
+    "test:browser": "pnpm build chrome && playwright test"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
@@ -48,6 +49,7 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@playwright/test": "^1.65.1",
     "@swc-node/register": "^1.10.9",
     "@swc/cli": "0.4.1-nightly.20240914",
     "@swc/core": "^1.7.26",

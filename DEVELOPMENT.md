@@ -88,6 +88,15 @@ use `about:debugging#/runtime/this-firefox` and load
 `dist/dev/firefox/manifest.json` as a temporary add-on. The first Firefox
 listing must preserve the configured Gecko ID on all later updates.
 
+### Popup layout tests
+
+Run `pnpm exec playwright install chromium` once, then `pnpm test:browser`.
+This builds the Chrome extension and checks its popup in an isolated Chromium
+profile, including a narrow initial viewport and the settings button. CI installs
+Chromium with its system dependencies and requires these tests in the `check` gate.
+Keep popup width independent of viewport width: Chromium sizes toolbar popups
+from their content, so `max-width: 100vw` can trap the popup at its initial width.
+
 ## Release and deployment contract
 
 `pnpm release` builds one `<browser>.zip` for each target. The Release workflow
