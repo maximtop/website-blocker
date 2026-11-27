@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.11](https://github.com/maximtop/website-blocker/compare/v1.2.10...v1.2.11) (2026-11-27)
+
+
+### Bug Fixes
+
+* prevent popup width collapse during auto-sizing ([#31](https://github.com/maximtop/website-blocker/issues/31)) ([88b42e4](https://github.com/maximtop/website-blocker/commit/88b42e48c7fc731a6d14ff988ec2a1bf28f9a186))
+* send short AMO approval notes ([#28](https://github.com/maximtop/website-blocker/issues/28)) ([2760886](https://github.com/maximtop/website-blocker/commit/276088679a9f464d7f0f79e503409d9f7e0afb62))
+
 ## [1.2.10](https://github.com/maximtop/website-blocker/compare/v1.2.9...v1.2.10) (2026-09-21)
 
 
